@@ -503,8 +503,6 @@ mortality_scenario
 
 
 # Panel
-
-
 spatiotemporal = ggarrange(Map1, timescale3, nrow = 2, ncol = 1, heights = c(0.7,1))
 spatiotemporal
 
