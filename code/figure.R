@@ -99,7 +99,7 @@ Map1 = ggplot() +
   geom_sf(data = world, fill = "grey90", color = "transparent",
           show.legend = FALSE, size = 5) +
   geom_sf(data = world_data_multi, aes(fill = color_group), color ="transparent") +
-  geom_sf(data = points_sf, aes(color = "Sub-national investigation"), size = 3, shape = 16) +
+  geom_sf(data = points_sf, aes(color = "Sub-national investigation"), size = 2, shape = 16) +
   scale_fill_manual(values = c("orange","firebrick2","firebrick4","mediumpurple4"),
                     breaks = c("1-2", "3-4","5-6", "15")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
