@@ -253,7 +253,7 @@ timescale2
 timescale3 = info_publi %>%
   ggplot(aes(x = as.numeric(rank_plot))) +
   geom_linerange(aes(ymin = time_scale_min, ymax = time_scale_max), linewidth= 0.5) +
-  geom_text(aes(x = as.numeric(rank_plot), y = (time_scale_min -7) , label = author_date), size = 3, fontface = "bold") +
+  geom_text(aes(x = as.numeric(rank_plot), y = (time_scale_min -7) , label = author_date), size = 3.5, fontface = "bold") +
   geom_segment(x=48, y=1986, xend=36.5, yend=1986)+
   geom_text(x=42.5, y= 1981, label="World", size = 5)+
   geom_segment(x=36, y=1991, xend=29.5, yend=1991 )+
@@ -262,9 +262,15 @@ timescale3 = info_publi %>%
   geom_text(x=20.5, y= 1980, label="National", size = 5)+
   geom_segment(x=8, y=1991, xend=0.5, yend=1991 )+
   geom_text(x=4.5, y= 1982.5, label="Sub-national", size = 5)+
+  geom_segment(aes(x=44, y=2020, xend=44, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
+  geom_text(x=44, y= 2070, label="2100", size = 4, angle = 45)+
+  geom_segment(aes(x=30, y=2021, xend=30, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
+  geom_text(x=30, y= 2070, label="2100", size = 4, angle = 45)+
+  geom_segment(aes(x=12, y=2011, xend=12, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
+  geom_text(x=12, y= 2070, label="2154", size = 4, angle = 45)+
   theme_bw() +
   coord_flip() +
-  scale_y_continuous(breaks = c(2010, 2020, 2030, 2040, 2050, 2060, 2070, 2100), limits = c(1980, 2100)) +
+  scale_y_continuous(breaks = c(2010, 2020, 2030, 2040, 2050, 2060, 2070, 2100), limits = c(1980, 2070)) +
   ylab("Year") +
   xlab("") +
   theme(legend.position = "top",
@@ -277,6 +283,10 @@ timescale3 = info_publi %>%
 
 timescale3
 
+
+# Panel
+spatiotemporal = ggarrange(Map1, timescale3, nrow = 2, ncol = 1, heights = c(0.5,1))
+spatiotemporal
 
 
 
@@ -541,12 +551,6 @@ mortality_scenario <- health_outcome %>%
 mortality_scenario
 
 
-
-
-
-# Panel
-spatiotemporal = ggarrange(Map1, timescale3, nrow = 2, ncol = 1, heights = c(0.7,1))
-spatiotemporal
 
 
 # Saving plots
