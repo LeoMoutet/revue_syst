@@ -154,6 +154,15 @@ population_proj_syst_review <- population_proj_clean %>%
 sum(population_proj_syst_review$n_pop)
 
 
+population_proj_syst_review <- population_proj_clean %>%
+  filter(region == "United Kingdom" 
+         , Year == "2021" | Year == "2022" | Year == "2023" | Year == "2024" | Year == "2025" | Year == "2026" | Year == "2027" | Year == "2028" | Year == "2029" | Year == "2050" |
+           Year == "2031" | Year == "2032" | Year == "2033" | Year == "2034" | Year == "2035" | Year == "2036" | Year == "2037" | Year == "2038" | Year == "2039" | Year == "2050" |
+           Year == "2041" | Year == "2042" | Year == "2043" | Year == "2044" | Year == "2045" | Year == "2046" | Year == "2047" | Year == "2048" | Year == "2049" | Year == "2050" )
+
+sum(population_proj_syst_review$n_pop)
+
+
 # Nawaz, 2022
 mortality_proj_syst_review <- mortality_proj_clean %>%
   filter(region == "Argentina" |region == "Australia" |region == "Austria" |region == "Luxembourg" 

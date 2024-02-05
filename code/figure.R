@@ -437,12 +437,26 @@ quality
 
 mortality_scenario <- health_outcome %>%
   drop_na(mortality_proj) %>%
-  ggplot(aes(x = factor(author_date, levels = unique(reorder(author_date, -as.numeric(author_date)))),
+  ggplot(aes(x = factor(author_date, levels = unique(reorder(author_date, as.numeric(author_date)))),
              y = mortality_proj, fill = pathway_co_benefits)) +
   geom_bar(position = position_dodge(), stat = "identity") +
   coord_flip()
 
-mortality_scenario
+mortality_exposure
+
+
+yll_exposure <- health_outcome %>%
+  drop_na(yll_per_capita) %>%
+  ggplot(aes(x = factor(author_date, levels = unique(reorder(author_date, as.numeric(author_date)))),
+             y = yll_per_capita, fill = pathway_co_benefits)) +
+  geom_bar(position = position_dodge(), stat = "identity") +
+  coord_flip()
+
+yll_exposure
+
+
+
+
 
 mortality_scenario <- health_outcome %>%
   drop_na(mortality_proj) %>%
@@ -452,6 +466,43 @@ mortality_scenario <- health_outcome %>%
   coord_flip()
 
 mortality_scenario
+
+
+
+yll_scenario <- health_outcome %>%
+  drop_na(yll_per_capita) %>%
+  ggplot(aes(x = factor(author_date, levels = unique(reorder(author_date, -as.numeric(author_date)))),
+             y = yll_per_capita, fill = scenario_cat)) +
+  geom_bar(position = position_dodge(), stat = "identity") +
+  coord_flip()
+
+yll_scenario
+
+
+
+
+
+
+mortality_scenario <- health_outcome %>% 
+  drop_na(mortality_proj) %>%
+  filter(scenario_cat != "not detailed") %>%
+  ggplot(aes(x = scenario, y = mortality_proj, fill = scenario_cat)) +
+  geom_bar(position = position_dodge(), stat = "identity")+
+  coord_flip()
+
+mortality_scenario
+
+
+yll_scenario <- health_outcome %>% 
+  drop_na(yll_per_capita) %>%
+  filter(scenario_cat != "not detailed") %>%
+  ggplot(aes(x = scenario, y = yll_per_capita, fill = scenario_cat)) +
+  geom_bar(position = position_dodge(), stat = "identity")+
+  coord_flip()
+
+yll_scenario
+
+
 
 
 
@@ -467,15 +518,6 @@ mortality_scenario <- health_outcome %>%
 
 mortality_scenario
 
-
-mortality_scenario <- health_outcome %>% 
-  drop_na(mortality_proj) %>%
-  filter(scenario_cat != "not detailed") %>%
-  ggplot(aes(x = scenario, y = mortality_proj, fill = scenario_cat)) +
-  geom_bar(position = position_dodge(), stat = "identity")+
-  coord_flip()
-
-mortality_scenario
 
 
 mortality_scenario <- health_outcome %>% 
