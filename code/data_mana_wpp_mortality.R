@@ -23,7 +23,9 @@ pacman::p_load(dplyr,
 
 
 # Data
-mortality_proj_wpp_2022 <- read_excel(here("data","medium_variant_wpp_2022.xlsx"))
+mortality_proj_wpp_2022 <- read_excel(here("data","mortality_medium_variant_wpp_2022.xlsx"))
+population_proj_wpp_2022 <- read_excel(here("data","population_medium_variant_wpp_2022.xlsx"))
+
 
 
 # Table format
