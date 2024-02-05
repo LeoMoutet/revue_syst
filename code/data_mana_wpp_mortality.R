@@ -162,6 +162,12 @@ mortality_proj_syst_review <- mortality_proj_clean %>%
 sum(mortality_proj_syst_review$n_death)
 
 
+# Dimitrova, 2021
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "India" 
+         , Year == "2050")
+
+sum(mortality_proj_syst_review$n_death)
 
 
 
