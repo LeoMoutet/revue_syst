@@ -110,7 +110,7 @@ Map1 = ggplot() +
         axis.text.y = element_blank(),
         axis.ticks = element_blank(),
         axis.line.x = element_blank(),
-        legend.position = "right",
+        legend.position = "bottom",
         legend.text = element_text(size = 15))+
   coord_sf(crs = robinson_proj)
 
@@ -171,6 +171,11 @@ Map2= ggplot() +
 
 
 Map2
+
+
+
+# Year of publi
+
 
 
 ##### Time-scale #####
@@ -282,11 +287,6 @@ timescale3 = info_publi %>%
 
 
 timescale3
-
-
-# Panel
-spatiotemporal = ggarrange(Map1, timescale3, nrow = 2, ncol = 1, heights = c(0.5,1))
-spatiotemporal
 
 
 
@@ -560,7 +560,6 @@ ggsave(here("figures","timescale1.png"), plot = timescale1 , width = 13, height 
 ggsave(here("figures","timescale2.png"), plot = timescale2 , width = 13, height = 7)
 ggsave(here("figures","timescale3.png"), plot = timescale3 , width = 13, height = 7)
 ggsave(here("figures","quality.png"), plot = quality , width = 13, height = 7)
-ggsave(here("figures","spatiotemporal.png"), plot = spatiotemporal , width = 10, height = 10)
 
 
 
