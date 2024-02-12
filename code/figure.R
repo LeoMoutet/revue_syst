@@ -442,8 +442,24 @@ quality
 
 
 
-
 # Health outcome
+health_outcome %>%
+  ggplot(aes(x = scenario_cat, y = mortality_proj, fill = scenario_cat))+
+  geom_boxplot()+
+  theme_pubr()
+
+health_outcome %>%
+  ggplot(aes(x = emission_sector, y = mortality_proj, fill = emission_sector))+
+  geom_boxplot()+
+  theme_pubr()
+
+health_outcome %>%
+  ggplot(aes(x = pathway_co_benefits, y = mortality_proj, fill = pathway_co_benefits))+
+  geom_boxplot()+
+  theme_pubr()
+
+
+# Health outcome v1
 
 mortality_scenario <- health_outcome %>%
   drop_na(mortality_proj) %>%
