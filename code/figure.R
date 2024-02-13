@@ -579,5 +579,21 @@ ggsave(here("figures","quality.png"), plot = quality , width = 13, height = 7)
 
 
 
+info_publi %>%
+  ggplot(aes(x = publi_yr))+
+  geom_bar()
+
+info_publi %>%
+  ggplot(aes(x = exposure_cat))+
+  geom_bar()+
+  geom_text(stat='count', aes(label=..count..), vjust=-1)
+
+info_publi %>%
+  ggplot(aes(x = `health outcome`))+
+  geom_bar()
+
+info_publi %>%
+  ggplot(aes(x = mitigation_type))+
+  geom_bar()
 
 
