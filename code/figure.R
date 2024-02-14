@@ -238,9 +238,15 @@ timescale2 = info_publi %>%
   geom_text(x=20.5, y= 1980, label="National")+
   geom_segment(x=8, y=1987, xend=0.5, yend=1987 )+
   geom_text(x=4.5, y= 1980, label="Sub-national")+
+  geom_segment(aes(x=44, y=2020, xend=44, yend=2067), size = 1.5, col = "grey40", arrow = arrow(length=unit(0.5, 'cm')))+
+  geom_text(x=44, y= 2070, label="2100", size = 4, angle = 45)+
+  geom_segment(aes(x=30, y=2021, xend=30, yend=2067), size = 1.5, col = "#4DAF4A"  ,arrow = arrow(length=unit(0.5, 'cm')))+
+  geom_text(x=30, y= 2070, label="2100", size = 4, angle = 45)+
+  geom_segment(aes(x=12, y=2011, xend=12, yend=2067), size = 1.5, col = "#377EB8"  , arrow = arrow(length=unit(0.5, 'cm')))+
+  geom_text(x=12, y= 2070, label="2154", size = 4, angle = 45)+
   theme_bw() +
   coord_flip() +
-  scale_y_continuous(breaks = c(2010, 2020, 2030, 2040, 2050, 2060, 2070, 2100), limits = c(1980, 2100)) +
+  scale_y_continuous(breaks = c(2010, 2020, 2030, 2040, 2050, 2060, 2070, 2100), limits = c(1980, 2070)) +
   ylab("Year") +
   xlab("") +
   theme(legend.position = "top",
@@ -468,7 +474,7 @@ mortality_scenario <- health_outcome %>%
   geom_bar(position = position_dodge(), stat = "identity") +
   coord_flip()
 
-mortality_exposure
+mortality_scenario
 
 
 yll_exposure <- health_outcome %>%
