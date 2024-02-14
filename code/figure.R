@@ -376,7 +376,7 @@ sankeyplot <- sankeyNetwork(Links = links, Nodes = nodes,
                             Source = "IDsource", Target = "IDtarget",
                             Value = "value", NodeID = "name", 
                             colourScale=my_color, LinkGroup="group", NodeGroup="group",
-                            fontSize = 17, nodeWidth = 2, fontFamily = )
+                            fontSize = 17, nodeWidth = 2 )
 
 
 
