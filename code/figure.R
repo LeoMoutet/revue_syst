@@ -25,6 +25,7 @@ pacman::p_load(dplyr,
 info_publi <- read_excel(here("data","extraction_grid.xlsx"))
 health_outcome <- read_excel(here("data","extraction_grid_health_outcome.xlsx"))
 quality_eval <- read_excel(here("data","quality_eval.xlsx"))
+quality_fr <- read_excel(here("data","quality_fr.xlsx"))
 
 
 ###### Geo scale #####
@@ -103,7 +104,7 @@ Map1 = ggplot() +
   scale_fill_manual(values = c("orange","firebrick2","firebrick4","mediumpurple4"),
                     breaks = c("1-2", "3-4","5-6", "15")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
-  labs(title = "",fill = "") +
+  labs(title = "",fill = "Number of investigation") +
   theme_pubr() +
   theme(axis.text.x = element_blank(),
         axis.title.x = element_blank(),
@@ -116,6 +117,27 @@ Map1 = ggplot() +
 
 Map1
 
+
+Map1fr = ggplot() +
+  geom_sf(data = world, fill = "grey90", color = "transparent",
+          show.legend = FALSE, size = 5) +
+  geom_sf(data = world_data_multi, aes(fill = color_group), color ="transparent") +
+  geom_sf(data = points_sf, aes(color = "Études régionales"), size = 2, shape = 16) +
+  scale_fill_manual(values = c("orange","firebrick2","firebrick4","mediumpurple4"),
+                    breaks = c("1-2", "3-4","5-6", "15")) +
+  scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
+  labs(title = "",fill = "Nombre d'étude:") +
+  theme_pubr() +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        axis.line.x = element_blank(),
+        legend.position = "bottom",
+        legend.text = element_text(size = 15))+
+  coord_sf(crs = robinson_proj)
+
+Map1fr
 
 
 
@@ -171,6 +193,30 @@ Map2= ggplot() +
 
 
 Map2
+
+
+Map2fr= ggplot() +
+  geom_sf(data = world, fill = "grey90", color = "transparent",
+          show.legend = FALSE, size = 5) +
+  geom_sf(data = world_data_multi, aes(fill = color_group), color ="transparent") +
+  scale_fill_manual(values = c("cadetblue1", "cornflowerblue", "blue", "darkblue"),
+                    breaks = c("1-2", "4-5", "9", "17"),
+                    guide = guide_legend(title = "Number of investigations")) +
+  scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
+  labs(title = "Pays de l'institution du 1er auteur",
+       fill = "Nombre d'étude:") +
+  theme_pubr() +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = c(0.5, -0.14),
+        legend.direction = "horizontal",)+
+  guides(fill = guide_legend(title = NULL)) +
+  coord_sf(crs = robinson_proj)
+
+
+Map2fr
 
 
 
@@ -255,7 +301,7 @@ timescale2 = info_publi %>%
         axis.text.x = element_text(angle = 45, hjust = 1),
         axis.ticks.y = element_blank(),
         legend.title = element_blank()) +
-  scale_color_manual(values = c("#377EB8", "#4DAF4A", "yellow","#E41A1C", "#984EA3","orange","grey40","pink" ))
+  scale_color_manual(values = c("#377EB8", "#4DAF4A", "yellow","#E41A1C", "#984EA3","orange","pink","grey40","black" ))
 
 
 timescale2
@@ -533,6 +579,145 @@ htmlwidgets::onRender(
 
 
 
+# Sankey2fr
+links <- data.frame(
+  source=c("Décarbonation de l'énergie","Décarbonation de l'énergie","Décarbonation de l'énergie",
+           "Décarbonation de l'énergie","Décarbonation de l'énergie","Décarbonation de l'énergie",
+           "Santé intégré","Santé intégré","Santé intégré","Santé intégré","Santé intégré","Santé intégré","Santé intégré",
+           "Sobriété","Sobriété","Sobriété","Sobriété","Sobriété",
+           "Incitation financière","Incitation financière","Incitation financière","Incitation financière","Incitation financière","Incitation financière","Incitation financière",
+           "Pas détaillé","Pas détaillé","Pas détaillé","Pas détaillé","Pas détaillé","Pas détaillé","Pas détaillé",
+           
+           "Tous confondus", "Tous confondus",
+           "Énergie", "Énergie",
+           "Transport",  "Transport", 
+           "Système alimentaire","Système alimentaire",
+           "Logement", "Logement",
+           "Industrie", "Industrie",
+           "Autres",
+           
+           "Pollution de l'air","Pollution de l'air","Pollution de l'air","Pollution de l'air","Pollution de l'air",
+           "Pollution de l'air",
+           "Alimentation","Alimentation","Alimentation",
+           "Activité physique","Activité physique","Activité physique","Activité physique",
+           "Pollution intérieur","Pollution intérieur","Pollution intérieur","Pollution intérieur"
+  ), 
+  
+  target=c("Énergie","Transport", "Système alimentaire",
+           "Tous confondus","Logement","Industrie",
+           "Énergie","Système alimentaire","Industrie","Transport", "Autres","Logement", "Tous confondus", 
+           "Énergie", "Tous confondus","Logement","Transport", "Système alimentaire",
+           "Tous confondus", "Transport", "Énergie", "Logement","Industrie","Système alimentaire","Autres",
+           "Tous confondus","Énergie","Industrie","Transport","Logement","Système alimentaire","Autres",
+           
+           
+           "Pollution de l'air","Pollution intérieur",
+           "Pollution de l'air","Pollution intérieur",
+           "Pollution de l'air", "Activité physique",
+           "Pollution de l'air", "Alimentation",
+           "Pollution de l'air", "Pollution intérieur",
+           "Pollution de l'air","Pollution intérieur",
+           "Pollution de l'air",
+           
+           "Mortalité", "YLL", "Economique","Espérance de vie","DALYs",
+           "Morbidité",
+           "Mortalité", "YLL", "DALYs",
+           "Mortalité", "YLL","Economique","Espérance de vie",
+           "YLL","Morbidité","Mortalité", "Economique"
+  ), 
+  
+  value=c(13,4,1,
+          3,3,1,
+          6,3,2,4,2,2,2,
+          3,1,1,2,1,
+          1,2,1,1,1,1,1,
+          9,10,8,8,5,5,4,
+          
+          
+          18,1,
+          26,3,
+          11,4,
+          7,3,
+          10,3,
+          11,1,
+          9,
+          
+          34,4,24,3,1,
+          14,
+          1,1,1,
+          2,2,1,1,
+          1,1,2,1
+  )
+)
+
+nodes <- data.frame(
+  name=c(as.character(links$source), 
+         as.character(links$target)) %>% unique()
+)
+
+links$IDsource <- match(links$source, nodes$name)-1 
+links$IDtarget <- match(links$target, nodes$name)-1
+
+links$group <- as.factor(c("type_m","type_m","type_m",
+                           "type_m","type_m","type_m",
+                           "type_o","type_o","type_o","type_o","type_o","type_o","type_o",
+                           "type_n","type_n","type_n","type_n","type_n",
+                           "type_l","type_l","type_l","type_l","type_l","type_l","type_l",
+                           "type_k","type_k","type_k","type_k","type_k","type_k","type_k",
+                           
+                           
+                           "type_a","type_a",
+                           "type_b","type_b",
+                           "type_c","type_c",
+                           "type_d","type_d",
+                           "type_e","type_e",
+                           "type_f","type_f",
+                           "type_k",
+                           
+                           "type_h","type_h","type_h","type_h","type_h",
+                           "type_h",
+                           "type_i","type_i","type_i",
+                           "type_j","type_j","type_j","type_j",
+                           "type_g","type_g","type_g","type_g"
+))
+nodes$group <- as.factor(c("my_unique_group"))
+
+my_color <- 'd3.scaleOrdinal() .domain(["type_a", "type_b","type_c","type_d","type_e","type_f","type_g","type_h","type_i","type_j","type_k","type_l","type_m","type_n","type_o", "my_unique_group"])
+.range(["#1f77b4", "#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#aec7e8","#bcbd22","#17becf","#7f7f7f","#ffbb78","#1f77b4","#98df8a","#ff9896", "black"])'
+
+
+sankeyplot2 <- sankeyNetwork(Links = links, Nodes = nodes,
+                             Source = "IDsource", Target = "IDtarget",
+                             Value = "value", NodeID = "name", 
+                             colourScale=my_color, LinkGroup="group", NodeGroup="group",
+                             fontSize = 17, nodeWidth = 2 )
+
+
+
+htmlwidgets::onRender(
+  sankeyplot2,
+  '
+  function(el) {
+    d3.select(el).selectAll(".node text").attr("font-weight", "bold");
+
+    // Add white background for text labels
+    d3.select(el).selectAll(".node text")
+      .each(function() {
+        var bbox = this.getBBox();
+        d3.select(this.parentNode)
+          .insert("rect", "text")
+          .attr("x", bbox.x - 3)
+          .attr("y", bbox.y - 3)
+          .attr("width", bbox.width + 6)
+          .attr("height", bbox.height + 6)
+          .style("fill", "white")
+          .style("stroke", "black");
+      });
+  }
+  '
+)
+
+
 
 # Pie chart
 
@@ -572,7 +757,7 @@ criteria_order <- c("Publicly shared data and code","Adverse consequences of mit
 quality_eval_long$Criteria <- factor(quality_eval_long$Criteria, levels = criteria_order)
 
 
-quality = ggplot(quality_eval_long, aes(x = Criteria, y = Count, fill = factor(Variable, levels = c("Yes", "Yes unsatisfactory", "Unclear", "No")))) +
+quality = ggplot(quality_eval_long, aes(x = Criteria, y = Count, fill = factor(Variable, levels = c("Yes", "Yes partially", "Unclear", "No")))) +
   geom_bar(stat = "identity") +
   labs(title = "",
        x = "",
@@ -587,6 +772,44 @@ quality = ggplot(quality_eval_long, aes(x = Criteria, y = Count, fill = factor(V
 
 
 quality
+
+
+
+# Quality FR
+quality_eval_data <- quality_fr %>%
+  gather(key = "Criteria", value = "Value", -Article) %>%
+  count(Criteria, Value) %>%
+  spread(key = "Value", value = "n", fill = 0)
+
+quality_eval_long <- quality_eval_data %>%
+  gather(key = "Variable", value = "Count", -Criteria)
+
+
+criteria_order <- c("Données et codes partagés publiquement","Conséquences négatives des mesures d'atténuation",
+                    "Limites et sources d'incertitudes discutés","Analyses de sensibilités","Métriques sanitaire adaptées",
+                    "Relations exposition-réponse décrites","Horizons temporels définis","Source des données",
+                    "Correspondance avec un scénario convenu","Affectation démographique et de l'exposition",
+                    "Population cible identifiée", "Équité des impacts","Projections détaillées"
+)
+quality_eval_long$Criteria <- factor(quality_eval_long$Criteria, levels = criteria_order)
+
+
+quality = ggplot(quality_eval_long, aes(x = Criteria, y = Count, fill = factor(Variable, levels = c("Oui", "Oui partiellement", "Pas clair", "Non")))) +
+  geom_bar(stat = "identity") +
+  labs(title = "",
+       x = "",
+       y = "Number of article",
+       fill = "Response") +
+  scale_fill_manual(values = c("#1A9850", "#B5E5B5", "#FF7F00", "#AA3939")) + 
+  theme_pubr() +
+  coord_flip()+
+  guides(fill = guide_legend(title = "", keywidth = 1, keyheight = 1, reverse = TRUE))+
+  theme(legend.text = element_text(size = 15),
+        axis.text.y = element_text(size = 20))
+
+
+quality
+
 
 
 
