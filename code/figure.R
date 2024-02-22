@@ -104,15 +104,15 @@ Map1 = ggplot() +
   scale_fill_manual(values = c("orange","firebrick2","firebrick4","mediumpurple4"),
                     breaks = c("1-2", "3-4","5-6", "15")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
-  labs(title = "",fill = "Number of investigation") +
+  labs(title = "",fill = "Number of investigation:") +
   theme_pubr() +
   theme(axis.text.x = element_blank(),
         axis.title.x = element_blank(),
         axis.text.y = element_blank(),
         axis.ticks = element_blank(),
         axis.line.x = element_blank(),
-        legend.position = "bottom",
-        legend.text = element_text(size = 15))+
+        legend.position = "top",
+        legend.text = element_text(size = 12))+
   coord_sf(crs = robinson_proj)
 
 Map1
@@ -763,7 +763,7 @@ quality = ggplot(quality_eval_long, aes(x = Criteria, y = Count, fill = factor(V
        x = "",
        y = "Number of article",
        fill = "Response") +
-  scale_fill_manual(values = c("#008000", "#98FB98", "#FFA500", "#DC143C")) + 
+  scale_fill_manual(values = c("#1A9850", "#B5E5B5", "#FF7F00", "#AA3939")) + 
   theme_pubr() +
   coord_flip()+
   guides(fill = guide_legend(title = "", keywidth = 1, keyheight = 1, reverse = TRUE))+
@@ -819,16 +819,37 @@ health_outcome %>%
   geom_boxplot()+
   theme_pubr()
 
-health_outcome %>%
-  ggplot(aes(x = emission_sector, y = mortality_proj, fill = emission_sector))+
-  geom_boxplot()+
-  theme_pubr()
 
-health_outcome %>%
+health_outcome1 = health_outcome %>% 
+  filter(emission_sector_cat != "Housing") %>%
+  ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
+  geom_boxplot()+
+  theme_pubr()+
+  xlab("")+
+  ylab("Réduction de mortalité associé")+
+  theme(legend.position = "none")+
+  scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
+  scale_fill_manual(values = wes_palette("Darjeeling1"))
+
+health_outcome2 = health_outcome %>% 
+  filter(pathway_co_benefits == "Air & Indoor pollution"|
+         pathway_co_benefits == "Air pollution"|
+         pathway_co_benefits == "Diet"|
+         pathway_co_benefits == "Physical activity") %>%
   ggplot(aes(x = pathway_co_benefits, y = mortality_proj, fill = pathway_co_benefits))+
   geom_boxplot()+
-  theme_pubr()
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(legend.position = "none")+
+  scale_x_discrete(label = c("Air & Indoor pollution"="Pollution\natmosphérique & intérieur", "Air pollution"="Pollution atmosphérique",
+                             "Diet"="Alimentation","Physical activity"="Activité physique"))+
+  scale_fill_manual(values = wes_palette("AsteroidCity2"))
 
+plot_health_outcome = ggarrange(health_outcome1,health_outcome2, ncol = 2 , nrow = 1,
+                            align = "h", labels = c("Secteur d'émission","Exposition"), hjust = c(-0.5,-0.8))
+
+plot_health_outcome
 
 # Health outcome v1
 
@@ -947,6 +968,7 @@ ggsave(here("figures","timescale1.png"), plot = timescale1 , width = 13, height 
 ggsave(here("figures","timescale2.png"), plot = timescale2 , width = 13, height = 7)
 ggsave(here("figures","timescale3.png"), plot = timescale3 , width = 13, height = 7)
 ggsave(here("figures","quality.png"), plot = quality , width = 13, height = 7)
+ggsave(here("figures","healthoutcome.png"), plot = plot_health_outcome , width = 15, height = 7)
 
 
 
