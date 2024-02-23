@@ -543,7 +543,7 @@ links$group <- as.factor(c("type_m","type_m","type_m",
 nodes$group <- as.factor(c("my_unique_group"))
 
 my_color <- 'd3.scaleOrdinal() .domain(["type_a", "type_b","type_c","type_d","type_e","type_f","type_g","type_h","type_i","type_j","type_k","type_l","type_m","type_n","type_o", "my_unique_group"])
-.range(["#1f77b4", "#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#aec7e8","#bcbd22","#17becf","#7f7f7f","#ffbb78","#1f77b4","#98df8a","#ff9896", "black"])'
+.range(["#1f77b4", "#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#aec7e8","#bcbd22","#17becf","#7f7f7f","#ffbb78","#6daed5","#98df8a","#ff9896", "black"])'
 
 
 sankeyplot2 <- sankeyNetwork(Links = links, Nodes = nodes,
@@ -683,7 +683,7 @@ links$group <- as.factor(c("type_m","type_m","type_m",
 nodes$group <- as.factor(c("my_unique_group"))
 
 my_color <- 'd3.scaleOrdinal() .domain(["type_a", "type_b","type_c","type_d","type_e","type_f","type_g","type_h","type_i","type_j","type_k","type_l","type_m","type_n","type_o", "my_unique_group"])
-.range(["#1f77b4", "#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#aec7e8","#bcbd22","#17becf","#7f7f7f","#ffbb78","#1f77b4","#98df8a","#ff9896", "black"])'
+.range(["#6daed5", "#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#aec7e8","#bcbd22","#17becf","#7f7f7f","#ffbb78","#1f77b4","#98df8a","#ff9896", "black"])'
 
 
 sankeyplot2 <- sankeyNetwork(Links = links, Nodes = nodes,
@@ -828,7 +828,7 @@ health_outcome1 = health_outcome %>%
   xlab("")+
   ylab("Réduction de mortalité associé")+
   theme(legend.position = "none")+
-  scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
+  #scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
   scale_fill_manual(values = wes_palette("Darjeeling1"))
 
 health_outcome2 = health_outcome %>% 
@@ -842,12 +842,15 @@ health_outcome2 = health_outcome %>%
   xlab("")+
   ylab("")+
   theme(legend.position = "none")+
-  scale_x_discrete(label = c("Air & Indoor pollution"="Pollution\natmosphérique & intérieur", "Air pollution"="Pollution atmosphérique",
-                             "Diet"="Alimentation","Physical activity"="Activité physique"))+
+  #scale_x_discrete(label = c("Air & Indoor pollution"="Pollution\natmosphérique & intérieur", "Air pollution"="Pollution atmosphérique",
+  #                           "Diet"="Alimentation","Physical activity"="Activité physique"))+
   scale_fill_manual(values = wes_palette("AsteroidCity2"))
 
-plot_health_outcome = ggarrange(health_outcome1,health_outcome2, ncol = 2 , nrow = 1,
+plot_health_outcome_fr = ggarrange(health_outcome1,health_outcome2, ncol = 2 , nrow = 1,
                             align = "h", labels = c("Secteur d'émission","Exposition"), hjust = c(-0.5,-0.8))
+
+plot_health_outcome = ggarrange(health_outcome1,health_outcome2, ncol = 2 , nrow = 1,
+                                   align = "h", labels = c("Emission sector","Co-benefit pathway"))
 
 plot_health_outcome
 

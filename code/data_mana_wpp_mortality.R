@@ -163,6 +163,11 @@ population_proj_syst_review <- population_proj_clean %>%
 sum(population_proj_syst_review$n_pop)
 
 
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "United Kingdom" , Year == "2050")
+
+sum(mortality_proj_syst_review$n_death)
+
 # Nawaz, 2022
 mortality_proj_syst_review <- mortality_proj_clean %>%
   filter(region == "Argentina" |region == "Australia" |region == "Austria" |region == "Luxembourg" 
@@ -185,6 +190,14 @@ population_proj_syst_review <- population_proj_clean %>%
          , Year == "2050")
 
 sum(population_proj_syst_review$n_pop)
+
+
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "Dem. People's Republic of Korea" 
+         , Year == "2050")
+
+sum(mortality_proj_syst_review$n_death)
+
 
 # Qu, 2020
 mortality_proj_syst_review <- mortality_proj_clean %>%
@@ -274,6 +287,12 @@ population_proj_syst_review <- population_proj_clean %>%
 
 sum(population_proj_syst_review$n_pop)
 
+
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "Poland" 
+         , Year == "2050")
+
+sum(mortality_proj_syst_review$n_death)
 
 
 
