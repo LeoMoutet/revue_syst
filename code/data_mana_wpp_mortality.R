@@ -82,6 +82,19 @@ population_proj_syst_review <- population_proj_clean %>%
 
 sum(population_proj_syst_review$n_pop)
 
+# Markandya
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "WORLD",  Year == "2030" )
+
+sum(mortality_proj_syst_review$n_death)
+
+# Weyant
+
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "WORLD",  Year == "2032" )
+
+sum(mortality_proj_syst_review$n_death)
+
 
 # Barban, 2022  
 mortality_proj_syst_review <- mortality_proj_clean %>%
@@ -135,6 +148,12 @@ mortality_proj_syst_review <- mortality_proj_clean %>%
 
 sum(mortality_proj_syst_review$n_death)
 
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "India" 
+         , Year == "2030")
+
+sum(mortality_proj_syst_review$n_death)
+
 
 # Hamilton, 2021
 mortality_proj_syst_review <- mortality_proj_clean %>%
@@ -167,6 +186,12 @@ mortality_proj_syst_review <- mortality_proj_clean %>%
   filter(region == "United Kingdom" , Year == "2050")
 
 sum(mortality_proj_syst_review$n_death)
+
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "United Kingdom" , Year == "2035")
+
+sum(mortality_proj_syst_review$n_death)
+
 
 # Nawaz, 2022
 mortality_proj_syst_review <- mortality_proj_clean %>%

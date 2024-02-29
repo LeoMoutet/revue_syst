@@ -820,6 +820,24 @@ health_outcome %>%
   theme_pubr()
 
 
+
+
+health_outcome %>% 
+  filter(emission_sector_cat != "Housing",
+         author_date != "Weyant, 2018",
+         author_date != "Milner, 2023",
+         author_date != "Williams, 2018",
+         author_date != "Zysk, 2020",
+         author_date != "Phillips, 2021") %>%
+  ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
+  geom_boxplot()+
+  theme_pubr()+
+  xlab("")+
+  ylab("Réduction de mortalité associé")+
+  theme(legend.position = "none")+
+  #scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
+  scale_fill_manual(values = wes_palette("Darjeeling1"))
+
 health_outcome1 = health_outcome %>% 
   filter(emission_sector_cat != "Housing") %>%
   ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
@@ -846,8 +864,8 @@ health_outcome2 = health_outcome %>%
   #                           "Diet"="Alimentation","Physical activity"="Activité physique"))+
   scale_fill_manual(values = wes_palette("AsteroidCity2"))
 
-plot_health_outcome_fr = ggarrange(health_outcome1,health_outcome2, ncol = 2 , nrow = 1,
-                            align = "h", labels = c("Secteur d'émission","Exposition"), hjust = c(-0.5,-0.8))
+# plot_health_outcome_fr = ggarrange(health_outcome1,health_outcome2, ncol = 2 , nrow = 1,
+#                            align = "h", labels = c("Secteur d'émission","Exposition"), hjust = c(-0.5,-0.8))
 
 plot_health_outcome = ggarrange(health_outcome1,health_outcome2, ncol = 2 , nrow = 1,
                                    align = "h", labels = c("Emission sector","Co-benefit pathway"))
