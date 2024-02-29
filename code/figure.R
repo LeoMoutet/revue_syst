@@ -839,7 +839,6 @@ health_outcome %>%
   scale_fill_manual(values = wes_palette("Darjeeling1"))
 
 health_outcome1 = health_outcome %>% 
-  filter(emission_sector_cat != "Housing") %>%
   ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
   geom_boxplot()+
   theme_pubr()+
@@ -847,7 +846,7 @@ health_outcome1 = health_outcome %>%
   ylab("Réduction de mortalité associé")+
   theme(legend.position = "none")+
   #scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
-  scale_fill_manual(values = wes_palette("Darjeeling1"))
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
 
 health_outcome2 = health_outcome %>% 
   filter(pathway_co_benefits == "Air & Indoor pollution"|
