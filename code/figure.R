@@ -819,7 +819,10 @@ health_outcome %>%
   geom_boxplot()+
   theme_pubr()
 
-
+health_outcome %>%
+  ggplot(aes(x = scenario_cat, y = mortality_proj, fill = scenario_cat))+
+  geom_violin()+
+  theme_pubr()
 
 
 health_outcome %>% 
@@ -830,7 +833,7 @@ health_outcome %>%
          author_date != "Zysk, 2020",
          author_date != "Phillips, 2021") %>%
   ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
-  geom_boxplot()+
+  geom_violin()+
   theme_pubr()+
   xlab("")+
   ylab("Réduction de mortalité associé")+
@@ -839,22 +842,34 @@ health_outcome %>%
   scale_fill_manual(values = wes_palette("Darjeeling1"))
 
 health_outcome1 = health_outcome %>% 
+  filter(emission_sector_cat != "Housing",
+         author_date != "Weyant, 2018",
+         author_date != "Milner, 2023",
+         author_date != "Williams, 2018",
+         author_date != "Zysk, 2020",
+         author_date != "Phillips, 2021") %>%
   ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
-  geom_boxplot()+
+  geom_violin()+
   theme_pubr()+
   xlab("")+
-  ylab("Réduction de mortalité associé")+
+  ylab("Mortality reduction")+
   theme(legend.position = "none")+
   #scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
   scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
 
 health_outcome2 = health_outcome %>% 
+  filter(emission_sector_cat != "Housing",
+         author_date != "Weyant, 2018",
+         author_date != "Milner, 2023",
+         author_date != "Williams, 2018",
+         author_date != "Zysk, 2020",
+         author_date != "Phillips, 2021") %>%
   filter(pathway_co_benefits == "Air & Indoor pollution"|
          pathway_co_benefits == "Air pollution"|
          pathway_co_benefits == "Diet"|
          pathway_co_benefits == "Physical activity") %>%
   ggplot(aes(x = pathway_co_benefits, y = mortality_proj, fill = pathway_co_benefits))+
-  geom_boxplot()+
+  geom_violin()+
   theme_pubr()+
   xlab("")+
   ylab("")+

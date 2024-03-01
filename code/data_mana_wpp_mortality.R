@@ -112,7 +112,7 @@ population_proj_syst_review <- population_proj_clean %>%
 sum(population_proj_syst_review$n_pop)
 
 
-# China, 2035/2050/2060 (Cai, Chen, Tang, Xing)
+# China, 2035/2050/2060 (Cai, Chen, Tang, Xing, Xie)
 population_proj_syst_review <- population_proj_clean %>%
   filter(region == "China" 
          , Year == "2050")
@@ -125,6 +125,7 @@ population_proj_syst_review <- population_proj_clean %>%
          , Year == "2060")
 
 sum(population_proj_syst_review$n_pop)
+sum(population_proj_syst_review$n_pop)*0.043  # Anhui
 
 population_proj_syst_review <- population_proj_clean %>%
   filter(region == "China" 
