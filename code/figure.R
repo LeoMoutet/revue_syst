@@ -814,42 +814,174 @@ quality
 
 
 # Health outcome
-health_outcome %>%
-  ggplot(aes(x = scenario_cat, y = mortality_proj, fill = scenario_cat))+
-  geom_boxplot()+
-  theme_pubr()
 
-health_outcome %>%
-  ggplot(aes(x = scenario_cat, y = mortality_proj, fill = scenario_cat))+
+p1 = health_outcome %>%
+  filter(HIA_type != "Microsimulation") %>%
+  ggplot(aes(x = HIA_type, y = mortality_proj, fill = HIA_type))+
   geom_violin()+
-  theme_pubr()
+  geom_point()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = wes_palette("BottleRocket2"))
 
 
-health_outcome %>% 
-  filter(emission_sector_cat != "Housing",
-         author_date != "Weyant, 2018",
-         author_date != "Milner, 2023",
-         author_date != "Williams, 2018",
-         author_date != "Zysk, 2020",
-         author_date != "Phillips, 2021") %>%
+p2 = health_outcome %>%
+  ggplot(aes(x = scenario_cat, y = mortality_proj, fill = HIA_type))+
+  geom_boxplot()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = wes_palette("BottleRocket2"))
+
+
+p3 = health_outcome %>%
+  ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = HIA_type))+
+  geom_boxplot()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = wes_palette("BottleRocket2"))
+
+
+p4 = health_outcome %>%
+  ggplot(aes(x = pathway_co_benefits2, y = mortality_proj, fill = HIA_type))+
+  geom_boxplot()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = wes_palette("BottleRocket2"))
+
+
+plot_health_outcome = ggarrange(p1,p2,p3,p4, ncol = 2 , nrow = 2, common.legend = T,
+                                align = "h", labels = c("","Typology of scenario","Emission sector","Co-benefit pathway"))
+
+plot_health_outcome
+
+
+
+
+
+p5 = health_outcome %>%
+  filter(HIA_type == "CRA") %>%
   ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
   geom_violin()+
+  geom_point()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
+  
+
+p6 = health_outcome %>%
+  filter(HIA_type == "Life tables") %>%
+  ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
+  geom_boxplot()+
+  geom_point()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
+
+
+p7 = health_outcome %>%
+  filter(HIA_type == "CRA") %>%
+  ggplot(aes(x = pathway_co_benefits2, y = mortality_proj, fill = pathway_co_benefits2))+
+  geom_violin()+
+  geom_point()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
+
+p8 = health_outcome %>%
+  filter(HIA_type == "Life tables") %>%
+  ggplot(aes(x = pathway_co_benefits2, y = mortality_proj, fill = pathway_co_benefits2))+
+  geom_boxplot()+
+  geom_point()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
+
+
+plot_health_outcome2.1 = ggarrange(p5,p6, ncol = 2 , nrow = 1, common.legend = T,
+                                align = "h", labels = c("CRA","Life tables"), hjust = c(-2,-1))
+
+plot_health_outcome2.1
+
+plot_health_outcome2.2 = ggarrange(p7,p8, ncol = 2 , nrow = 1, common.legend = T,
+                                 align = "h")
+
+plot_health_outcome2.2
+
+plot_health_outcome2 = ggarrange (plot_health_outcome2.1,plot_health_outcome2.2, ncol = 1 , nrow = 2)
+
+plot_health_outcome2
+
+
+
+
+##### Air pollution
+a1 = health_outcome %>%
+  filter(HIA_type != "Microsimulation" & pathway_co_benefits2 == "Air pollution") %>%
+  ggplot(aes(x = HIA_type, y = mortality_proj, fill = HIA_type))+
+  geom_violin()+
+  geom_point()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = wes_palette("BottleRocket2"))+
+  ggtitle("Air pollution focus")
+
+
+
+a2 = health_outcome %>%
+  filter(pathway_co_benefits2 == "Air pollution" & emission_sector_cat != "Transport") %>%
+  ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
+  geom_boxplot()+
+  geom_point()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = wes_palette("Royal1"))+
+  ggtitle("Air pollution focus")
+
+
+plot_health_outcome_air = ggarrange (a1,a2, ncol = 1 , nrow = 2)
+plot_health_outcome_air
+
+# Health outcome v1
+health_outcome %>% 
+  filter(emission_sector_cat != "Housing") %>%
+  ggplot(aes(x = emission_sector_cat, y = mortality_proj, color = HIA_type))+
+  geom_point()+
   theme_pubr()+
   xlab("")+
   ylab("Réduction de mortalité associé")+
-  theme(legend.position = "none")+
+  #theme(legend.position = "none")+
   #scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
   scale_fill_manual(values = wes_palette("Darjeeling1"))
 
-health_outcome1 = health_outcome %>% 
-  filter(emission_sector_cat != "Housing",
-         author_date != "Weyant, 2018",
-         author_date != "Milner, 2023",
-         author_date != "Williams, 2018",
-         author_date != "Zysk, 2020",
-         author_date != "Phillips, 2021") %>%
+
+health_outcome %>% 
+  ggplot(aes(x = pathway_co_benefits, y = mortality_proj, color = HIA_type))+
+  geom_point()+
+  theme_pubr()+
+  xlab("")+
+  ylab("Mortality reduction")+
+  #theme(legend.position = "none")+
+  #scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
+  scale_fill_manual(values = wes_palette("Darjeeling1"))
+
+
+
+
+
+health_outcome %>% 
   ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
   geom_violin()+
+  geom_point()+
   theme_pubr()+
   xlab("")+
   ylab("Mortality reduction")+
@@ -857,19 +989,15 @@ health_outcome1 = health_outcome %>%
   #scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
   scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
 
-health_outcome2 = health_outcome %>% 
-  filter(emission_sector_cat != "Housing",
-         author_date != "Weyant, 2018",
-         author_date != "Milner, 2023",
-         author_date != "Williams, 2018",
-         author_date != "Zysk, 2020",
-         author_date != "Phillips, 2021") %>%
+health_outcome %>% 
+  filter(emission_sector_cat != "Housing")%>%
   filter(pathway_co_benefits == "Air & Indoor pollution"|
          pathway_co_benefits == "Air pollution"|
          pathway_co_benefits == "Diet"|
          pathway_co_benefits == "Physical activity") %>%
   ggplot(aes(x = pathway_co_benefits, y = mortality_proj, fill = pathway_co_benefits))+
   geom_violin()+
+  geom_point()+
   theme_pubr()+
   xlab("")+
   ylab("")+
@@ -886,7 +1014,9 @@ plot_health_outcome = ggarrange(health_outcome1,health_outcome2, ncol = 2 , nrow
 
 plot_health_outcome
 
-# Health outcome v1
+
+
+
 
 mortality_scenario <- health_outcome %>%
   drop_na(mortality_proj) %>%
