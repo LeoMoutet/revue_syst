@@ -823,34 +823,47 @@ p1 = health_outcome %>%
   theme_pubr()+
   xlab("")+
   ylab("")+
-  scale_fill_manual(values = wes_palette("BottleRocket2"))
+  scale_fill_manual(values = wes_palette("BottleRocket2"))+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))
 
 
-p2 = health_outcome %>%
-  ggplot(aes(x = scenario_cat, y = mortality_proj, fill = HIA_type))+
-  geom_boxplot()+
+p2 = g
+health_outcome %>%
+  group_by(HIA_type) %>%
+  filter(HIA_type != "Microsimulation")%>%
+  ggplot()+
+  geom_point(aes(x = scenario_cat, y = mortality_proj, col = HIA_type), size = 2.5)+
   theme_pubr()+
   xlab("")+
   ylab("")+
-  scale_fill_manual(values = wes_palette("BottleRocket2"))
+  scale_color_manual(values = wes_palette("BottleRocket2"))+
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 15, hjust = 1))
 
 
 p3 = health_outcome %>%
   ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = HIA_type))+
   geom_boxplot()+
+  geom_point()+
   theme_pubr()+
   xlab("")+
   ylab("")+
-  scale_fill_manual(values = wes_palette("BottleRocket2"))
+  scale_fill_manual(values = wes_palette("BottleRocket2"))+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))
 
 
 p4 = health_outcome %>%
   ggplot(aes(x = pathway_co_benefits2, y = mortality_proj, fill = HIA_type))+
   geom_boxplot()+
+  geom_point()+
   theme_pubr()+
   xlab("")+
   ylab("")+
-  scale_fill_manual(values = wes_palette("BottleRocket2"))
+  scale_fill_manual(values = wes_palette("BottleRocket2"))+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))
 
 
 plot_health_outcome = ggarrange(p1,p2,p3,p4, ncol = 2 , nrow = 2, common.legend = T,
