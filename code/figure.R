@@ -819,7 +819,7 @@ p1 = health_outcome %>%
   filter(HIA_type != "Microsimulation") %>%
   ggplot(aes(x = HIA_type, y = mortality_proj, fill = HIA_type))+
   geom_violin()+
-  geom_point()+
+  geom_point(size = 3,shape = 18)+
   theme_pubr()+
   xlab("")+
   ylab("")+
@@ -828,40 +828,45 @@ p1 = health_outcome %>%
         text = element_text(size = 10))
 
 
-p2 = g
-health_outcome %>%
+p2 = health_outcome %>%
   group_by(HIA_type) %>%
   filter(HIA_type != "Microsimulation")%>%
   ggplot()+
-  geom_point(aes(x = scenario_cat, y = mortality_proj, col = HIA_type), size = 2.5)+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  scale_color_manual(values = wes_palette("BottleRocket2"))+
-  theme(legend.title = element_blank(),
-        axis.text.x = element_text(angle = 15, hjust = 1))
-
-
-p3 = health_outcome %>%
-  ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = HIA_type))+
-  geom_boxplot()+
-  geom_point()+
+  geom_boxplot(aes(x = scenario_cat, y = mortality_proj, fill = HIA_type))+
+  geom_point(aes(x = scenario_cat, y = mortality_proj, col = HIA_type), size = 3,shape = 18)+
   theme_pubr()+
   xlab("")+
   ylab("")+
   scale_fill_manual(values = wes_palette("BottleRocket2"))+
+  scale_color_manual(values = wes_palette("BottleRocket2"))+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))
+
+
+p3 = health_outcome %>%
+  filter(HIA_type != "Microsimulation")%>%
+  ggplot()+
+  geom_boxplot(aes(x = emission_sector_cat, y = mortality_proj, fill = HIA_type))+
+  geom_point(aes(x = emission_sector_cat, y = mortality_proj, col = HIA_type), size = 3,shape = 18)+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = wes_palette("BottleRocket2"))+
+  scale_color_manual(values = wes_palette("BottleRocket2"))+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))
 
 
 p4 = health_outcome %>%
-  ggplot(aes(x = pathway_co_benefits2, y = mortality_proj, fill = HIA_type))+
-  geom_boxplot()+
-  geom_point()+
+  filter(HIA_type != "Microsimulation")%>%
+  ggplot()+
+  geom_boxplot(aes(x = pathway_co_benefits2, y = mortality_proj, fill = HIA_type))+
+  geom_point(aes(x = pathway_co_benefits2, y = mortality_proj, col = HIA_type), size = 3,shape = 18)+
   theme_pubr()+
   xlab("")+
   ylab("")+
   scale_fill_manual(values = wes_palette("BottleRocket2"))+
+  scale_color_manual(values = wes_palette("BottleRocket2"))+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))
 
@@ -877,24 +882,28 @@ plot_health_outcome
 
 p5 = health_outcome %>%
   filter(HIA_type == "CRA") %>%
-  ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
+  ggplot(aes(x = emission_sector_cat, y = mortality_proj,
+             fill = factor(emission_sector_cat, levels = c("All", "Energy", "Food system", "Transport","Multi"))))+
   geom_violin()+
   geom_point()+
   theme_pubr()+
   xlab("")+
   ylab("")+
-  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  theme(legend.title = element_blank())
   
 
 p6 = health_outcome %>%
   filter(HIA_type == "Life tables") %>%
-  ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
+  ggplot(aes(x = emission_sector_cat, y = mortality_proj,
+             fill = factor(emission_sector_cat, levels = c("All", "Energy", "Food system", "Transport","Multi","Housing"))))+
   geom_boxplot()+
   geom_point()+
   theme_pubr()+
   xlab("")+
   ylab("")+
-  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  theme(legend.title = element_blank())
 
 
 p7 = health_outcome %>%
@@ -905,7 +914,8 @@ p7 = health_outcome %>%
   theme_pubr()+
   xlab("")+
   ylab("")+
-  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
+  scale_fill_manual(values = c(wes_palette("Darjeeling2"), "#D4A5A5"))+
+  theme(legend.title = element_blank())
 
 p8 = health_outcome %>%
   filter(HIA_type == "Life tables") %>%
@@ -915,16 +925,17 @@ p8 = health_outcome %>%
   theme_pubr()+
   xlab("")+
   ylab("")+
-  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
+  scale_fill_manual(values = c(wes_palette("Darjeeling2"), "#D4A5A5"))+
+  theme(legend.title = element_blank())
 
 
 plot_health_outcome2.1 = ggarrange(p5,p6, ncol = 2 , nrow = 1, common.legend = T,
-                                align = "h", labels = c("CRA","Life tables"), hjust = c(-2,-1))
+                                align = "h", labels = c("CRA","Life tables"), hjust = c(-2,-0.9))
 
 plot_health_outcome2.1
 
 plot_health_outcome2.2 = ggarrange(p7,p8, ncol = 2 , nrow = 1, common.legend = T,
-                                 align = "h")
+                                   align = "h", labels = c("CRA","Life tables"), hjust = c(-2,-0.9))
 
 plot_health_outcome2.2
 
@@ -958,6 +969,17 @@ a2 = health_outcome %>%
   xlab("")+
   ylab("")+
   scale_fill_manual(values = wes_palette("Royal1"))+
+  ggtitle("Air pollution focus")
+
+health_outcome %>%
+  filter(pathway_co_benefits2 == "Air pollution" & emission_sector_cat != "Transport") %>%
+  ggplot(aes(x = scenario_cat, y = mortality_proj, fill = scenario_cat))+
+  geom_boxplot()+
+  geom_point()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_fill_manual(values = c(wes_palette("Royal1"),"grey"))+
   ggtitle("Air pollution focus")
 
 
