@@ -719,6 +719,150 @@ htmlwidgets::onRender(
 
 
 
+
+
+# Sankey3
+links <- data.frame(
+  source=c("Energy decarbonation","Energy decarbonation","Energy decarbonation",
+           "Energy decarbonation","Energy decarbonation","Energy decarbonation","Energy decarbonation",
+           "Health","Health","Health","Health","Health","Health","Health",
+           "Sufficiency","Sufficiency","Sufficiency","Sufficiency","Sufficiency",
+           "Financial","Financial","Financial","Financial","Financial","Financial","Financial",
+           "Not detailed","Not detailed","Not detailed","Not detailed","Not detailed","Not detailed","Not detailed",
+           
+           "Global economy", "Global economy",
+           "Energy", "Energy",
+           "Transport",  "Transport", 
+           "Food system","Food system",
+           "Housing", "Housing",
+           "Industry", "Industry",
+           "Other",
+           
+           "Air pollution","Air pollution","Air pollution","Air pollution","Air pollution",
+           "Air pollution",
+           "Diet","Diet","Diet",
+           "Physical activity","Physical activity","Physical activity","Physical activity",
+           "Indoor pollution","Indoor pollution","Indoor pollution","Indoor pollution"
+  ), 
+  
+  target=c("Energy","Transport", "Food system",
+           "Housing","Industry","Global economy","Other",
+           "Energy","Food system","Industry","Transport", "Other","Housing", "Global economy", 
+           "Energy", "Global economy","Housing","Transport", "Food system",
+           "Global economy", "Transport", "Energy", "Housing","Industry","Food system","Other",
+           "Global economy","Energy","Industry","Transport","Housing","Food system","Other",
+           
+           
+           "Air pollution","Indoor pollution",
+           "Air pollution","Indoor pollution",
+           "Air pollution", "Physical activity",
+           "Air pollution", "Diet",
+           "Air pollution", "Indoor pollution",
+           "Air pollution","Indoor pollution",
+           "Air pollution",
+           
+           "Deaths", "YLL", "Economic","Life expectancy","DALYs",
+           "Morbidity",
+           "Deaths", "YLL", "DALYs",
+           "Deaths", "YLL","Economic","Life expectancy",
+           "YLL","Morbidity","Deaths", "Economic"
+  ), 
+  
+  value=c(17,8,3,
+          7,4,2,3,
+          7,3,4,6,3,4,1,
+          3,1,1,2,1,
+          1,2,1,1,1,1,1,
+          7,11,9,9,5,6,4,
+          
+          
+          12,1,
+          31,3,
+          17,4,
+          9,3,
+          15,3,
+          16,1,
+          11,
+          
+          34,4,24,3,1,
+          14,
+          1,1,1,
+          2,2,1,1,
+          1,1,2,1
+  )
+)
+
+nodes <- data.frame(
+  name=c(as.character(links$source), 
+         as.character(links$target)) %>% unique()
+)
+
+links$IDsource <- match(links$source, nodes$name)-1 
+links$IDtarget <- match(links$target, nodes$name)-1
+
+links$group <- as.factor(c("type_m","type_m","type_m",
+                           "type_m","type_m","type_m","type_m",
+                           "type_o","type_o","type_o","type_o","type_o","type_o","type_o",
+                           "type_n","type_n","type_n","type_n","type_n",
+                           "type_l","type_l","type_l","type_l","type_l","type_l","type_l",
+                           "type_k","type_k","type_k","type_k","type_k","type_k","type_k",
+                           
+                           
+                           "type_a","type_a",
+                           "type_b","type_b",
+                           "type_c","type_c",
+                           "type_d","type_d",
+                           "type_e","type_e",
+                           "type_f","type_f",
+                           "type_k",
+                           
+                           "type_h","type_h","type_h","type_h","type_h",
+                           "type_h",
+                           "type_i","type_i","type_i",
+                           "type_j","type_j","type_j","type_j",
+                           "type_g","type_g","type_g","type_g"
+))
+nodes$group <- as.factor(c("my_unique_group"))
+
+my_color <- 'd3.scaleOrdinal() .domain(["type_a", "type_b","type_c","type_d","type_e","type_f","type_g","type_h","type_i","type_j","type_k","type_l","type_m","type_n","type_o", "my_unique_group"])
+.range(["#1f77b4", "#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#aec7e8","#bcbd22","#17becf","#7f7f7f","#ffbb78","#6daed5","#98df8a","#ff9896", "black"])'
+
+
+sankeyplot2 <- sankeyNetwork(Links = links, Nodes = nodes,
+                             Source = "IDsource", Target = "IDtarget",
+                             Value = "value", NodeID = "name", 
+                             colourScale=my_color, LinkGroup="group", NodeGroup="group",
+                             fontSize = 17, nodeWidth = 2 )
+
+
+
+htmlwidgets::onRender(
+  sankeyplot2,
+  '
+  function(el) {
+    d3.select(el).selectAll(".node text").attr("font-weight", "bold");
+
+    // Add white background for text labels
+    d3.select(el).selectAll(".node text")
+      .each(function() {
+        var bbox = this.getBBox();
+        d3.select(this.parentNode)
+          .insert("rect", "text")
+          .attr("x", bbox.x - 3)
+          .attr("y", bbox.y - 3)
+          .attr("width", bbox.width + 6)
+          .attr("height", bbox.height + 6)
+          .style("fill", "white")
+          .style("stroke", "black");
+      });
+  }
+  '
+)
+
+
+
+
+
 # Pie chart
 
 info_publi %>%
