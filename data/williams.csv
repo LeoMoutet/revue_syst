@@ -1,0 +1,5 @@
+measure_id,measure_name,location_id,location_name,sex_id,sex_name,age_id,age_name,cause_id,cause_name,metric_id,metric_name,year,val,upper,lower
+1,Deaths,4749,England,3,Both,22,All ages,294,All causes,1,Number,2011,460251.7764338783,462024.38824383536,458471.9122099179
+1,Deaths,4749,England,3,Both,22,All ages,294,All causes,1,Number,2019,509267.3921146821,513814.1816290161,504767.1592878485
+4,YLLs (Years of Life Lost),4749,England,3,Both,22,All ages,294,All causes,1,Number,2011,7628533.123116576,7661346.049820921,7596574.550257515
+4,YLLs (Years of Life Lost),4749,England,3,Both,22,All ages,294,All causes,1,Number,2019,8193985.947315839,8278719.717971193,8111726.9174850825
