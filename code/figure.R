@@ -100,7 +100,7 @@ Map1 = ggplot() +
   geom_sf(data = world, fill = "grey90", color = "transparent",
           show.legend = FALSE, size = 5) +
   geom_sf(data = world_data_multi, aes(fill = color_group), color ="transparent") +
-  geom_sf(data = points_sf, aes(color = "Sub-national investigation"), size = 2, shape = 16) +
+  geom_sf(data = points_sf, aes(color = "Sub-national investigation        "), size = 2, shape = 16) +
   scale_fill_manual(values = c("orange","firebrick2","firebrick4","mediumpurple4"),
                     breaks = c("1-2", "3-4","5-6", "15")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
@@ -111,7 +111,7 @@ Map1 = ggplot() +
         axis.text.y = element_blank(),
         axis.ticks = element_blank(),
         axis.line.x = element_blank(),
-        legend.position = "top",
+        legend.position = "bottom",
         legend.text = element_text(size = 12))+
   coord_sf(crs = robinson_proj)
 
@@ -972,7 +972,7 @@ p0 = health_outcome %>%
   scale_color_manual(values = wes_palette("BottleRocket2"))+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
-  geom_hline(aes(yintercept = 0), color= "black")
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
 
 
 health_outcome$pathway_co_benefits2 <- factor(health_outcome$pathway_co_benefits2, 
@@ -990,13 +990,23 @@ p1 = health_outcome %>%
         text = element_text(size = 10))+
   scale_color_manual(values = wes_palette("Moonrise3"))+
   scale_fill_manual(values = wes_palette("Moonrise3"))+
-  geom_hline(aes(yintercept = 0), color= "black")
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
 
 
-plot_health_outcome = ggarrange(p0,p1, ncol = 2 , nrow = 1, align = "v", 
-                                labels = c("Method","Exposition"), hjust=c(-1,-0.8))
+p00 = health_outcome %>%
+  ggplot()+
+  geom_boxplot(aes( y = mortality_proj), fill ="#D4A190")+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        text = element_text(size = 10))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
 
-plot_health_outcome
+
+plot_mortality = ggarrange(p0,p1,p00, ncol =  , nrow = 1, align = "h")
+plot_mortality
 
 
 
@@ -1011,7 +1021,7 @@ p0 = health_outcome %>%
   scale_fill_manual(values = wes_palette("BottleRocket2"))+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
-  geom_hline(aes(yintercept = 0), color= "black")
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
 
 
 health_outcome$pathway_co_benefits2 <- factor(health_outcome$pathway_co_benefits2, 
@@ -1029,28 +1039,25 @@ p1 = health_outcome %>%
         text = element_text(size = 10))+
   scale_color_manual(values = wes_palette("Moonrise3"))+
   scale_fill_manual(values = wes_palette("Moonrise3"))+
-  geom_hline(aes(yintercept = 0), color= "black")
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
 
 
-plot_health_outcome2 = ggarrange(p0,p1, ncol = 2 , nrow = 1, align = "v", 
-                                labels = c("Method","Exposition"), hjust=c(-1,-0.8))
-
-plot_health_outcome2
+plot_mortality = ggarrange(p0,p1,p00, ncol =  , nrow = 1, align = "h")
+plot_mortality
 
 
 
 
 
 p2 = health_outcome %>%
-  ggplot(aes(x = pathway_co_benefits2, fill = pathway_co_benefits2))+
+  ggplot(aes(x = pathway_co_benefits2, fill = include_mortality))+
   geom_bar( width = 0.5, show.legend = F)+
-  geom_text(stat='count', aes(label=..count..), hjust=1.4)+
   theme_pubr()+
   xlab("")+
   ylab("")+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
-  scale_fill_manual(values = c(wes_palette("Moonrise3")))+
+  scale_fill_manual(values = c("steelblue1","steelblue4"))+
   scale_y_continuous(limits =c(0,90))+
   coord_flip()+
   theme(axis.line.x = element_blank(),
@@ -1061,13 +1068,10 @@ health_outcome$scenario_cat <- factor(health_outcome$scenario_cat, levels = rev(
                     "financial instrument", "health in climate policies","sufficiency", "not detailed")))
 
 
-counts <- health_outcome %>%
-  group_by(scenario_cat) %>%
-  summarise(count = n())
 
-p3 = ggplot(counts, aes(x = scenario_cat, y = count, fill = scenario_cat)) +
-  geom_bar(stat = "identity", width = 0.5, position = "dodge", show.legend = F) +
-  geom_text(aes(label = count), hjust=1.4) +
+p3 =  health_outcome %>%
+  ggplot(aes(x = scenario_cat,fill = include_mortality)) +
+  geom_bar( width = 0.5,  show.legend = F) +
   theme_pubr() +
   scale_x_discrete(labels = c('Not detailed','Sufficiency','Health', 'Finance','Energy shift')) +
   xlab("") +
@@ -1078,7 +1082,7 @@ p3 = ggplot(counts, aes(x = scenario_cat, y = count, fill = scenario_cat)) +
     axis.line.x = element_blank(),
     axis.text.x = element_blank(),
     axis.ticks.x = element_blank()) +
-  scale_fill_manual(values = c(wes_palette("Moonrise3")))+
+  scale_fill_manual(values = c("steelblue1","steelblue4"))+
   scale_y_continuous(limits =c(0,90))+
   coord_flip()
 
@@ -1094,15 +1098,14 @@ health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat,
                                                      'Housing', 'Transport','Multi')))
 
 p4 = health_outcome %>%
-  ggplot(aes(x = emission_sector_cat, fill = emission_sector_cat))+
+  ggplot(aes(x = emission_sector_cat, fill = include_mortality))+
   geom_bar( width = 0.5, show.legend = F)+
-  geom_text(stat='count', aes(label=..count..), hjust=1.4)+
   theme_pubr()+
   xlab("")+
   ylab("Number of scenario")+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
-  scale_fill_manual(values = c(wes_palette("Moonrise3"),"#778899"))+
+  scale_fill_manual(values = c("steelblue1","steelblue4"))+
   scale_y_continuous(limits =c(0,90))+
   coord_flip()
 
@@ -1112,22 +1115,22 @@ p5 = info_publi %>%
   ggplot(aes(x = publi_yr, fill =include_mortality))+
   geom_bar( width = 0.5)+
   theme_pubr()+
-  xlab("")+
+  xlab("Year of publication")+
   ylab("Number of studies")+
-  scale_fill_manual(values = c("#4682B4","#B48246"))+
+  scale_fill_manual(values = c("steelblue1","steelblue4"))+
   theme(legend.title = element_text(),
         legend.position = "top",
         text = element_text(size = 10))+
-  guides(fill=guide_legend(title="Mortality analysis:"))
+  guides(fill=guide_legend(title="Adjustable mortality analysis:"))
 
 
 
 
 
-plot_outcome = ggarrange(p5,ggarrange(p2,p3,p4, ncol = 1 , nrow = 3, align = "v", 
-                         labels = c("Exposition","Typology of scenario","Emission sector"), 
-                         hjust = c(-8,-3.6,-5))
-                         ,ncol = 2, nrow = 1)
+plot_outcome = ggarrange(ggarrange(p2,p3,p4, ncol = 1 , nrow = 3, align = "v", 
+                         labels = c("Exposition","Typology of scenario","Emission sector"),
+                         hjust = c(-4,-2,-2.6)),
+                         p5,ncol = 2, nrow = 1, common.legend = T)
 
 plot_outcome
 
