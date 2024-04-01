@@ -960,35 +960,171 @@ quality
 
 # Health outcome
 
-p1 = health_outcome %>%
+
+p0 = health_outcome %>%
   filter(HIA_type != "Microsimulation") %>%
-  ggplot(aes(x = HIA_type, y = mortality_proj, fill = HIA_type))+
-  geom_violin()+
-  geom_point(size = 3,shape = 18)+
+  ggplot(aes(x = HIA_type, y = mortality_proj, color = HIA_type, shape = HIA_type))+
+  #geom_violin(show.legend = F)+
+  geom_point(size = 2,position=position_jitter(h=NULL,w=0.2), show.legend = F)+
+  theme_pubr()+
+  xlab("")+
+  ylab("Attributable mortality fraction")+
+  scale_color_manual(values = wes_palette("BottleRocket2"))+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  geom_hline(aes(yintercept = 0), color= "black")
+
+
+health_outcome$pathway_co_benefits2 <- factor(health_outcome$pathway_co_benefits2, 
+                                              levels = c("Air pollution", "Physical activity", "Diet"))
+
+p1 = health_outcome %>%
+  ggplot()+
+  #geom_violin(aes(x = pathway_co_benefits2, y = mortality_proj, fill =pathway_co_benefits2), show.legend = F)+
+  geom_point(aes(x = pathway_co_benefits2, y = mortality_proj, color =pathway_co_benefits2, shape = pathway_co_benefits2), 
+             size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
   theme_pubr()+
   xlab("")+
   ylab("")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_color_manual(values = wes_palette("Moonrise3"))+
+  scale_fill_manual(values = wes_palette("Moonrise3"))+
+  geom_hline(aes(yintercept = 0), color= "black")
+
+
+plot_health_outcome = ggarrange(p0,p1, ncol = 2 , nrow = 1, align = "v", 
+                                labels = c("Method","Exposition"), hjust=c(-1,-0.8))
+
+plot_health_outcome
+
+
+
+p0 = health_outcome %>%
+  filter(HIA_type != "Microsimulation") %>%
+  ggplot(aes(x = HIA_type, y = mortality_proj, fill = HIA_type, shape = HIA_type))+
+  geom_violin(show.legend = F)+
+  #geom_point(size = 2,position=position_jitter(h=NULL,w=0.2), show.legend = F)+
+  theme_pubr()+
+  xlab("")+
+  ylab("Attributable mortality fraction")+
   scale_fill_manual(values = wes_palette("BottleRocket2"))+
   theme(legend.title = element_blank(),
-        text = element_text(size = 10))
+        text = element_text(size = 10))+
+  geom_hline(aes(yintercept = 0), color= "black")
+
+
+health_outcome$pathway_co_benefits2 <- factor(health_outcome$pathway_co_benefits2, 
+                                              levels = c("Air pollution", "Physical activity", "Diet"))
+
+p1 = health_outcome %>%
+  ggplot()+
+  geom_violin(aes(x = pathway_co_benefits2, y = mortality_proj, fill =pathway_co_benefits2), show.legend = F)+
+  #geom_point(aes(x = pathway_co_benefits2, y = mortality_proj, color =pathway_co_benefits2, shape = pathway_co_benefits2), 
+  #           size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_color_manual(values = wes_palette("Moonrise3"))+
+  scale_fill_manual(values = wes_palette("Moonrise3"))+
+  geom_hline(aes(yintercept = 0), color= "black")
+
+
+plot_health_outcome2 = ggarrange(p0,p1, ncol = 2 , nrow = 1, align = "v", 
+                                labels = c("Method","Exposition"), hjust=c(-1,-0.8))
+
+plot_health_outcome2
+
+
+
 
 
 p2 = health_outcome %>%
-  group_by(HIA_type) %>%
-  filter(HIA_type != "Microsimulation")%>%
-  ggplot()+
-  geom_boxplot(aes(x = scenario_cat, y = mortality_proj, fill = HIA_type))+
-  geom_point(aes(x = scenario_cat, y = mortality_proj, col = HIA_type), size = 3,shape = 18)+
+  ggplot(aes(x = pathway_co_benefits2, fill = pathway_co_benefits2))+
+  geom_bar( width = 0.5, show.legend = F)+
+  geom_text(stat='count', aes(label=..count..), hjust=1.4)+
   theme_pubr()+
   xlab("")+
   ylab("")+
-  scale_fill_manual(values = wes_palette("BottleRocket2"))+
-  scale_color_manual(values = wes_palette("BottleRocket2"))+
   theme(legend.title = element_blank(),
-        text = element_text(size = 10))
+        text = element_text(size = 10))+
+  scale_fill_manual(values = wes_palette("Chevalier1"))+
+  scale_y_continuous(limits =c(0,90))+
+  coord_flip()+
+  theme(axis.line.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+
+health_outcome$scenario_cat <- factor(health_outcome$scenario_cat, levels = rev(c("energy decarbonation", 
+                    "financial instrument", "health in climate policies","sufficiency", "not detailed")))
 
 
 p3 = health_outcome %>%
+  filter(HIA_type != "Microsimulation")%>%
+  ggplot(aes(x = scenario_cat, fill = scenario_cat))+
+  geom_bar( width = 0.5, show.legend = F)+
+  geom_text(stat='count', aes(label=..count..), hjust=1.4)+
+  theme_pubr()+
+  scale_x_discrete(labels = c('Not detailed','Sufficiency','Health', 'Finance','Energy shift'))+
+  scale_y_continuous(limits =c(0,90))+
+  xlab("")+
+  ylab("")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_fill_manual(values = wes_palette("Darjeeling1"))+
+  coord_flip()+
+  theme(axis.line.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank())
+
+
+
+
+health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat,
+                                      levels = rev(c('Global','Energy','Food system',
+                                                     'Housing', 'Transport','Multi')))
+
+p4 = health_outcome %>%
+  filter(HIA_type != "Microsimulation")%>%
+  ggplot(aes(x = emission_sector_cat, fill = emission_sector_cat))+
+  geom_bar( width = 0.5, show.legend = F)+
+  geom_text(stat='count', aes(label=..count..), hjust=1.4)+
+  theme_pubr()+
+  xlab("")+
+  ylab("Number of scenario")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_fill_manual(values = c(wes_palette("Moonrise3"),"#778899"))+
+  scale_y_continuous(limits =c(0,90))+
+  coord_flip()
+
+plot_outcome = ggarrange(p2,p3,p4, ncol = 1 , nrow = 3, align = "v", 
+                                labels = c("Exposition","Typology of scenario","Emission sector"), 
+                                 hjust = c(-8,-3.6,-5))
+
+plot_outcome
+
+
+
+
+health_outcome %>%
+  group_by(HIA_type) %>%
+  filter(HIA_type != "Microsimulation")%>%
+  ggplot()+
+  geom_point(aes(x = scenario_cat, y = mortality_proj, shape = scenario_cat)
+             , size = 2, position=position_jitter(h=NULL,w=0.2))+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  scale_shape_manual(values = c(16,15,17,18,3))+
+  scale_x_discrete(labels = c('Energy','Finance','Health', 'Sufficiency','Not detailed'))+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10),
+        axis.text.x = element_text(angle = 35, vjust = 0.5, hjust=0.5))
+
+health_outcome %>%
   filter(HIA_type != "Microsimulation")%>%
   ggplot()+
   geom_boxplot(aes(x = emission_sector_cat, y = mortality_proj, fill = HIA_type))+
@@ -1002,7 +1138,7 @@ p3 = health_outcome %>%
         text = element_text(size = 10))
 
 
-p4 = health_outcome %>%
+health_outcome %>%
   filter(HIA_type != "Microsimulation")%>%
   ggplot()+
   geom_boxplot(aes(x = pathway_co_benefits2, y = mortality_proj, fill = HIA_type))+
@@ -1015,11 +1151,6 @@ p4 = health_outcome %>%
   theme(legend.title = element_blank(),
         text = element_text(size = 10))
 
-
-plot_health_outcome = ggarrange(p1,p2,p3,p4, ncol = 2 , nrow = 2, common.legend = T,
-                                align = "h", labels = c("","Typology of scenario","Emission sector","Co-benefit pathway"))
-
-plot_health_outcome
 
 
 
