@@ -1050,7 +1050,7 @@ p2 = health_outcome %>%
   ylab("")+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
-  scale_fill_manual(values = wes_palette("Chevalier1"))+
+  scale_fill_manual(values = c(wes_palette("Moonrise3")))+
   scale_y_continuous(limits =c(0,90))+
   coord_flip()+
   theme(axis.line.x = element_blank(),
@@ -1061,23 +1061,30 @@ health_outcome$scenario_cat <- factor(health_outcome$scenario_cat, levels = rev(
                     "financial instrument", "health in climate policies","sufficiency", "not detailed")))
 
 
-p3 = health_outcome %>%
-  filter(HIA_type != "Microsimulation")%>%
-  ggplot(aes(x = scenario_cat, fill = scenario_cat))+
-  geom_bar( width = 0.5, show.legend = F)+
-  geom_text(stat='count', aes(label=..count..), hjust=1.4)+
-  theme_pubr()+
-  scale_x_discrete(labels = c('Not detailed','Sufficiency','Health', 'Finance','Energy shift'))+
+counts <- health_outcome %>%
+  group_by(scenario_cat) %>%
+  summarise(count = n())
+
+p3 = ggplot(counts, aes(x = scenario_cat, y = count, fill = scenario_cat)) +
+  geom_bar(stat = "identity", width = 0.5, position = "dodge", show.legend = F) +
+  geom_text(aes(label = count), hjust=1.4) +
+  theme_pubr() +
+  scale_x_discrete(labels = c('Not detailed','Sufficiency','Health', 'Finance','Energy shift')) +
+  xlab("") +
+  ylab("") +
+  theme(
+    legend.title = element_blank(),
+    text = element_text(size = 10),
+    axis.line.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()) +
+  scale_fill_manual(values = c(wes_palette("Moonrise3")))+
   scale_y_continuous(limits =c(0,90))+
-  xlab("")+
-  ylab("")+
-  theme(legend.title = element_blank(),
-        text = element_text(size = 10))+
-  scale_fill_manual(values = wes_palette("Darjeeling1"))+
-  coord_flip()+
-  theme(axis.line.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
+  coord_flip()
+
+
+
+
 
 
 
@@ -1087,7 +1094,6 @@ health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat,
                                                      'Housing', 'Transport','Multi')))
 
 p4 = health_outcome %>%
-  filter(HIA_type != "Microsimulation")%>%
   ggplot(aes(x = emission_sector_cat, fill = emission_sector_cat))+
   geom_bar( width = 0.5, show.legend = F)+
   geom_text(stat='count', aes(label=..count..), hjust=1.4)+
@@ -1100,12 +1106,30 @@ p4 = health_outcome %>%
   scale_y_continuous(limits =c(0,90))+
   coord_flip()
 
-plot_outcome = ggarrange(p2,p3,p4, ncol = 1 , nrow = 3, align = "v", 
-                                labels = c("Exposition","Typology of scenario","Emission sector"), 
-                                 hjust = c(-8,-3.6,-5))
+
+
+p5 = info_publi %>%
+  ggplot(aes(x = publi_yr, fill =include_mortality))+
+  geom_bar( width = 0.5)+
+  theme_pubr()+
+  xlab("")+
+  ylab("Number of studies")+
+  scale_fill_manual(values = c("#4682B4","#B48246"))+
+  theme(legend.title = element_text(),
+        legend.position = "top",
+        text = element_text(size = 10))+
+  guides(fill=guide_legend(title="Mortality analysis:"))
+
+
+
+
+
+plot_outcome = ggarrange(p5,ggarrange(p2,p3,p4, ncol = 1 , nrow = 3, align = "v", 
+                         labels = c("Exposition","Typology of scenario","Emission sector"), 
+                         hjust = c(-8,-3.6,-5))
+                         ,ncol = 2, nrow = 1)
 
 plot_outcome
-
 
 
 
@@ -1448,9 +1472,7 @@ ggsave(here("figures","healthoutcome.png"), plot = plot_health_outcome , width =
 
 
 
-info_publi %>%
-  ggplot(aes(x = publi_yr))+
-  geom_bar()
+
 
 info_publi %>%
   ggplot(aes(x = exposure_cat))+
