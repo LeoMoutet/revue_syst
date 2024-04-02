@@ -730,7 +730,7 @@ links <- data.frame(
            "Financial","Financial","Financial","Financial","Financial","Financial","Financial",
            "Not detailed","Not detailed","Not detailed","Not detailed","Not detailed","Not detailed","Not detailed",
            
-           "Global economy", "Global economy",
+           "All-encompassing", "All-encompassing",
            "Energy", "Energy",
            "Transport",  "Transport", 
            "Food system","Food system",
@@ -746,11 +746,11 @@ links <- data.frame(
   ), 
   
   target=c("Energy","Transport", "Food system",
-           "Housing","Industry","Global economy","Other",
-           "Energy","Food system","Industry","Transport", "Other","Housing", "Global economy", 
-           "Energy", "Global economy","Housing","Transport", "Food system",
-           "Global economy", "Transport", "Energy", "Housing","Industry","Food system","Other",
-           "Global economy","Energy","Industry","Transport","Housing","Food system","Other",
+           "Housing","Industry","All-encompassing","Other",
+           "Energy","Food system","Industry","Transport", "Other","Housing", "All-encompassing", 
+           "Energy", "All-encompassing","Housing","Transport", "Food system",
+           "All-encompassing", "Transport", "Energy", "Housing","Industry","Food system","Other",
+           "All-encompassing","Energy","Industry","Transport","Housing","Food system","Other",
            
            
            "Air pollution","Indoor pollution",
@@ -832,7 +832,7 @@ sankeyplot2 <- sankeyNetwork(Links = links, Nodes = nodes,
                              Source = "IDsource", Target = "IDtarget",
                              Value = "value", NodeID = "name", 
                              colourScale=my_color, LinkGroup="group", NodeGroup="group",
-                             fontSize = 17, nodeWidth = 2 )
+                             fontSize = 20, nodeWidth = 2 )
 
 
 
@@ -897,8 +897,8 @@ criteria_order <- rev(c("Specification of target population","Demographic and ex
                     "Defined timeframes","Describe mitigation policies",
                     "Correspondance with agreed-upon scenarios","Equity impact",
                     "Adverse consequences of mitigation actions",
-                    "Limitations and source of uncertainty","Sensitivity analysis",
-                    "Publicly shared data and code","Data sources"))
+                    "Limitations and source of uncertainty","Sensitivity analysis","Data sources",
+                    "Publicly shared data and code"))
 quality_eval_long$Criteria <- factor(quality_eval_long$Criteria, levels = criteria_order)
 
 
@@ -988,14 +988,51 @@ p1 = health_outcome %>%
   ylab("")+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
-  scale_color_manual(values = wes_palette("Moonrise3"))+
-  scale_fill_manual(values = wes_palette("Moonrise3"))+
+  scale_color_manual(values = wes_palette("Darjeeling1"))+
+  scale_fill_manual(values = wes_palette("Darjeeling1"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
+
+
+health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat, 
+                                              levels = c("All-encompassing", "Multi", "Energy", "Food system",
+                                                         "Housing","Transport"))
+
+p12 = health_outcome %>%
+  ggplot()+
+  geom_point(aes(x = emission_sector_cat, y = mortality_proj, color =emission_sector_cat, shape = emission_sector_cat), 
+             size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_color_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
+
+
+health_outcome$scenario_cat <- factor(health_outcome$scenario_cat, 
+                                      levels = c("energy decarbonation", "financial instrument", 
+                                                 "health in climate policies","sufficiency", "not detailed"))
+
+p13 = health_outcome %>%
+  ggplot()+
+  geom_point(aes(x = scenario_cat, y = mortality_proj, color =scenario_cat, shape = scenario_cat), 
+             size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
+  scale_x_discrete(labels = c('Energy shift','Finance','Health','Sufficiency' ,'Not detailed')) +
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_color_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
 
 
 p00 = health_outcome %>%
   ggplot()+
-  geom_boxplot(aes( y = mortality_proj), fill ="#D4A190")+
+  geom_boxplot(aes( y = mortality_proj), fill ="grey")+
   theme_pubr()+
   xlab("")+
   ylab("")+
@@ -1005,8 +1042,19 @@ p00 = health_outcome %>%
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
 
 
-plot_mortality = ggarrange(p0,p1,p00, ncol =  , nrow = 1, align = "h")
+plot_mortality = ggarrange(p0,p1,p00, ncol =  , nrow = 1, align = "h", 
+                           labels = c("HIA method", "Exposure", "Overall"), hjust = c(-0.8,-1,-1.5))
 plot_mortality
+
+
+
+plot_mortality1 = ggarrange(p0,p1,p12,p13, ncol =2  , nrow = 2, align = "h", 
+                           labels = c("HIA method", "Exposure", "Emission sector","Typology of scenario"), 
+                           hjust = c(-0.8,-1,-0.5,-0.5))
+
+plot_mortality12 = ggarrange(plot_mortality1,p00, ncol = 2, nrow = 1,labels = c("", "Overall"), 
+                            widths = c(1,0.5))
+plot_mortality12
 
 
 
@@ -1037,15 +1085,91 @@ p1 = health_outcome %>%
   ylab("")+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
-  scale_color_manual(values = wes_palette("Moonrise3"))+
-  scale_fill_manual(values = wes_palette("Moonrise3"))+
+  scale_color_manual(values = wes_palette("Darjeeling1"))+
+  scale_fill_manual(values = wes_palette("Darjeeling1"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
 
 
-plot_mortality = ggarrange(p0,p1,p00, ncol =  , nrow = 1, align = "h")
-plot_mortality
+p12 = health_outcome %>%
+  ggplot()+
+  geom_violin(aes(x = emission_sector_cat, y = mortality_proj, fill =emission_sector_cat), 
+            show.legend = F)+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_color_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
 
 
+
+p13 = health_outcome %>%
+  ggplot()+
+  geom_violin(aes(x = scenario_cat, y = mortality_proj, fill =scenario_cat), 
+              show.legend = F)+
+  scale_x_discrete(labels = c('Energy shift','Finance','Health','Sufficiency' ,'Not detailed')) +
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_color_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
+
+
+p14 = health_outcome %>%
+  ggplot()+
+  geom_boxplot(aes(x = emission_sector_cat, y = mortality_proj, fill =emission_sector_cat), 
+              show.legend = F)+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_color_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
+
+
+
+p15 = health_outcome %>%
+  ggplot()+
+  geom_boxplot(aes(x = scenario_cat, y = mortality_proj, fill =scenario_cat), 
+              show.legend = F)+
+  scale_x_discrete(labels = c('Energy shift','Finance','Health','Sufficiency' ,'Not detailed')) +
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_color_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
+
+plot_mortality2 = ggarrange(p0,p1,p00, ncol =  , nrow = 1, align = "h", 
+                            labels = c("HIA method", "Exposure", "Overall"), hjust = c(-0.8,-1,-1.5))
+plot_mortality2
+
+
+plot_mortality21 = ggarrange(p0,p1,p12,p13, ncol =2  , nrow = 2, align = "h", 
+                            labels = c("HIA method", "Exposure", "Emission sector","Typology of scenario"), 
+                            hjust = c(-0.8,-1,-0.5,-0.5))
+
+plot_mortality22 = ggarrange(plot_mortality21,p00, ncol = 2, nrow = 1,labels = c("", "Overall"), 
+                             widths = c(1,0.5))
+plot_mortality22
+
+
+plot_mortality23 = ggarrange(p0,p1,p14,p15, ncol =2  , nrow = 2, align = "h", 
+                             labels = c("HIA method", "Exposure", "Emission sector","Typology of scenario"), 
+                             hjust = c(-0.8,-1,-0.5,-0.5))
+
+plot_mortality24 = ggarrange(plot_mortality23,p00, ncol = 2, nrow = 1,labels = c("", "Overall"), 
+                             widths = c(1,0.5))
+plot_mortality24
 
 
 
@@ -1054,15 +1178,14 @@ p2 = health_outcome %>%
   geom_bar( width = 0.5, show.legend = F)+
   theme_pubr()+
   xlab("")+
-  ylab("")+
+  ylab("Number of scenario")+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
   scale_y_continuous(limits =c(0,90))+
   coord_flip()+
-  theme(axis.line.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank())
+  theme(legend.title = element_blank(),
+    text = element_text(size = 10))
 
 health_outcome$scenario_cat <- factor(health_outcome$scenario_cat, levels = rev(c("energy decarbonation", 
                     "financial instrument", "health in climate policies","sufficiency", "not detailed")))
@@ -1094,7 +1217,7 @@ p3 =  health_outcome %>%
 
 
 health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat,
-                                      levels = rev(c('Global','Energy','Food system',
+                                      levels = rev(c('All-encompassing','Energy','Food system',
                                                      'Housing', 'Transport','Multi')))
 
 p4 = health_outcome %>%
@@ -1102,9 +1225,13 @@ p4 = health_outcome %>%
   geom_bar( width = 0.5, show.legend = F)+
   theme_pubr()+
   xlab("")+
-  ylab("Number of scenario")+
-  theme(legend.title = element_blank(),
-        text = element_text(size = 10))+
+  ylab("")+
+  theme(
+    legend.title = element_blank(),
+    text = element_text(size = 10),
+    axis.line.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()) +
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
   scale_y_continuous(limits =c(0,90))+
   coord_flip()
@@ -1127,9 +1254,9 @@ p5 = info_publi %>%
 
 
 
-plot_outcome = ggarrange(ggarrange(p2,p3,p4, ncol = 1 , nrow = 3, align = "v", 
-                         labels = c("Exposition","Typology of scenario","Emission sector"),
-                         hjust = c(-4,-2,-2.6)),
+plot_outcome = ggarrange(ggarrange(p3,p4,p2, ncol = 1 , nrow = 3, align = "v", 
+                         labels = c("Typology of scenario","Emission sector","Exposition"),
+                         hjust = c(-2,-2.6,-4)),
                          p5,ncol = 2, nrow = 1, common.legend = T)
 
 plot_outcome
@@ -1472,6 +1599,12 @@ ggsave(here("figures","timescale2.png"), plot = timescale2 , width = 13, height 
 ggsave(here("figures","timescale3.png"), plot = timescale3 , width = 13, height = 7)
 ggsave(here("figures","quality.png"), plot = quality , width = 13, height = 7)
 ggsave(here("figures","healthoutcome.png"), plot = plot_health_outcome , width = 15, height = 7)
+ggsave(here("figures","plot_mortality.png"), plot = plot_mortality , width = 15, height = 7)
+ggsave(here("figures","plot_mortality2.png"), plot = plot_mortality2 , width = 15, height = 7)
+ggsave(here("figures","plot_mortality21.png"), plot = plot_mortality12 , width = 15, height = 7)
+ggsave(here("figures","plot_mortality22.png"), plot = plot_mortality22 , width = 15, height = 7)
+ggsave(here("figures","plot_mortality24.png"), plot = plot_mortality24 , width = 15, height = 7)
+ggsave(here("figures","plot_outcome.png"), plot = plot_outcome , width = 15, height = 7)
 
 
 
