@@ -404,7 +404,7 @@ quality
 health_outcome$scenario_cat <- factor(health_outcome$scenario_cat, levels = rev(c("energy decarbonation", 
                                                                                   "financial instrument", "health in climate policies","sufficiency", "not detailed")))
 
-p1 =  health_outcome %>%
+p1 = health_outcome %>%
   ggplot(aes(x = scenario_cat,fill = include_mortality)) +
   geom_bar( width = 0.5,  show.legend = F) +
   theme_pubr() +
@@ -425,7 +425,7 @@ p1 =  health_outcome %>%
 
 health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat,
                                              levels = rev(c('All-encompassing','Energy','Food system',
-                                                            'Housing', 'Transport','Multi')))
+                                                            'Housing', 'Transport','Multi*')))
 
 p2 = health_outcome %>%
   ggplot(aes(x = emission_sector_cat, fill = include_mortality))+
@@ -453,7 +453,7 @@ p3 = health_outcome %>%
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
-  scale_y_continuous(limits =c(0,90))+
+  scale_y_continuous(limits =c(0,101), breaks= c(0,10,25,50,100))+
   coord_flip()+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))
@@ -467,19 +467,22 @@ p4 = info_publi %>%
   xlab("Year of publication")+
   ylab("Number of studies")+
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
+  scale_y_continuous(limits = c(0, 12), breaks= c(0,5,10,12))+
+  scale_x_continuous( breaks= c(2012,2015,2020,2023))+
   theme(legend.title = element_text(),
         legend.position = "top",
         text = element_text(size = 10))+
-  guides(fill=guide_legend(title="Adjustable mortality analysis:"))
+  guides(fill=guide_legend(title="Adjustable mortality analysis**:"))
 
 
 
 
 
-plot_outcome = ggarrange(ggarrange(p1,p2,p3, ncol = 1 , nrow = 3, align = "v", 
+plot_outcome = ggarrange(p4,ggarrange(p1,p2,p3, ncol = 1 , nrow = 3, align = "v", 
                                    labels = c("Typology of scenario","Emission sector","Exposition"),
-                                   hjust = c(-2,-2.6,-4)),
-                         p4,ncol = 2, nrow = 1, common.legend = T)
+                                   hjust = c(-1.5,-2,-3.2), vjust = c(0.5,0.5,0.5)),
+                         ncol = 2, nrow = 1, common.legend = T,  widths = c(0.8,1), legend = "bottom")+
+  theme(plot.margin = margin(2,0.1,0.1,0.1, "cm"))
 
 plot_outcome
 
@@ -495,16 +498,15 @@ p5 = health_outcome %>%
   geom_point(size = 2,position=position_jitter(h=NULL,w=0.2), show.legend = F)+
   theme_pubr()+
   xlab("")+
-  ylab("Preventable mortality (%)")+
-  scale_color_manual(values = wes_palette("BottleRocket2"))+
+  ylab("")+
+  scale_color_manual(values =c("#5F5647","#A42820"))+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
-  geom_hline(aes(yintercept = 100*median(mortality_proj[HIA_type == "Life tables"])),
-             color= "#A42820", linetype = 1, )+
-  geom_hline(aes(yintercept = 100* median(mortality_proj[HIA_type == "CRA"])),
-             color= "#E6D4A6", linetype = 1)+
-  scale_y_continuous(limits = c(0, 16), breaks= c(0.27,1.87,5,10,15))
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#5F5647","#A42820"))+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#5F5647","#A42820"),aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.4, y = 0.5))+
+  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))
 
 
 health_outcome$pathway_co_benefits2 <- factor(health_outcome$pathway_co_benefits2, 
@@ -512,8 +514,7 @@ health_outcome$pathway_co_benefits2 <- factor(health_outcome$pathway_co_benefits
 
 p6 = health_outcome %>%
   ggplot()+
-  #geom_violin(aes(x = pathway_co_benefits2, y = mortality_proj, fill =pathway_co_benefits2), show.legend = F)+
-  geom_point(aes(x = pathway_co_benefits2, y = mortality_proj, color =pathway_co_benefits2, shape = pathway_co_benefits2), 
+  geom_point(aes(x = pathway_co_benefits2, y = 100*mortality_proj, color =pathway_co_benefits2, shape = pathway_co_benefits2), 
              size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
   theme_pubr()+
   xlab("")+
@@ -522,16 +523,17 @@ p6 = health_outcome %>%
         text = element_text(size = 10))+
   scale_color_manual(values = wes_palette("Darjeeling1"))+
   scale_fill_manual(values = wes_palette("Darjeeling1"))+
-  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))
 
 
 health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat, 
-                                             levels = c("All-encompassing", "Multi", "Energy", "Food system",
-                                                        "Housing","Transport"))
+                                             levels = c("All-encompassing", "Energy", "Food system",
+                                                        "Housing","Transport", "Multi*"))
 
 p7 = health_outcome %>%
   ggplot()+
-  geom_point(aes(x = emission_sector_cat, y = mortality_proj, color =emission_sector_cat, shape = emission_sector_cat), 
+  geom_point(aes(x = emission_sector_cat, y = 100*mortality_proj, color =emission_sector_cat, shape = emission_sector_cat), 
              size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
   theme_pubr()+
   xlab("")+
@@ -540,378 +542,48 @@ p7 = health_outcome %>%
         text = element_text(size = 10))+
   scale_color_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
   scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
-  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))
 
 
+summary(health_outcome$mortality_proj)*100
 
 p8 = health_outcome %>%
+  filter(HIA_type != "Microsimulation" & mortality_proj > -1) %>%
   filter(include_mortality == "Yes")%>%
-  ggplot()+
-  geom_violin(aes( y = mortality_proj, x= include_mortality), fill ="grey")+
+  ggplot(aes( y = 100*mortality_proj, x= include_mortality))+
+  geom_violin(fill ="grey")+
   theme_pubr()+
   xlab("")+
   ylab("")+
   theme(axis.ticks.x = element_blank(),
         axis.text.x = element_blank(),
         text = element_text(size = 10))+
-  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = "black")+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.42, y = 0.5))+
+  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))
 
 
-plot_mortality1 = ggarrange(p5,p8,p6,p7, ncol = 2, nrow = 2,labels = c("Methods","",
-                                                                    "Exposure","Sector of emission"),
-                            align ="h")
-plot_mortality1
+plot_mortality = annotate_figure(ggarrange(p5,p8,p6,p7, ncol = 2, nrow = 2,labels = c("Methods","Overall",
+                                                                     "Exposure","Sector of emission"),
+                          align ="h", hjust = c(-1,-1.2,-1,-0.5)),
+                left = "Preventable mortality (%)")
 
-plot_mortality = ggarrange(plot_mortality1,p8, ncol = 2, nrow = 1,labels = c("", "Overall"), 
-                             widths = c(1,0.5), align ="h")
+
 plot_mortality
-
-
-
-
-
-health_outcome %>%
-  group_by(HIA_type) %>%
-  filter(HIA_type != "Microsimulation")%>%
-  ggplot()+
-  geom_point(aes(x = scenario_cat, y = mortality_proj, shape = scenario_cat)
-             , size = 2, position=position_jitter(h=NULL,w=0.2))+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  scale_shape_manual(values = c(16,15,17,18,3))+
-  scale_x_discrete(labels = c('Energy','Finance','Health', 'Sufficiency','Not detailed'))+
-  theme(legend.title = element_blank(),
-        text = element_text(size = 10),
-        axis.text.x = element_text(angle = 35, vjust = 0.5, hjust=0.5))
-
-health_outcome %>%
-  filter(HIA_type != "Microsimulation")%>%
-  ggplot()+
-  geom_boxplot(aes(x = emission_sector_cat, y = mortality_proj, fill = HIA_type))+
-  geom_point(aes(x = emission_sector_cat, y = mortality_proj, col = HIA_type), size = 3,shape = 18)+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  scale_fill_manual(values = wes_palette("BottleRocket2"))+
-  scale_color_manual(values = wes_palette("BottleRocket2"))+
-  theme(legend.title = element_blank(),
-        text = element_text(size = 10))
-
-
-health_outcome %>%
-  filter(HIA_type != "Microsimulation")%>%
-  ggplot()+
-  geom_boxplot(aes(x = pathway_co_benefits2, y = mortality_proj, fill = HIA_type))+
-  geom_point(aes(x = pathway_co_benefits2, y = mortality_proj, col = HIA_type), size = 3,shape = 18)+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  scale_fill_manual(values = wes_palette("BottleRocket2"))+
-  scale_color_manual(values = wes_palette("BottleRocket2"))+
-  theme(legend.title = element_blank(),
-        text = element_text(size = 10))
-
-
-
-
-
-
-p5 = health_outcome %>%
-  filter(HIA_type == "CRA") %>%
-  ggplot(aes(x = emission_sector_cat, y = mortality_proj,
-             fill = factor(emission_sector_cat, levels = c("All", "Energy", "Food system", "Transport","Multi"))))+
-  geom_violin()+
-  geom_point()+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
-  theme(legend.title = element_blank())
-
-
-p6 = health_outcome %>%
-  filter(HIA_type == "Life tables") %>%
-  ggplot(aes(x = emission_sector_cat, y = mortality_proj,
-             fill = factor(emission_sector_cat, levels = c("All", "Energy", "Food system", "Transport","Multi","Housing"))))+
-  geom_boxplot()+
-  geom_point()+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
-  theme(legend.title = element_blank())
-
-
-p7 = health_outcome %>%
-  filter(HIA_type == "CRA") %>%
-  ggplot(aes(x = pathway_co_benefits2, y = mortality_proj, fill = pathway_co_benefits2))+
-  geom_violin()+
-  geom_point()+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  scale_fill_manual(values = c(wes_palette("Darjeeling2"), "#D4A5A5"))+
-  theme(legend.title = element_blank())
-
-p8 = health_outcome %>%
-  filter(HIA_type == "Life tables") %>%
-  ggplot(aes(x = pathway_co_benefits2, y = mortality_proj, fill = pathway_co_benefits2))+
-  geom_boxplot()+
-  geom_point()+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  scale_fill_manual(values = c(wes_palette("Darjeeling2"), "#D4A5A5"))+
-  theme(legend.title = element_blank())
-
-
-plot_health_outcome2.1 = ggarrange(p5,p6, ncol = 2 , nrow = 1, common.legend = T,
-                                   align = "h", labels = c("CRA","Life tables"), hjust = c(-2,-0.9))
-
-plot_health_outcome2.1
-
-plot_health_outcome2.2 = ggarrange(p7,p8, ncol = 2 , nrow = 1, common.legend = T,
-                                   align = "h", labels = c("CRA","Life tables"), hjust = c(-2,-0.9))
-
-plot_health_outcome2.2
-
-plot_health_outcome2 = ggarrange (plot_health_outcome2.1,plot_health_outcome2.2, ncol = 1 , nrow = 2)
-
-plot_health_outcome2
-
-
-
-
-##### Air pollution
-a1 = health_outcome %>%
-  filter(HIA_type != "Microsimulation" & pathway_co_benefits2 == "Air pollution") %>%
-  ggplot(aes(x = HIA_type, y = mortality_proj, fill = HIA_type))+
-  geom_violin()+
-  geom_point()+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  scale_fill_manual(values = wes_palette("BottleRocket2"))+
-  ggtitle("Air pollution focus")
-
-
-
-a2 = health_outcome %>%
-  filter(pathway_co_benefits2 == "Air pollution" & emission_sector_cat != "Transport") %>%
-  ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
-  geom_boxplot()+
-  geom_point()+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  scale_fill_manual(values = wes_palette("Royal1"))+
-  ggtitle("Air pollution focus")
-
-health_outcome %>%
-  filter(pathway_co_benefits2 == "Air pollution" & emission_sector_cat != "Transport") %>%
-  ggplot(aes(x = scenario_cat, y = mortality_proj, fill = scenario_cat))+
-  geom_boxplot()+
-  geom_point()+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  scale_fill_manual(values = c(wes_palette("Royal1"),"grey"))+
-  ggtitle("Air pollution focus")
-
-
-plot_health_outcome_air = ggarrange (a1,a2, ncol = 1 , nrow = 2)
-plot_health_outcome_air
-
-# Health outcome v1
-health_outcome %>% 
-  filter(emission_sector_cat != "Housing") %>%
-  ggplot(aes(x = emission_sector_cat, y = mortality_proj, color = HIA_type))+
-  geom_point()+
-  theme_pubr()+
-  xlab("")+
-  ylab("Réduction de mortalité associé")+
-  #theme(legend.position = "none")+
-  #scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
-  scale_fill_manual(values = wes_palette("Darjeeling1"))
-
-
-health_outcome %>% 
-  ggplot(aes(x = pathway_co_benefits, y = mortality_proj, color = HIA_type))+
-  geom_point()+
-  theme_pubr()+
-  xlab("")+
-  ylab("Mortality reduction")+
-  #theme(legend.position = "none")+
-  #scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
-  scale_fill_manual(values = wes_palette("Darjeeling1"))
-
-
-
-
-
-health_outcome %>% 
-  ggplot(aes(x = emission_sector_cat, y = mortality_proj, fill = emission_sector_cat))+
-  geom_violin()+
-  geom_point()+
-  theme_pubr()+
-  xlab("")+
-  ylab("Mortality reduction")+
-  theme(legend.position = "none")+
-  #scale_x_discrete(label = c("all"="Tous", "Energy"="Énergie","Food system"="Système alimentaire","Multi", "Transport"))+
-  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))
-
-health_outcome %>% 
-  filter(emission_sector_cat != "Housing")%>%
-  filter(pathway_co_benefits == "Air & Indoor pollution"|
-           pathway_co_benefits == "Air pollution"|
-           pathway_co_benefits == "Diet"|
-           pathway_co_benefits == "Physical activity") %>%
-  ggplot(aes(x = pathway_co_benefits, y = mortality_proj, fill = pathway_co_benefits))+
-  geom_violin()+
-  geom_point()+
-  theme_pubr()+
-  xlab("")+
-  ylab("")+
-  theme(legend.position = "none")+
-  #scale_x_discrete(label = c("Air & Indoor pollution"="Pollution\natmosphérique & intérieur", "Air pollution"="Pollution atmosphérique",
-  #                           "Diet"="Alimentation","Physical activity"="Activité physique"))+
-  scale_fill_manual(values = wes_palette("AsteroidCity2"))
-
-# plot_health_outcome_fr = ggarrange(health_outcome1,health_outcome2, ncol = 2 , nrow = 1,
-#                            align = "h", labels = c("Secteur d'émission","Exposition"), hjust = c(-0.5,-0.8))
-
-plot_health_outcome = ggarrange(health_outcome1,health_outcome2, ncol = 2 , nrow = 1,
-                                align = "h", labels = c("Emission sector","Co-benefit pathway"))
-
-plot_health_outcome
-
-
-
-
-
-mortality_scenario <- health_outcome %>%
-  drop_na(mortality_proj) %>%
-  ggplot(aes(x = factor(author_date, levels = unique(reorder(author_date, as.numeric(author_date)))),
-             y = mortality_proj, fill = pathway_co_benefits)) +
-  geom_bar(position = position_dodge(), stat = "identity") +
-  coord_flip()
-
-mortality_scenario
-
-
-yll_exposure <- health_outcome %>%
-  drop_na(yll_per_capita) %>%
-  ggplot(aes(x = factor(author_date, levels = unique(reorder(author_date, as.numeric(author_date)))),
-             y = yll_per_capita, fill = pathway_co_benefits)) +
-  geom_bar(position = position_dodge(), stat = "identity") +
-  coord_flip()
-
-yll_exposure
-
-
-
-
-
-mortality_scenario <- health_outcome %>%
-  drop_na(mortality_proj) %>%
-  ggplot(aes(x = factor(author_date, levels = unique(reorder(author_date, -as.numeric(author_date)))),
-             y = mortality_proj, fill = scenario_cat)) +
-  geom_bar(position = position_dodge(), stat = "identity") +
-  coord_flip()
-
-mortality_scenario
-
-
-
-yll_scenario <- health_outcome %>%
-  drop_na(yll_per_capita) %>%
-  ggplot(aes(x = factor(author_date, levels = unique(reorder(author_date, -as.numeric(author_date)))),
-             y = yll_per_capita, fill = scenario_cat)) +
-  geom_bar(position = position_dodge(), stat = "identity") +
-  coord_flip()
-
-yll_scenario
-
-
-
-
-
-
-mortality_scenario <- health_outcome %>% 
-  drop_na(mortality_proj) %>%
-  filter(scenario_cat != "not detailed") %>%
-  ggplot(aes(x = scenario, y = mortality_proj, fill = scenario_cat)) +
-  geom_bar(position = position_dodge(), stat = "identity")+
-  coord_flip()
-
-mortality_scenario
-
-
-yll_scenario <- health_outcome %>% 
-  drop_na(yll_per_capita) %>%
-  filter(scenario_cat != "not detailed") %>%
-  ggplot(aes(x = scenario, y = yll_per_capita, fill = scenario_cat)) +
-  geom_bar(position = position_dodge(), stat = "identity")+
-  coord_flip()
-
-yll_scenario
-
-
-
-
-
-
-mortality_scenario <- health_outcome %>% 
-  drop_na(mortality_proj) %>%
-  filter(author_date == "Hamilton, 2021" | author_date == "Yang, 2019"|
-           author_date == "Polonik, 2021" | author_date == "Reis, 2022"| author_date == "Sampedro, 2020") %>%
-  ggplot(aes(x = reorder(scenario, rank_pop), y = mortality_proj, fill = scenario_cat)) +
-  geom_bar(position = position_dodge(), stat = "identity")+
-  coord_flip()+
-  facet_wrap(~ author_date)
-
-mortality_scenario
-
-
-
-mortality_scenario <- health_outcome %>% 
-  drop_na(mortality_proj) %>%
-  ggplot(aes(x = fct_reorder(scenario, mortality_proj), y = mortality_proj, fill = pathway_co_benefits)) +
-  geom_bar(position = position_dodge(), stat = "identity")+
-  coord_flip()+
-  facet_wrap(~ scenario_cat)
-
-mortality_scenario
-
-
-mortality_scenario <- health_outcome %>% 
-  drop_na(mortality_proj) %>%
-  ggplot(aes(x = fct_reorder(scenario, mortality_proj), y = mortality_proj, fill = scenario_cat)) +
-  geom_bar(position = position_dodge(), stat = "identity")+
-  coord_flip()+
-  facet_wrap(~ pathway_co_benefits)
-
-
-mortality_scenario
-
 
 
 
 # Saving plots
 ggsave(here("figures","Map1.png"), plot = Map1 , width = 10, height = 7)
 ggsave(here("figures","Map2.png"), plot = Map2 , width = 10, height = 7)
-ggsave(here("figures","timescale1.png"), plot = timescale1 , width = 13, height = 7)
-ggsave(here("figures","timescale2.png"), plot = timescale2 , width = 13, height = 7)
-ggsave(here("figures","timescale3.png"), plot = timescale3 , width = 13, height = 7)
+ggsave(here("figures","timescale.png"), plot = timescale , width = 13, height = 7)
 ggsave(here("figures","quality.png"), plot = quality , width = 13, height = 7)
-ggsave(here("figures","healthoutcome.png"), plot = plot_health_outcome , width = 15, height = 7)
-ggsave(here("figures","plot_mortality.png"), plot = plot_mortality , width = 15, height = 7)
-ggsave(here("figures","plot_mortality2.png"), plot = plot_mortality2 , width = 15, height = 7)
-ggsave(here("figures","plot_mortality21.png"), plot = plot_mortality12 , width = 15, height = 7)
-ggsave(here("figures","plot_mortality22.png"), plot = plot_mortality22 , width = 15, height = 7)
-ggsave(here("figures","plot_mortality24.png"), plot = plot_mortality24 , width = 15, height = 7)
-ggsave(here("figures","plot_outcome.png"), plot = plot_outcome , width = 15, height = 7)
+ggsave(here("figures","plot_outcome.png"), plot = plot_outcome , width = 10, height = 7)
+ggsave(here("figures","plot_mortality.png"), plot = plot_mortality , width = 12, height = 7)
+
 
 
 
