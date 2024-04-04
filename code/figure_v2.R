@@ -472,7 +472,7 @@ p4 = info_publi %>%
   theme(legend.title = element_text(),
         legend.position = "top",
         text = element_text(size = 10))+
-  guides(fill=guide_legend(title="Adjustable mortality analysis**:"))
+  guides(fill=guide_legend(title="Scalable mortality analysis**:"))
 
 
 
@@ -513,9 +513,8 @@ health_outcome$pathway_co_benefits2 <- factor(health_outcome$pathway_co_benefits
                                               levels = c("Air pollution", "Physical activity", "Diet"))
 
 p6 = health_outcome %>%
-  ggplot()+
-  geom_point(aes(x = pathway_co_benefits2, y = 100*mortality_proj, color =pathway_co_benefits2, shape = pathway_co_benefits2), 
-             size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
+  ggplot(aes(x = pathway_co_benefits2, y = 100*mortality_proj, color =pathway_co_benefits2, shape = pathway_co_benefits2))+
+  geom_point(size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
   theme_pubr()+
   xlab("")+
   ylab("")+
@@ -524,7 +523,10 @@ p6 = health_outcome %>%
   scale_color_manual(values = wes_palette("Darjeeling1"))+
   scale_fill_manual(values = wes_palette("Darjeeling1"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
-  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))
+  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))+
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#FF0000","#00A08A","#F2AD00"))+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#FF0000","#00A08A","#F2AD00"),aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.4, y = 0.5))
 
 
 health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat, 
@@ -532,9 +534,8 @@ health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat,
                                                         "Housing","Transport", "Multi*"))
 
 p7 = health_outcome %>%
-  ggplot()+
-  geom_point(aes(x = emission_sector_cat, y = 100*mortality_proj, color =emission_sector_cat, shape = emission_sector_cat), 
-             size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
+  ggplot(aes(x = emission_sector_cat, y = 100*mortality_proj, color =emission_sector_cat, shape = emission_sector_cat))+
+  geom_point(size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
   theme_pubr()+
   xlab("")+
   ylab("")+
@@ -543,7 +544,10 @@ p7 = health_outcome %>%
   scale_color_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
   scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
-  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))
+  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))+
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#FF0000","#00A08A","#F2AD00","#F98400","#5BBCD6","#D4A5A5"))+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#FF0000","#00A08A","#F2AD00","#F98400","#5BBCD6","#D4A5A5"),aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.4, y = 0.5))
 
 
 summary(health_outcome$mortality_proj)*100
@@ -566,7 +570,7 @@ p8 = health_outcome %>%
   scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))
 
 
-plot_mortality = annotate_figure(ggarrange(p5,p8,p6,p7, ncol = 2, nrow = 2,labels = c("Methods","Overall",
+plot_mortality = annotate_figure(ggarrange(p8,p5,p6,p7, ncol = 2, nrow = 2,labels = c("Overall","Methods",
                                                                      "Exposure","Sector of emission"),
                           align ="h", hjust = c(-1,-1.2,-1,-0.5)),
                 left = "Preventable mortality (%)")
