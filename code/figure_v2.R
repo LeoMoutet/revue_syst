@@ -27,7 +27,6 @@ health_outcome <- read_excel(here("data","extraction_grid_health_outcome.xlsx"))
 quality_eval <- read_excel(here("data","quality_eval.xlsx"))
 quality_fr <- read_excel(here("data","quality_fr.xlsx"))
 
-
 ###### Geo scale #####
 
 # Get world map data
@@ -487,6 +486,7 @@ plot_outcome = ggarrange(p4,ggarrange(p1,p2,p3, ncol = 1 , nrow = 3, align = "v"
 plot_outcome
 
 
+summary(health_outcome$mortality_proj)*100
 
 summary(health_outcome$mortality_proj[health_outcome$HIA_type == "Life tables"])*100
 summary(health_outcome$mortality_proj[health_outcome$HIA_type == "CRA"])*100
@@ -556,7 +556,7 @@ p8 = health_outcome %>%
   filter(HIA_type != "Microsimulation" & mortality_proj > -1) %>%
   filter(include_mortality == "Yes")%>%
   ggplot(aes( y = 100*mortality_proj, x= include_mortality))+
-  geom_violin(fill ="grey")+
+  geom_violin(fill ="lightcyan3")+
   theme_pubr()+
   xlab("")+
   ylab("")+
