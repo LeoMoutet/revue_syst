@@ -297,6 +297,13 @@ population_proj_syst_review <- population_proj_clean %>%
 sum(population_proj_syst_review$n_pop)
 
 
+# Wang, 2023b
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "China" 
+         , Year == "2060")
+
+sum(mortality_proj_syst_review$n_death)
+
 # Xing, 2020
 mortality_proj_syst_review <- mortality_proj_clean %>%
   filter(region == "China" 
