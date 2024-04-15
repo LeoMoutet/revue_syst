@@ -24,7 +24,7 @@ pacman::p_load(dplyr,
 # Data
 info_publi <- read_excel(here("data","extraction_grid.xlsx"))
 health_outcome <- read_excel(here("data","extraction_grid_health_outcome.xlsx"))
-quality_eval <- read_excel(here("data","quality_eval.xlsx"))
+quality_eval <- read_excel(here("data","quality_eval_v2.xlsx"))
 quality_fr <- read_excel(here("data","quality_fr.xlsx"))
 
 ###### Geo scale #####
@@ -46,8 +46,8 @@ data_multi <- data.frame(country = c("China", "United Kingdom", "India", "United
                                      "Bangladesh", "Cambodia", "Iran", "Laos", "Malaysia", "Mongolia", 
                                      "Nepal", "Pakistan", "Philippines", "Thaïland", "Vietnam"
 ),
-value = c(15, 6, 6, 3, 
-          4,5, 3,2,
+value = c(19, 6, 6, 3, 
+          4,5, 3,3,
           2,4,3,1,1,
           1,1,3,3,3,
           1,3,3,3,3,3,
@@ -62,8 +62,8 @@ value = c(15, 6, 6, 3,
 
 # Color scale
 data_multi$color_group <- cut(data_multi$value,
-                              breaks = c(1,2,4,6,15),
-                              labels = c("1-2", "3-4","5-6", "15"),
+                              breaks = c(1,2,4,6,19),
+                              labels = c("1-2", "3-4","5-6", "19"),
                               include.lowest = TRUE)
 
 # Take out Antartica and merge the data with the world map data
@@ -84,8 +84,11 @@ world_data_multi <- st_transform(world_data_multi, crs = robinson_proj)
 # Define latitude and longitude for specific regions
 points_data <- data.frame(
   # Shaanxi,   Beijing  , Shandong , California (LA), Anhui,     Sichuan, California (SF), California (CC), London (&Milton keynes), Barcelona, Freidburg, Malmö, 
-  lat = c(34.274342, 39.916668, 36.066898, 34.052235      , 31.848398, 31.456781,37.773972,     41.755749,        51.5085300,             41.3850639, 47.997791, 55.60587, 42.698334) ,  #  latitudes
-  lon = c(108.889191, 116.383331, 120.382698,-118.243683,  117.272362, 102.843018,-122.431297,   -124.202591,     -0.1257400,             2.1734035, 7.842609, 13.00073, 23.319941)  #  longitudes
+  #         Santiago, Virginia
+  lat = c(34.274342, 39.916668, 36.066898, 34.052235      , 31.848398, 31.456781,37.773972,     41.755749,        51.5085300,             41.3850639, 47.997791, 55.60587, 42.698334,
+          -33.447487,37.926868) ,  #  latitudes
+  lon = c(108.889191, 116.383331, 120.382698,-118.243683,  117.272362, 102.843018,-122.431297,   -124.202591,     -0.1257400,             2.1734035, 7.842609, 13.00073, 23.319941,
+          -70.673676,-78.024902)  #  longitudes
 )
 
 
@@ -101,7 +104,7 @@ Map1 = ggplot() +
   geom_sf(data = world_data_multi, aes(fill = color_group), color ="transparent") +
   geom_sf(data = points_sf, aes(color = "Sub-national investigation        "), size = 2, shape = 16) +
   scale_fill_manual(values = c("orange","firebrick2","firebrick4","mediumpurple4"),
-                    breaks = c("1-2", "3-4","5-6", "15")) +
+                    breaks = c("1-2", "3-4","5-6", "19")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
   labs(title = "",fill = "Number of investigation:") +
   theme_pubr() +
@@ -121,14 +124,14 @@ Map1
 
 
 # 1st author map
-data_multi <- data.frame(country = c("China", "United Kingdom", "United States","France", "Poland", "Korea", "Germany", "Spain", "Austria", "Italy"
+data_multi <- data.frame(country = c("China", "United Kingdom", "United States","France", "Poland", "Korea", "Germany", "Spain", "Austria", "Italy","Japan"
 ),
-value = c(17,5,9,1,2,1,4,4,4,1))
+value = c(20,6,12,1,2,1,4,4,4,1,1))
 
 # Color scale
 data_multi$color_group <- cut(data_multi$value,
-                              breaks = c(1,2,5,9,17),
-                              labels = c("1-2", "4-5", "9","17"),
+                              breaks = c(1,2,6,12,20),
+                              labels = c("1-2", "4-6", "12","20"),
                               include.lowest = TRUE)
 
 # Take out Antartica and
@@ -153,7 +156,7 @@ Map2= ggplot() +
           show.legend = FALSE, size = 5) +
   geom_sf(data = world_data_multi, aes(fill = color_group), color ="transparent") +
   scale_fill_manual(values = c("cadetblue1", "cornflowerblue", "blue", "darkblue"),
-                    breaks = c("1-2", "4-5", "9", "17"),
+                    breaks = c("1-2", "4-6", "12", "20"),
                     guide = guide_legend(title = "Number of investigations")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
   labs(title = "Spatial distribution of 1st authors' institution",
@@ -183,23 +186,25 @@ timescale = info_publi %>%
   ggplot(aes(x = as.numeric(rank_plot))) +
   geom_linerange(aes(ymin = time_scale_min, ymax = time_scale_max), linewidth= 0.5) +
   geom_text(aes(x = as.numeric(rank_plot), y = (time_scale_min -7) , label = author_date), size = 3.5, fontface = "bold") +
-  geom_segment(x=48, y=1986, xend=36.5, yend=1986)+
-  geom_text(x=42.5, y= 1981, label="World", size = 5)+
-  geom_segment(x=36, y=1991, xend=29.5, yend=1991 )+
-  geom_text(x=33, y= 1982.5, label="Multi-country", size = 5)+
-  geom_segment(x=29, y=1988, xend=8.5, yend=1988 )+
-  geom_text(x=20.5, y= 1980, label="National", size = 5)+
-  geom_segment(x=8, y=1991, xend=0.5, yend=1991 )+
-  geom_text(x=4.5, y= 1982.5, label="Sub-national", size = 5)+
-  geom_segment(aes(x=44, y=2020, xend=44, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
-  geom_text(x=44, y= 2070, label="2100", size = 4, angle = 45)+
-  geom_segment(aes(x=30, y=2021, xend=30, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
-  geom_text(x=30, y= 2070, label="2100", size = 4, angle = 45)+
-  geom_segment(aes(x=12, y=2011, xend=12, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
-  geom_text(x=12, y= 2070, label="2154", size = 4, angle = 45)+
+  geom_segment(x=56, y=1986, xend=44.5, yend=1986)+
+  geom_text(x=50.5, y= 1981, label="World", size = 5)+
+  geom_segment(x=44, y=1991, xend=37.5, yend=1991 )+
+  geom_text(x=41, y= 1982.5, label="Multi-country", size = 5)+
+  geom_segment(x=37, y=1988, xend=12.5, yend=1988 )+
+  geom_text(x=25.5, y= 1980, label="National", size = 5)+
+  geom_segment(x=12, y=1991, xend=0.5, yend=1991 )+
+  geom_text(x=6.5, y= 1982.5, label="Sub-national", size = 5)+
+  geom_segment(aes(x=56, y=2020, xend=56, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
+  geom_text(x=56, y= 2070, label="2100", size = 4, angle = 45)+
+  geom_segment(aes(x=51, y=2020, xend=51, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
+  geom_text(x=51, y= 2070, label="2100", size = 4, angle = 45)+
+  geom_segment(aes(x=18, y=2021, xend=18, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
+  geom_text(x=18, y= 2070, label="2100", size = 4, angle = 45)+
+  geom_segment(aes(x=16, y=2011, xend=16, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
+  geom_text(x=16, y= 2070, label="2154", size = 4, angle = 45)+
   theme_bw() +
   coord_flip() +
-  scale_y_continuous(breaks = c(2010, 2020, 2030, 2040, 2050, 2060, 2070, 2100), limits = c(1980, 2070)) +
+  scale_y_continuous(breaks = c(2010, 2020, 2030, 2040, 2050, 2060, 2070, 2500), limits = c(1980, 2070)) +
   ylab("Year") +
   xlab("") +
   theme(legend.position = "top",
@@ -261,23 +266,23 @@ links <- data.frame(
            "YLL","Morbidity","Deaths", "Economic"
   ), 
   
-  value=c(17,8,3,
-          7,4,2,3,
-          7,3,4,6,3,4,1,
+  value=c(22,9,3,
+          8,5,2,3,
+          8,4,5,7,3,5,2,
           3,1,1,2,1,
           1,2,1,1,1,1,1,
-          7,11,9,9,5,6,4,
+          8,12,10,10,6,7,5,
           
           
-          12,1,
-          31,3,
-          17,4,
-          9,3,
-          15,3,
-          16,1,
-          11,
+          14,1,
+          37,3,
+          20,4,
+          11,3,
+          18,3,
+          19,1,
+          12,
           
-          34,4,24,3,1,
+          41,4,26,3,1,
           14,
           1,1,1,
           2,2,1,1,
@@ -390,6 +395,7 @@ quality = ggplot(quality_eval_long, aes(x = Criteria, y = Count, fill = factor(V
   theme_pubr() +
   coord_flip()+
   guides(fill = guide_legend(title = "", keywidth = 1, keyheight = 1, reverse = TRUE))+
+  scale_y_continuous(breaks= c(0,25,50))+
   theme(legend.text = element_text(size = 15),
         axis.text.y = element_text(size = 20))
 
@@ -506,7 +512,7 @@ p5 = health_outcome %>%
   stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#5F5647","#A42820"))+
   stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#5F5647","#A42820"),aes(label = round(after_stat(y),1)),
                 position = position_nudge(x = -0.4, y = 0.5))+
-  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))
+  scale_y_continuous( breaks= c(1,5,10,15))
 
 
 health_outcome$pathway_co_benefits2 <- factor(health_outcome$pathway_co_benefits2, 
@@ -523,7 +529,7 @@ p6 = health_outcome %>%
   scale_color_manual(values = wes_palette("Darjeeling1"))+
   scale_fill_manual(values = wes_palette("Darjeeling1"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
-  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))+
+  scale_y_continuous( breaks= c(1,5,10,15))+
   stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#FF0000","#00A08A","#F2AD00"))+
   stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#FF0000","#00A08A","#F2AD00"),aes(label = round(after_stat(y),1)),
                 position = position_nudge(x = -0.4, y = 0.5))
@@ -544,15 +550,44 @@ p7 = health_outcome %>%
   scale_color_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
   scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
-  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))+
+  scale_y_continuous( breaks= c(1,5,10,15))+
+  scale_x_discrete(labels = c("All", "Energy", "Food\nsystem","Housing","Transport","Multi"))+
   stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#FF0000","#00A08A","#F2AD00","#F98400","#5BBCD6","#D4A5A5"))+
   stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#FF0000","#00A08A","#F2AD00","#F98400","#5BBCD6","#D4A5A5"),aes(label = round(after_stat(y),1)),
                 position = position_nudge(x = -0.4, y = 0.5))
 
 
+baseline_year <- merge(health_outcome,info_publi, by = "author_date")
+
+p8 = baseline_year %>%
+  ggplot(aes(x = baseline_scenario, y = 100*mortality_proj, color =baseline_scenario, shape = baseline_scenario))+
+  geom_point(size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_color_manual(values = c("#5F5647","#A42820","#9B9987"))+
+  scale_fill_manual(values = c("#5F5647","#A42820","#9B9987"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  scale_y_continuous( breaks= c(1,5,10,15))+
+  scale_x_discrete(labels = c("Decreasing\n GHG emission","Increasing\n GHG emission", "Reference\nyear"))+
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#5F5647","#A42820","#9B9987"))+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#5F5647","#A42820","#9B9987"),aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.4, y = 0.5))
+
+
+plot_mortality = annotate_figure(ggarrange(p5,p8,p6,p7, ncol = 2, nrow = 2,labels = c("Methods","Baseline scenario",
+                                                                                      "Exposure","Sector of emission"),
+                                           align ="h", hjust = c(-1,-0.5,-1,-0.5)))
+
+
+plot_mortality
+
+
 summary(health_outcome$mortality_proj)*100
 
-p8 = health_outcome %>%
+p9 = health_outcome %>%
   filter(HIA_type != "Microsimulation" & mortality_proj > -1) %>%
   filter(include_mortality == "Yes")%>%
   ggplot(aes( y = 100*mortality_proj, x= include_mortality))+
@@ -562,23 +597,20 @@ p8 = health_outcome %>%
   ylab("")+
   theme(axis.ticks.x = element_blank(),
         axis.text.x = element_blank(),
-        text = element_text(size = 10))+
+        text = element_text(size = 10),
+        plot.margin = margin(1,0.1,1,0.1,"cm"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
   stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = "black")+
   stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
                 position = position_nudge(x = -0.42, y = 0.5))+
-  scale_y_continuous(limits = c(0, 16), breaks= c(1,5,10,15))
+  scale_y_continuous( breaks= c(1,5,10,15))
 
 
-plot_mortality = annotate_figure(ggarrange(p8,p5,p6,p7, ncol = 2, nrow = 2,labels = c("Overall","Methods",
-                                                                     "Exposure","Sector of emission"),
-                          align ="h", hjust = c(-1,-1.2,-1,-0.5)),
-                left = "Preventable mortality (%)")
+plot_mortality2 = annotate_figure(ggarrange(p9,plot_mortality, ncol = 2, nrow = 1,labels = c("Overall", ""),
+                                           align ="v", hjust = c(-1,1),vjust = c(4,1), widths = c(0.4, 1)),
+                                 left = "Preventable mortality (%)")
 
-
-plot_mortality
-
-
+plot_mortality2
 
 # Saving plots
 ggsave(here("figures","Map1.png"), plot = Map1 , width = 10, height = 7)
@@ -586,7 +618,7 @@ ggsave(here("figures","Map2.png"), plot = Map2 , width = 10, height = 7)
 ggsave(here("figures","timescale.png"), plot = timescale , width = 13, height = 7)
 ggsave(here("figures","quality.png"), plot = quality , width = 13, height = 7)
 ggsave(here("figures","plot_outcome.png"), plot = plot_outcome , width = 10, height = 7)
-ggsave(here("figures","plot_mortality.png"), plot = plot_mortality , width = 12, height = 7)
+ggsave(here("figures","plot_mortality.png"), plot = plot_mortality2 , width = 15, height = 7)
 
 
 

@@ -70,8 +70,9 @@ population_proj_clean <- population_proj %>%
 
 # Table for extraction grid
 
+# Polonik, 2021
 mortality_proj_syst_review <- mortality_proj_clean %>%
-  filter(region == "WORLD",  Year == "2030" |Year == "2050")
+  filter(region == "WORLD",  Year == "2030"  )
 
 sum(mortality_proj_syst_review$n_death)
 
@@ -133,7 +134,7 @@ population_proj_syst_review <- population_proj_clean %>%
 
 sum(population_proj_syst_review$n_pop)
 
-# Conibear, 2022
+# Conibear, 2022 / Ma, 2023b
 mortality_proj_syst_review <- mortality_proj_clean %>%
   filter(region == "China" 
          , Year == "2050")
@@ -271,9 +272,23 @@ mortality_proj_syst_review <- mortality_proj_clean %>%
 sum(mortality_proj_syst_review$n_death)
 
 
+# Rauner, 2020
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "WORLD",  Year == "2050" )
+
+sum(mortality_proj_syst_review$n_death)
 
 
-# Shen, 2022
+
+# Reddington, 2023
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "WORLD",  Year == "2047" )
+
+sum(mortality_proj_syst_review$n_death)
+
+
+
+# Shen, 2022 / Cheng, 2023
 mortality_proj_syst_review <- mortality_proj_clean %>%
   filter(region == "China" 
          , Year == "2060")
