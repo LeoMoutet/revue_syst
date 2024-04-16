@@ -512,7 +512,7 @@ p5 = health_outcome %>%
   stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#5F5647","#A42820"))+
   stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#5F5647","#A42820"),aes(label = round(after_stat(y),1)),
                 position = position_nudge(x = -0.4, y = 0.5))+
-  scale_y_continuous( breaks= c(1,5,10,15))
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
 
 
 health_outcome$pathway_co_benefits2 <- factor(health_outcome$pathway_co_benefits2, 
@@ -529,7 +529,7 @@ p6 = health_outcome %>%
   scale_color_manual(values = wes_palette("Darjeeling1"))+
   scale_fill_manual(values = wes_palette("Darjeeling1"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
-  scale_y_continuous( breaks= c(1,5,10,15))+
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
   stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#FF0000","#00A08A","#F2AD00"))+
   stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#FF0000","#00A08A","#F2AD00"),aes(label = round(after_stat(y),1)),
                 position = position_nudge(x = -0.4, y = 0.5))
@@ -550,7 +550,7 @@ p7 = health_outcome %>%
   scale_color_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
   scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
-  scale_y_continuous( breaks= c(1,5,10,15))+
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
   scale_x_discrete(labels = c("All", "Energy", "Food\nsystem","Housing","Transport","Multi"))+
   stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#FF0000","#00A08A","#F2AD00","#F98400","#5BBCD6","#D4A5A5"))+
   stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#FF0000","#00A08A","#F2AD00","#F98400","#5BBCD6","#D4A5A5"),aes(label = round(after_stat(y),1)),
@@ -570,7 +570,7 @@ p8 = baseline_year %>%
   scale_color_manual(values = c("#5F5647","#A42820","#9B9987"))+
   scale_fill_manual(values = c("#5F5647","#A42820","#9B9987"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
-  scale_y_continuous( breaks= c(1,5,10,15))+
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
   scale_x_discrete(labels = c("Decreasing\n GHG emission","Increasing\n GHG emission", "Reference\nyear"))+
   stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#5F5647","#A42820","#9B9987"))+
   stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#5F5647","#A42820","#9B9987"),aes(label = round(after_stat(y),1)),
@@ -603,7 +603,7 @@ p9 = health_outcome %>%
   stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = "black")+
   stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
                 position = position_nudge(x = -0.42, y = 0.5))+
-  scale_y_continuous( breaks= c(1,5,10,15))
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
 
 
 plot_mortality2 = annotate_figure(ggarrange(p9,plot_mortality, ncol = 2, nrow = 1,labels = c("Overall", ""),
