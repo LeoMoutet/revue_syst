@@ -472,7 +472,7 @@ p4 = info_publi %>%
   xlab("Year of publication")+
   ylab("Number of studies")+
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
-  scale_y_continuous(limits = c(0, 12), breaks= c(0,5,10,12))+
+  scale_y_continuous(limits = c(0, 13), breaks= c(0,5,10,13))+
   scale_x_continuous( breaks= c(2012,2015,2020,2023))+
   theme(legend.title = element_text(),
         legend.position = "top",
@@ -612,10 +612,75 @@ plot_mortality2 = annotate_figure(ggarrange(p9,plot_mortality, ncol = 2, nrow = 
 
 plot_mortality2
 
+
+
+health_outcome %>%
+  filter(HIA_type != "Microsimulation" & mortality_proj > 0.036) %>%
+  filter(include_mortality == "Yes" & author_date != "Hamilton, 2021")%>%
+  filter(pathway_co_benefits == "Air pollution" )%>%
+  ggplot(aes( y = 100*mortality_proj, x= include_mortality, color = `Geographical scale`))+
+  geom_point(size = 2,position=position_jitter(h=NULL,w=0.3))+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        text = element_text(size = 10),
+        plot.margin = margin(1,0.1,1,0.1,"cm"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = "black")+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.42, y = 0.5))+
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
+
+
+health_outcome %>%
+  filter(HIA_type != "Microsimulation") %>%
+  filter(include_mortality == "Yes" & `Geographical scale`== "China")%>%
+  filter(pathway_co_benefits == "Air pollution" )%>%
+  ggplot(aes( y = 100*mortality_proj, x= include_mortality, color = `Geographical scale`))+
+  geom_point(size = 2,position=position_jitter(h=NULL,w=0.3))+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        text = element_text(size = 10),
+        plot.margin = margin(1,0.1,1,0.1,"cm"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = "black")+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.42, y = 0.5))+
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
+
+
+
+
+baseline_year %>%
+  filter(HIA_type != "Microsimulation") %>%
+  filter(include_mortality.y == "Yes")%>%
+  filter(pathway_co_benefits == "Air pollution")%>%
+  ggplot(aes( y = 100*mortality_proj, x= include_mortality.y, color = `publi_yr`))+
+  geom_point(size = 2,position=position_jitter(h=NULL,w=0.3))+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        text = element_text(size = 10),
+        plot.margin = margin(1,0.1,1,0.1,"cm"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = "black")+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.42, y = 0.5))+
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
+  scale_color_gradientn(colours = c("blue", "green", "yellow", "orange", "red","darkred"))
+
+
 # Saving plots
 ggsave(here("figures","Map1.png"), plot = Map1 , width = 10, height = 7)
 ggsave(here("figures","Map2.png"), plot = Map2 , width = 10, height = 7)
-ggsave(here("figures","timescale.png"), plot = timescale , width = 13, height = 7)
+ggsave(here("figures","timescale.png"), plot = timescale , width = 10, height = 9)
 ggsave(here("figures","quality.png"), plot = quality , width = 13, height = 7)
 ggsave(here("figures","plot_outcome.png"), plot = plot_outcome , width = 10, height = 7)
 ggsave(here("figures","plot_mortality.png"), plot = plot_mortality2 , width = 15, height = 7)
