@@ -498,7 +498,7 @@ summary(health_outcome$mortality_proj[health_outcome$HIA_type == "Life tables"])
 summary(health_outcome$mortality_proj[health_outcome$HIA_type == "CRA"])*100
 
 p5 = health_outcome %>%
-  filter(HIA_type != "Microsimulation" & mortality_proj > -1) %>%
+  filter(HIA_type != "Microsimulation" ) %>%
   ggplot(aes(x = HIA_type, y = mortality_proj*100, color = HIA_type, shape = HIA_type))+
   #geom_violin(show.legend = F)+
   geom_point(size = 2,position=position_jitter(h=NULL,w=0.2), show.legend = F)+
@@ -588,7 +588,7 @@ plot_mortality
 summary(health_outcome$mortality_proj)*100
 
 p9 = health_outcome %>%
-  filter(HIA_type != "Microsimulation" & mortality_proj > -1) %>%
+  filter(HIA_type != "Microsimulation" ) %>%
   filter(include_mortality == "Yes")%>%
   ggplot(aes( y = 100*mortality_proj, x= include_mortality))+
   geom_violin(fill ="lightcyan3")+
@@ -612,6 +612,44 @@ plot_mortality2 = annotate_figure(ggarrange(p9,plot_mortality, ncol = 2, nrow = 
 
 plot_mortality2
 
+
+
+health_outcome %>%
+  filter(HIA_type != "Microsimulation" & pathway_co_benefits == "Air pollution") %>%
+  filter(include_mortality == "Yes")%>%
+  ggplot(aes( y = 100*mortality_proj, x= geo_scale, color = geo_scale))+
+  geom_point()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = "black")+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.42, y = 0.5))+
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
+
+baseline_year %>%
+  filter(HIA_type != "Microsimulation" & pathway_co_benefits == "Air pollution") %>%
+  filter(include_mortality.y == "Yes")%>%
+  ggplot(aes( y = 100*mortality_proj, x= publi_yr, color = publi_yr))+
+  geom_point()+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = "black")+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.42, y = 0.5))+
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
+
+kruskal.test(mortality_proj ~ publi_yr, data = baseline_year)
+
+baseline_year$test <- ifelse(baseline_year$publi_yr < 2023, 2018,2023)
+
+kruskal.test(mortality_proj ~ test, data = baseline_year)
+
+
+cor.test(baseline_year$mortality_proj, baseline_year$publi_yr, method = c( "kendall"))
 
 
 health_outcome %>%
