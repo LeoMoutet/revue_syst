@@ -469,7 +469,7 @@ p4 = info_publi %>%
   ggplot(aes(x = publi_yr, fill =include_mortality))+
   geom_bar( width = 0.5)+
   theme_pubr()+
-  xlab("Year of publication")+
+  xlab("Year")+
   ylab("Number of studies")+
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
   scale_y_continuous(limits = c(0, 13), breaks= c(0,5,10,13))+
@@ -484,13 +484,14 @@ p4 = info_publi %>%
 
 
 plot_outcome = ggarrange(p4,ggarrange(p1,p2,p3, ncol = 1 , nrow = 3, align = "v", 
-                                   labels = c("Typology of scenario","Emission sector","Exposition"),
-                                   hjust = c(-1.5,-2,-3.2), vjust = c(0.5,0.5,0.5)),
-                         ncol = 2, nrow = 1, common.legend = T,  widths = c(0.8,1), legend = "bottom")+
+                                   labels = c("B: Typology of scenario","C: Emission sector","D: Exposition"),
+                                   hjust = c(-0.68,-0.85,-1.2),vjust = c(0.5,0.5,0.5)),
+                         ncol = 2, nrow = 1, common.legend = T,  widths = c(0.8,1), legend = "bottom", labels = c("A: Year of publication",""), hjust = c(-0.28,0))+
   theme(plot.margin = margin(2,0.1,0.1,0.1, "cm"))
 
 plot_outcome
 
+ggsave(here("figures","plot_outcome.png"), plot = plot_outcome , width = 10, height = 7)
 
 summary(health_outcome$mortality_proj)*100
 
@@ -613,7 +614,7 @@ plot_mortality2 = annotate_figure(ggarrange(p9,plot_mortality, ncol = 2, nrow = 
 plot_mortality2
 
 
-
+## Tests
 health_outcome %>%
   filter(HIA_type != "Microsimulation" & pathway_co_benefits == "Air pollution") %>%
   filter(include_mortality == "Yes")%>%
