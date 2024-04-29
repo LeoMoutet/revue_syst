@@ -510,9 +510,6 @@ p5 = health_outcome %>%
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
-  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#5F5647","#A42820"))+
-  stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#5F5647","#A42820"),aes(label = round(after_stat(y),1)),
-                position = position_nudge(x = -0.4, y = 0.5))+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
 
 
@@ -527,13 +524,9 @@ p6 = health_outcome %>%
   ylab("")+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
-  scale_color_manual(values = wes_palette("Darjeeling1"))+
-  scale_fill_manual(values = wes_palette("Darjeeling1"))+
+  scale_color_manual(values = c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
-  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
-  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#FF0000","#00A08A","#F2AD00"))+
-  stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#FF0000","#00A08A","#F2AD00"),aes(label = round(after_stat(y),1)),
-                position = position_nudge(x = -0.4, y = 0.5))
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
 
 
 health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat, 
@@ -548,14 +541,10 @@ p7 = health_outcome %>%
   ylab("")+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
-  scale_color_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
-  scale_fill_manual(values = c(wes_palette("Darjeeling1"), "#D4A5A5"))+
+  scale_color_manual(values = c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
-  scale_x_discrete(labels = c("All", "Energy", "Food\nsystem","Housing","Transport","Multi"))+
-  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#FF0000","#00A08A","#F2AD00","#F98400","#5BBCD6","#D4A5A5"))+
-  stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#FF0000","#00A08A","#F2AD00","#F98400","#5BBCD6","#D4A5A5"),aes(label = round(after_stat(y),1)),
-                position = position_nudge(x = -0.4, y = 0.5))
+  scale_x_discrete(labels = c("All", "Energy", "Food\nsystem","Housing","Transport","Multi"))
 
 
 baseline_year <- merge(health_outcome,info_publi, by = "author_date")
@@ -572,10 +561,7 @@ p8 = baseline_year %>%
   scale_fill_manual(values = c("#5F5647","#A42820","#9B9987"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
-  scale_x_discrete(labels = c("Decreasing\n GHG emission","Increasing\n GHG emission", "Reference\nyear"))+
-  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = c("#5F5647","#A42820","#9B9987"))+
-  stat_summary( geom = "text", fun = "median",  size = 3,  col = c("#5F5647","#A42820","#9B9987"),aes(label = round(after_stat(y),1)),
-                position = position_nudge(x = -0.4, y = 0.5))
+  scale_x_discrete(labels = c("Decreasing\nGHG emission", "Increasing\nGHG emission", "Reference\nyear"))
 
 
 plot_mortality = annotate_figure(ggarrange(p5,p8,p6,p7, ncol = 2, nrow = 2,labels = c("Methods","Baseline scenario",
