@@ -403,26 +403,13 @@ quality = ggplot(quality_eval_long, aes(x = Criteria, y = Count, fill = factor(V
 quality
 
 
-
+# Quality of individual article 
 quality_eval_article <- quality_eval %>%
   gather(key = "Criteria", value = "Value", -Article) %>%
   mutate(yes = ifelse(Value == "Yes",1,0)) %>%
   count(Article, Value) %>%
   spread(key = "Value", value = "n", fill = 0)
 
-ggplot(quality_eval_article, aes(x = Criteria, y = Count, fill = factor(Variable, levels = c("Yes", "Yes partially", "Unclear", "No")))) +
-  geom_bar(stat = "identity") +
-  labs(title = "",
-       x = "",
-       y = "Number of article",
-       fill = "Response") +
-  scale_fill_manual(values = c("#1A9850", "#B5E5B5", "#FF7F00", "#AA3939")) + 
-  theme_pubr() +
-  coord_flip()+
-  guides(fill = guide_legend(title = "", keywidth = 1, keyheight = 1, reverse = TRUE))+
-  scale_y_continuous(breaks= c(0,25,50))+
-  theme(legend.text = element_text(size = 15),
-        axis.text.y = element_text(size = 20))
 
 # Health outcome
 
