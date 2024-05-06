@@ -430,7 +430,7 @@ p1 = health_outcome %>%
     axis.text.x = element_blank(),
     axis.ticks.x = element_blank()) +
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
-  scale_y_continuous(limits =c(0,90))+
+  scale_y_continuous(limits =c(0,105))+
   coord_flip()
 
 
@@ -452,7 +452,7 @@ p2 = health_outcome %>%
     axis.text.x = element_blank(),
     axis.ticks.x = element_blank()) +
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
-  scale_y_continuous(limits =c(0,90))+
+  scale_y_continuous(limits =c(0,105))+
   coord_flip()
 
 
@@ -465,7 +465,7 @@ p3 = health_outcome %>%
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
-  scale_y_continuous(limits =c(0,101), breaks= c(0,10,25,50,100))+
+  scale_y_continuous(limits =c(0,105), breaks= c(0,10,25,50,75,100))+
   coord_flip()+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))
@@ -571,9 +571,9 @@ p8 = baseline_year %>%
   scale_x_discrete(labels = c("Decreasing\nGHG emission", "Increasing\nGHG emission", "Reference\nyear"))
 
 
-plot_mortality = annotate_figure(ggarrange(p5,p8,p6,p7, ncol = 2, nrow = 2,labels = c("Methods","Baseline scenario",
-                                                                                      "Exposure","Sector of emission"),
-                                           align ="h", hjust = c(-1,-0.5,-1,-0.5)))
+plot_mortality = annotate_figure(ggarrange(p5,p8,p6,p7, ncol = 2, nrow = 2,labels = c("B: Methods","C: Baseline scenario",
+                                                                                      "D: Exposure","E: Sector of emission"),
+                                           align ="h", hjust = c(-0.6,-0.3,-0.6,-0.3)))
 
 
 plot_mortality
@@ -600,9 +600,9 @@ p9 = health_outcome %>%
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
 
 
-plot_mortality2 = annotate_figure(ggarrange(p9,plot_mortality, ncol = 2, nrow = 1,labels = c("Overall", ""),
-                                           align ="v", hjust = c(-1,1),vjust = c(4,1), widths = c(0.4, 1)),
-                                 left = "Preventable mortality (%)")
+plot_mortality2 = annotate_figure(ggarrange(p9,plot_mortality, ncol = 2, nrow = 1,labels = c("A: Overall", ""),
+                                           align ="v", hjust = c(-0.6,1),vjust = c(4,1), widths = c(0.4, 1)),
+                                 left = "Preventable mortality fraction (%)")
 
 plot_mortality2
 
