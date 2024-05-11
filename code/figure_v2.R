@@ -99,14 +99,14 @@ points_sf <- st_as_sf(points_data, coords = c("lon", "lat"), crs = 4326)
 
 # Map with regions
 Map1 = ggplot() +
-  geom_sf(data = world, fill = "grey90", color = "transparent",
+  geom_sf(data = world, fill = "grey90", color = "black", linewidth = 0.1,
           show.legend = FALSE, size = 5) +
-  geom_sf(data = world_data_multi, aes(fill = color_group), color ="transparent") +
+  geom_sf(data = world_data_multi, aes(fill = color_group), color ="black", linewidth = 0.1) +
   geom_sf(data = points_sf, aes(color = "Sub-national investigation        "), size = 2, shape = 16) +
   scale_fill_manual(values = c("orange","firebrick2","firebrick4","mediumpurple4"),
                     breaks = c("1-2", "3-4","5-6", "19")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
-  labs(title = "",fill = "Number of investigation:") +
+  labs(title = "",fill = "Number of investigations:") +
   theme_pubr() +
   theme(axis.text.x = element_blank(),
         axis.title.x = element_blank(),
@@ -119,7 +119,7 @@ Map1 = ggplot() +
 
 Map1
 
-
+ggsave(here("figures","Map1.png"), plot = Map1 , width = 10, height = 7)
 
 
 
@@ -506,14 +506,13 @@ summary(health_outcome$mortality_proj[health_outcome$HIA_type == "Life tables"])
 summary(health_outcome$mortality_proj[health_outcome$HIA_type == "CRA"])*100
 
 p5 = health_outcome %>%
-  filter(HIA_type != "Microsimulation" ) %>%
-  ggplot(aes(x = HIA_type, y = mortality_proj*100, color = HIA_type, shape = HIA_type))+
-  #geom_violin(show.legend = F)+
+  filter(HIA_type != "Microsimulation") %>%
+  ggplot(aes(x = HIA_type, y = 100*mortality_proj, color = HIA_type, shape = HIA_type))+
   geom_point(size = 2,position=position_jitter(h=NULL,w=0.2), show.legend = F)+
   theme_pubr()+
   xlab("")+
   ylab("")+
-  scale_color_manual(values =c("#5F5647","#A42820"))+
+  scale_color_manual(values =c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
@@ -551,7 +550,7 @@ p7 = health_outcome %>%
   scale_color_manual(values = c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
-  scale_x_discrete(labels = c("All", "Energy", "Food\nsystem","Housing","Transport","Multi"))
+  scale_x_discrete(labels = c("All", "Energy", "Food\nsystem","Housing","Transport","*Multi"))
 
 
 baseline_year <- merge(health_outcome,info_publi, by = "author_date")
@@ -582,10 +581,10 @@ plot_mortality
 summary(health_outcome$mortality_proj)*100
 
 p9 = health_outcome %>%
-  filter(HIA_type != "Microsimulation" ) %>%
   filter(include_mortality == "Yes")%>%
   ggplot(aes( y = 100*mortality_proj, x= include_mortality))+
-  geom_violin(fill ="lightcyan3")+
+  geom_violin(fill ="lightcyan2")+
+  geom_point(size = 1,position=position_jitter(h=NULL,w=0.2), show.legend = F) +
   theme_pubr()+
   xlab("")+
   ylab("")+
