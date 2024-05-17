@@ -1,7 +1,7 @@
 Code :
 ========
 
-- **conversion_factor** : Script that calculate the conversion factor from YLL to death prevented based on the data of the Global burden of disease 2019 for our scalable mortality analysis.
+- **conversion_factor** : Script that calculate the conversion factor, if necessary, from YLL to death prevented based on the data of the Global burden of disease 2019 for our scalable mortality analysis.
 - **data_mana_wpp_mortality** : Script that allows extracting projected population and mortality based on the World Population Prospect of 2022
 - **figure** : Script to obtain figures included for the publication
 
