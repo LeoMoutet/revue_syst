@@ -271,7 +271,7 @@ links <- data.frame(
           8,4,5,7,3,5,2,
           3,1,1,2,1,
           1,2,1,1,1,1,1,
-          8,12,10,10,6,7,5,
+          8,12,9,10,5,6,5,
           
           
           14,1,
@@ -606,6 +606,25 @@ plot_mortality2 = annotate_figure(ggarrange(p9,plot_mortality, ncol = 2, nrow = 
 plot_mortality2
 
 
+# China sub-analysis
+china_impact = health_outcome %>%
+  filter(include_mortality == "Yes" & geo_scale == "China")%>%
+  ggplot(aes( y = 100*mortality_proj, x= include_mortality))+
+  geom_violin(fill ="lightcyan2")+
+  geom_point(size = 1,position=position_jitter(h=NULL,w=0.2), show.legend = F) +
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        text = element_text(size = 10),
+        plot.margin = margin(1,0.1,1,0.1,"cm"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = "black")+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.42, y = 0.5))+
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
+
 ## Tests
 health_outcome %>%
   filter(HIA_type != "Microsimulation" & pathway_co_benefits == "Air pollution") %>%
@@ -726,6 +745,7 @@ ggsave(here("figures","timescale.png"), plot = timescale , width = 10, height = 
 ggsave(here("figures","quality.png"), plot = quality , width = 13, height = 7)
 ggsave(here("figures","plot_outcome.png"), plot = plot_outcome , width = 10, height = 7)
 ggsave(here("figures","plot_mortality.png"), plot = plot_mortality2 , width = 15, height = 7)
+ggsave(here("figures","china_impact.png"), plot = china_impact , width = 10, height = 7)
 
 
 
