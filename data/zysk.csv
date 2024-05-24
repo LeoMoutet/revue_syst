@@ -1,5 +1,0 @@
-measure_id,measure_name,location_id,location_name,sex_id,sex_name,age_id,age_name,cause_id,cause_name,metric_id,metric_name,year,val,upper,lower
-1,Deaths,51,Poland,3,Both,22,All ages,294,All causes,1,Number,2019,406276.65301861754,465432.65828510385,350624.2605906714
-1,Deaths,51,Poland,3,Both,22,All ages,294,All causes,1,Number,2014,376599.4291859577,378909.13738410844,374112.74806170707
-4,YLLs (Years of Life Lost),51,Poland,3,Both,22,All ages,294,All causes,1,Number,2019,7682791.234145308,8965358.44896309,6528645.591659262
-4,YLLs (Years of Life Lost),51,Poland,3,Both,22,All ages,294,All causes,1,Number,2014,7484364.814907402,7533464.212850226,7435604.15934595

@@ -662,7 +662,6 @@ kruskal.test(mortality_proj ~ test, data = baseline_year)
 
 
 cor.test(baseline_year$mortality_proj, baseline_year$publi_yr, method = c( "kendall"))
-cor.test(baseline_year$mortality_proj, baseline_year$HIA_type, method = c( "kendall"))
 
 test_hia_type <- baseline_year %>% 
   filter(HIA_type != "Microsimulation") %>%

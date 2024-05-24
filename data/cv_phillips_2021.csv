@@ -1,0 +1,21 @@
+measure_id,measure_name,location_id,location_name,sex_id,sex_name,age_id,age_name,cause_id,cause_name,metric_id,metric_name,year,val,upper,lower
+1,Deaths,68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2011,251831.6761757954,253114.93460822824,250511.11085023844
+1,Deaths,68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2013,258961.63903754545,260408.5010650049,257512.0231086073
+1,Deaths,68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2015,267779.1087115801,269396.4644105645,266405.00918324036
+1,Deaths,68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2012,256795.22157397395,258108.9653806209,255344.49101865222
+1,Deaths,68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2016,273970.7507632882,275444.54313240614,272403.5094021265
+1,Deaths,68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2014,262212.94557859853,263694.7972851921,260761.2746099935
+1,Deaths,68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2018,288268.66324815236,289852.0544309923,286571.18253311043
+1,Deaths,68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2019,292222.63100117777,294343.65860245685,290345.0523511936
+1,Deaths,68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2017,279537.20484343235,281077.55510418065,278039.20388148364
+1,Deaths,68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2020,298750.3618836133,300841.78990265634,296881.2130317233
+4,YLLs (Years of Life Lost),68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2011,5481786.031401407,5510019.453160437,5451609.449021534
+4,YLLs (Years of Life Lost),68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2012,5475754.414878121,5506674.875960849,5442567.3208763385
+4,YLLs (Years of Life Lost),68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2014,5434548.0486132065,5466176.295378573,5402495.086260427
+4,YLLs (Years of Life Lost),68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2016,5440475.136463886,5471649.964879904,5404895.488670427
+4,YLLs (Years of Life Lost),68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2018,5531181.237173468,5565234.248856582,5495651.128745676
+4,YLLs (Years of Life Lost),68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2013,5446126.804880835,5479050.54848401,5412998.280662566
+4,YLLs (Years of Life Lost),68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2015,5425462.224424121,5461082.22031725,5395212.24526429
+4,YLLs (Years of Life Lost),68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2017,5443833.471339826,5477077.406816653,5412587.166749752
+4,YLLs (Years of Life Lost),68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2019,5548832.952621612,5591198.173390081,5510212.13574033
+4,YLLs (Years of Life Lost),68,Republic of Korea,3,Both,157,25+ years,294,All causes,1,Number,2020,5591924.197647545,5634896.211568907,5552916.798635643
