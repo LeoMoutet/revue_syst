@@ -430,7 +430,7 @@ p1 = health_outcome %>%
     axis.text.x = element_blank(),
     axis.ticks.x = element_blank()) +
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
-  scale_y_continuous(limits =c(0,105))+
+  scale_y_continuous(limits =c(0,115))+
   coord_flip()
 
 
@@ -452,7 +452,7 @@ p2 = health_outcome %>%
     axis.text.x = element_blank(),
     axis.ticks.x = element_blank()) +
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
-  scale_y_continuous(limits =c(0,105))+
+  scale_y_continuous(limits =c(0,115))+
   coord_flip()
 
 
@@ -465,7 +465,7 @@ p3 = health_outcome %>%
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
-  scale_y_continuous(limits =c(0,105), breaks= c(0,10,25,50,75,100))+
+  scale_y_continuous(limits =c(0,115), breaks= c(0,10,25,50,75,100,110))+
   coord_flip()+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))
@@ -491,8 +491,8 @@ p4 = info_publi %>%
 
 
 plot_outcome = ggarrange(p4,ggarrange(p1,p2,p3, ncol = 1 , nrow = 3, align = "v", 
-                                   labels = c("B: Typology of scenario","C: Emission sector","D: Exposition"),
-                                   hjust = c(-0.68,-0.85,-1.2),vjust = c(0.5,0.5,0.5)),
+                                   labels = c("B: Typology of scenario","C: Emission sector","D: Exposure"),
+                                   hjust = c(-0.68,-0.85,-1.35),vjust = c(0.5,0.5,0.5)),
                          ncol = 2, nrow = 1, common.legend = T,  widths = c(0.8,1), legend = "bottom", labels = c("A: Year of publication",""), hjust = c(-0.28,0))+
   theme(plot.margin = margin(2,0.1,0.1,0.1, "cm"))
 
