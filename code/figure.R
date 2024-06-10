@@ -930,12 +930,14 @@ quality_eval_long <- quality_eval_data %>%
   gather(key = "Variable", value = "Count", -Criteria)
 
 
-criteria_order <- c("Données et codes partagés publiquement","Conséquences négatives des mesures d'atténuation",
-                    "Limites et sources d'incertitudes discutés","Analyses de sensibilités","Métriques sanitaire adaptées",
-                    "Relations exposition-réponse décrites","Horizons temporels définis","Source des données",
-                    "Correspondance avec un scénario convenu","Affectation démographique et de l'exposition",
-                    "Population cible identifiée", "Équité des impacts","Projections détaillées"
-)
+criteria_order <- rev(c("Population cible identifiée","Affectation démographique et de l'exposition",
+                    "Relations exposition-réponse décrites", "Métriques sanitaire adaptées",
+                    "Horizons temporels définis", "Projections détaillées",
+                    "Correspondance avec un scénario convenu", "Équité des impacts",
+                    "Conséquences négatives des mesures d'atténuation",
+                    "Limites et sources d'incertitudes discutés","Analyses de sensibilités", "Source des données",
+                    "Données et codes partagés publiquement"
+))
 quality_eval_long$Criteria <- factor(quality_eval_long$Criteria, levels = criteria_order)
 
 
