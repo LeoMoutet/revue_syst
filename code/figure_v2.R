@@ -413,8 +413,10 @@ quality_eval_article <- quality_eval %>%
 
 # Health outcome
 
-health_outcome$scenario_cat <- factor(health_outcome$scenario_cat, levels = rev(c("energy decarbonation", 
-                                                                                  "financial instrument", "health in climate policies","sufficiency", "not detailed")))
+health_outcome$scenario_cat <- factor(health_outcome$scenario_cat,
+                                      levels = rev(c("energy decarbonation","financial instrument", 
+                                                     "health in climate policies","sufficiency", 
+                                                     "not detailed")))
 
 p1 = health_outcome %>%
   ggplot(aes(x = scenario_cat,fill = include_mortality)) +
@@ -452,6 +454,7 @@ p2 = health_outcome %>%
     axis.text.x = element_blank(),
     axis.ticks.x = element_blank()) +
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
+  #scale_x_discrete(labels = c('Multi*','Transport','Logement','Alimentation','Énergie','Tous')) +
   scale_y_continuous(limits =c(0,115))+
   coord_flip()
 
@@ -466,6 +469,7 @@ p3 = health_outcome %>%
         text = element_text(size = 10))+
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
   scale_y_continuous(limits =c(0,115), breaks= c(0,10,25,50,75,100,110))+
+  #scale_x_discrete(labels = c('Pollution','Alimentation','Activité physique')) +
   coord_flip()+
   theme(legend.title = element_blank(),
         text = element_text(size = 10))
@@ -516,6 +520,7 @@ p5 = health_outcome %>%
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  #scale_x_discrete(labels = c('Évaluation comparative','Tables de vie')) +
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
 
 
@@ -532,6 +537,7 @@ p6 = health_outcome %>%
         text = element_text(size = 10))+
   scale_color_manual(values = c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  #scale_x_discrete(labels = c('Pollution','Activité physique','Alimentation')) +
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
 
 
@@ -550,7 +556,8 @@ p7 = health_outcome %>%
   scale_color_manual(values = c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
-  scale_x_discrete(labels = c("All", "Energy", "Food\nsystem","Housing","Transport","*Multi"))
+  scale_x_discrete(labels = c('Tous','Énergie','Alimentation','Logement','Transport','Multi*'))
+  scale_x_discrete(labels = c("All", "Energy", "Food\nsystem","Housing","Transport","Multi*"))
 
 
 baseline_year <- merge(health_outcome,info_publi, by = "author_date")
@@ -567,6 +574,7 @@ p8 = baseline_year %>%
   scale_fill_manual(values = c("#5F5647","#A42820","#9B9987"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
+  #scale_x_discrete(labels = c("Diminution\ndes GES", "Augmentation\ndes GES", "Année de\nréférence"))
   scale_x_discrete(labels = c("Decreasing\nGHG emission", "Increasing\nGHG emission", "Reference\nyear"))
 
 
