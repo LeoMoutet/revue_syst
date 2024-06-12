@@ -238,7 +238,7 @@ links <- data.frame(
            
            "Air pollution","Air pollution","Air pollution","Air pollution","Air pollution",
            "Air pollution",
-           "Diet","Diet","Diet",
+           "Diet","Diet",
            "Physical activity","Physical activity","Physical activity","Physical activity",
            "Indoor pollution","Indoor pollution","Indoor pollution","Indoor pollution"
   ), 
@@ -261,7 +261,7 @@ links <- data.frame(
            
            "Deaths", "YLL", "Economic","Life expectancy","DALYs",
            "Morbidity",
-           "Deaths", "YLL", "DALYs",
+           "Deaths", "YLL", 
            "Deaths", "YLL","Economic","Life expectancy",
            "YLL","Morbidity","Deaths", "Economic"
   ), 
@@ -284,7 +284,7 @@ links <- data.frame(
           
           41,4,26,3,1,
           14,
-          1,1,1,
+          1,1,
           2,2,1,1,
           2,1,2,1
   )
@@ -316,7 +316,7 @@ links$group <- as.factor(c("type_m","type_m","type_m",
                            
                            "type_h","type_h","type_h","type_h","type_h",
                            "type_h",
-                           "type_i","type_i","type_i",
+                           "type_i","type_i",
                            "type_j","type_j","type_j","type_j",
                            "type_g","type_g","type_g","type_g"
 ))
