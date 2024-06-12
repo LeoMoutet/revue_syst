@@ -126,12 +126,12 @@ ggsave(here("figures","Map1.png"), plot = Map1 , width = 10, height = 7)
 # 1st author map
 data_multi <- data.frame(country = c("China", "United Kingdom", "United States","France", "Poland", "Korea", "Germany", "Spain", "Austria", "Italy","Japan"
 ),
-value = c(20,6,12,1,2,1,4,4,4,1,1))
+value = c(20,6,11,1,2,1,4,4,4,1,1))
 
 # Color scale
 data_multi$color_group <- cut(data_multi$value,
-                              breaks = c(1,2,6,12,20),
-                              labels = c("1-2", "4-6", "12","20"),
+                              breaks = c(1,2,6,11,20),
+                              labels = c("1-2", "4-6", "11","20"),
                               include.lowest = TRUE)
 
 # Take out Antartica and
@@ -156,7 +156,7 @@ Map2= ggplot() +
           show.legend = FALSE, size = 5) +
   geom_sf(data = world_data_multi, aes(fill = color_group), color ="transparent") +
   scale_fill_manual(values = c("cadetblue1", "cornflowerblue", "blue", "darkblue"),
-                    breaks = c("1-2", "4-6", "12", "20"),
+                    breaks = c("1-2", "4-6", "11", "20"),
                     guide = guide_legend(title = "Number of investigations")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
   labs(title = "Spatial distribution of 1st authors' institution",
