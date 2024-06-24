@@ -488,7 +488,7 @@ p4 = info_publi %>%
   theme(legend.title = element_text(),
         legend.position = "top",
         text = element_text(size = 10))+
-  guides(fill=guide_legend(title="Scalable mortality analysis**:"))
+  guides(fill=guide_legend(title="Scalable mortality analysis*:"))
 
 
 
