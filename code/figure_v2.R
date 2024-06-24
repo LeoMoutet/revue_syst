@@ -22,8 +22,8 @@ pacman::p_load(dplyr,
                forcats)
 
 # Data
-info_publi <- read_excel(here("data","extraction_grid.xlsx"))
-health_outcome <- read_excel(here("data","extraction_grid_health_outcome.xlsx"))
+info_publi <- read_excel(here("data","extraction_grid_article.xlsx"))
+health_outcome <- read_excel(here("data","extraction_grid_scenario.xlsx"))
 quality_eval <- read_excel(here("data","quality_eval_v2.xlsx"))
 quality_fr <- read_excel(here("data","quality_fr.xlsx"))
 
@@ -439,7 +439,7 @@ p1 = health_outcome %>%
 
 health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat,
                                              levels = rev(c('All-encompassing','Energy','Food system',
-                                                            'Housing', 'Transport','Multi*')))
+                                                            'Housing', 'Transport','Multisectorial')))
 
 p2 = health_outcome %>%
   ggplot(aes(x = emission_sector_cat, fill = include_mortality))+
@@ -543,7 +543,7 @@ p6 = health_outcome %>%
 
 health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat, 
                                              levels = c("All-encompassing", "Energy", "Food system",
-                                                        "Housing","Transport", "Multi*"))
+                                                        "Housing","Transport", "Multisectorial"))
 
 p7 = health_outcome %>%
   ggplot(aes(x = emission_sector_cat, y = 100*mortality_proj, color =emission_sector_cat, shape = emission_sector_cat))+
@@ -556,8 +556,8 @@ p7 = health_outcome %>%
   scale_color_manual(values = c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
-  scale_x_discrete(labels = c('Tous','Énergie','Alimentation','Logement','Transport','Multi*'))
-  scale_x_discrete(labels = c("All", "Energy", "Food\nsystem","Housing","Transport","Multi*"))
+  #scale_x_discrete(labels = c('Tous','Énergie','Alimentation','Logement','Transport','Multisectorial'))
+  scale_x_discrete(labels = c("All", "Energy", "Food\nsystem","Housing","Transport","Multi\nsectorial"))
 
 
 baseline_year <- merge(health_outcome,info_publi, by = "author_date")
