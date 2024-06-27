@@ -578,9 +578,9 @@ p8 = baseline_year %>%
   scale_x_discrete(labels = c("Decreasing\nGHG emission", "Increasing\nGHG emission", "Reference\nyear"))
 
 
-plot_mortality = annotate_figure(ggarrange(p5,p8,p6,p7, ncol = 2, nrow = 2,labels = c("B: Methods","C: Baseline scenario",
+plot_mortality = annotate_figure(ggarrange(p5,p8,p6,p7, ncol = 2, nrow = 2,labels = c("B: Quantitative modelling methods","C: Baseline scenario",
                                                                                       "D: Exposure","E: Sector of emission"),
-                                           align ="h", hjust = c(-0.6,-0.3,-0.6,-0.3)))
+                                           align ="h", hjust = c(-0.2,-0.3,-0.6,-0.3)))
 
 
 plot_mortality
@@ -622,7 +622,7 @@ china_impact = health_outcome %>%
   geom_point(size = 1,position=position_jitter(h=NULL,w=0.2), show.legend = F) +
   theme_pubr()+
   xlab("")+
-  ylab("")+
+  ylab("Preventable mortality fraction (%)")+
   theme(axis.ticks.x = element_blank(),
         axis.text.x = element_blank(),
         text = element_text(size = 10),
@@ -632,6 +632,45 @@ china_impact = health_outcome %>%
   stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
                 position = position_nudge(x = -0.42, y = 0.5))+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
+
+
+# Air pollution sub-analysis
+AP_methods = health_outcome %>%
+  filter(HIA_type != "Microsimulation" & pathway_co_benefits2 == "Air pollution") %>%
+  ggplot(aes(x = HIA_type, y = 100*mortality_proj, color = HIA_type, shape = HIA_type))+
+  geom_point(size = 2,position=position_jitter(h=NULL,w=0.2), show.legend = F)+
+  theme_pubr()+
+  xlab("")+
+  ylab("Preventable mortality fraction (%)")+
+  scale_color_manual(values =c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  #scale_x_discrete(labels = c('Évaluation comparative','Tables de vie')) +
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
+
+AP_baseline = baseline_year %>%
+  filter(pathway_co_benefits2 == "Air pollution") %>%
+  ggplot(aes(x = baseline_scenario, y = 100*mortality_proj, color =baseline_scenario, shape = baseline_scenario))+
+  geom_point(size = 2,position=position_jitter(h=NULL,w=0.3), show.legend = F)+
+  theme_pubr()+
+  xlab("")+
+  ylab("")+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  scale_color_manual(values = c("#5F5647","#A42820","#9B9987"))+
+  scale_fill_manual(values = c("#5F5647","#A42820","#9B9987"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
+  #scale_x_discrete(labels = c("Diminution\ndes GES", "Augmentation\ndes GES", "Année de\nréférence"))
+  scale_x_discrete(labels = c("Decreasing\nGHG emission", "Increasing\nGHG emission", "Reference\nyear"))
+
+plot_AP = ggarrange(AP_methods,AP_baseline, ncol = 2, nrow = 1,labels = c("A: Quantitative modelling methods\n    (only air pollution exposure)", 
+                                                                          "B: Baseline scenario\n(only air pollution exposure)"),
+                                            hjust = c(-0.2,-0.3),vjust = c(1.1,1.1))
+
+plot_AP
+
 
 ## Tests
 health_outcome %>%
@@ -753,6 +792,7 @@ ggsave(here("figures","quality.png"), plot = quality , width = 13, height = 7)
 ggsave(here("figures","plot_outcome.png"), plot = plot_outcome , width = 10, height = 7)
 ggsave(here("figures","plot_mortality.png"), plot = plot_mortality2 , width = 15, height = 7)
 ggsave(here("figures","china_impact.png"), plot = china_impact , width = 10, height = 7)
+ggsave(here("figures","plot_AP.png"), plot = plot_AP , width = 10, height = 7)
 
 
 
