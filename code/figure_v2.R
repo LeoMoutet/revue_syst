@@ -106,7 +106,7 @@ Map1 = ggplot() +
   scale_fill_manual(values = c("orange","firebrick2","firebrick4","mediumpurple4"),
                     breaks = c("1-2", "3-4","5-6", "19")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
-  labs(title = "",fill = "Number of investigations:") +
+  labs(title = "",fill = "Number of article:") +
   theme_pubr() +
   theme(axis.text.x = element_blank(),
         axis.title.x = element_blank(),
@@ -157,7 +157,7 @@ Map2= ggplot() +
   geom_sf(data = world_data_multi, aes(fill = color_group), color ="transparent") +
   scale_fill_manual(values = c("cadetblue1", "cornflowerblue", "blue", "darkblue"),
                     breaks = c("1-2", "4-6", "11", "20"),
-                    guide = guide_legend(title = "Number of investigations")) +
+                    guide = guide_legend(title = "Number of article:")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
   labs(title = "Spatial distribution of 1st authors' institution",
        fill = "") +
@@ -168,7 +168,6 @@ Map2= ggplot() +
         axis.ticks = element_blank(),
         legend.position = c(0.5, -0.14),
         legend.direction = "horizontal",)+
-  guides(fill = guide_legend(title = NULL)) +
   coord_sf(crs = robinson_proj)
 
 
