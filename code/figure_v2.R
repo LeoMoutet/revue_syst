@@ -24,7 +24,7 @@ pacman::p_load(dplyr,
 # Data
 info_publi <- read_excel(here("data","extraction_grid_article.xlsx"))
 health_outcome <- read_excel(here("data","extraction_grid_scenario.xlsx"))
-quality_eval <- read_excel(here("data","quality_eval_v2.xlsx"))
+quality_eval <- read_excel(here("data","quality_eval.xlsx"))
 quality_fr <- read_excel(here("data","quality_fr.xlsx"))
 
 ###### Geo scale #####
@@ -670,6 +670,21 @@ plot_AP = ggarrange(AP_methods,AP_baseline, ncol = 2, nrow = 1,labels = c("A: Qu
 
 plot_AP
 
+
+health_outcome %>%
+  filter(pathway_co_benefits2 == "Air pollution") %>%
+  ggplot(aes(x = only_CCS, y = 100*mortality_proj, color = only_CCS, shape = only_CCS))+
+  geom_point(size = 2,position=position_jitter(h=NULL,w=0.2), show.legend = F)+
+  theme_pubr()+
+  xlab("Only CCS")+
+  ylab("Preventable mortality fraction (%)")+
+  scale_color_manual(values =c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
+  theme(legend.title = element_blank(),
+        text = element_text(size = 10))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  #scale_x_discrete(labels = c('Évaluation comparative','Tables de vie')) +
+  scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
+  ggtitle("Only air pollution exposure")
 
 ## Tests
 health_outcome %>%
