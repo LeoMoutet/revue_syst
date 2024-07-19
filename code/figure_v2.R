@@ -84,29 +84,41 @@ world_data_multi <- st_transform(world_data_multi, crs = robinson_proj)
 # Define latitude and longitude for specific regions
 points_data <- data.frame(
   # Shaanxi,   Beijing  , Shandong , California (LA), Anhui,     Sichuan, California (SF), California (CC), London (&Milton keynes), Barcelona, Freidburg, Malmö, 
-  #         Santiago, Virginia
+  #         Sofia, Santiago, Virginia
   lat = c(34.274342, 39.916668, 36.066898, 34.052235      , 31.848398, 31.456781,37.773972,     41.755749,        51.5085300,             41.3850639, 47.997791, 55.60587, 42.698334,
           -33.447487,37.926868) ,  #  latitudes
   lon = c(108.889191, 116.383331, 120.382698,-118.243683,  117.272362, 102.843018,-122.431297,   -124.202591,     -0.1257400,             2.1734035, 7.842609, 13.00073, 23.319941,
-          -70.673676,-78.024902)  #  longitudes
-)
+          -70.673676,-78.024902) ,  #  longitudes
+  region = c("Shaanxi", "Beijing", "Shandong", " ", "Anhui", "Sichuan", "California (x3)", 
+             " ", "London", "Barcelona", "Freiburg", "Malmö", "Sofia", "Santiago", "Virginia"),
+  lat_nudged = c(34.274342, 40.916668, 37.066898, 34.052235      , 31.848398, 31.456781,37.773972,     41.755749,        51.5085300,             41.3850639, 47.997791, 55.60587, 42.698334,
+  -33.447487,37.926868),
+  
+  lon_nudged = c(101.889191, 110.383331, 112.382698,-127.243683,  111.272362, 95.843018,-135.431297,   -122.202591,     -9.1257400,             -7.1734035, -0.842609, 6.00073, 18.319941,
+                 -78.673676,-69.024902)
+  )
 
 
 # Transform the points data into a spatial object
 points_sf <- st_as_sf(points_data, coords = c("lon", "lat"), crs = 4326)
+points_sf <- st_transform(points_sf, crs = robinson_proj)
 
+# Transform the nudged points data into a spatial object
+points_sf_nudged <- st_as_sf(points_data, coords = c("lon_nudged", "lat_nudged"), crs = 4326)
+points_sf_nudged <- st_transform(points_sf_nudged, crs = robinson_proj)
 
 
 # Map with regions
 Map1 = ggplot() +
-  geom_sf(data = world, fill = "grey90", color = "black", linewidth = 0.1,
+  geom_sf(data = world, fill = "grey90", color = "grey", linewidth = 0.1,
           show.legend = FALSE, size = 5) +
-  geom_sf(data = world_data_multi, aes(fill = color_group), color ="black", linewidth = 0.1) +
+  geom_sf(data = world_data_multi, aes(fill = color_group), color ="grey", linewidth = 0.1) +
   geom_sf(data = points_sf, aes(color = "Sub-national investigation        "), size = 2, shape = 16) +
+  geom_sf_text(data = points_sf_nudged, aes(label = region), size = 3, check_overlap = F) +
   scale_fill_manual(values = c("orange","firebrick2","firebrick4","mediumpurple4"),
                     breaks = c("1-2", "3-4","5-6", "19")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
-  labs(title = "",fill = "Number of article:") +
+  labs(title = "",fill = "Number of articles:") +
   theme_pubr() +
   theme(axis.text.x = element_blank(),
         axis.title.x = element_blank(),
@@ -119,7 +131,7 @@ Map1 = ggplot() +
 
 Map1
 
-ggsave(here("figures","Map1.png"), plot = Map1 , width = 10, height = 7)
+ggsave("Map1.png", plot = Map1, width = 10, height = 18, dpi = 800)
 
 
 
@@ -230,7 +242,7 @@ links <- data.frame(
            "All-encompassing", "All-encompassing",
            "Energy", "Energy",
            "Transport",  "Transport", 
-           "Food system","Food system",
+           "AFOLU","AFOLU",
            "Housing", "Housing",
            "Industry", "Industry",
            "Other",
@@ -242,12 +254,12 @@ links <- data.frame(
            "Indoor pollution","Indoor pollution","Indoor pollution","Indoor pollution"
   ), 
   
-  target=c("Energy","Transport", "Food system",
+  target=c("Energy","Transport", "AFOLU",
            "Housing","Industry","All-encompassing","Other",
-           "Energy","Food system","Industry","Transport", "Other","Housing", "All-encompassing", 
-           "Energy", "All-encompassing","Housing","Transport", "Food system",
-           "All-encompassing", "Transport", "Energy", "Housing","Industry","Food system","Other",
-           "All-encompassing","Energy","Industry","Transport","Housing","Food system","Other",
+           "Energy","AFOLU","Industry","Transport", "Other","Housing", "All-encompassing", 
+           "Energy", "All-encompassing","Housing","Transport", "AFOLU",
+           "All-encompassing", "Transport", "Energy", "Housing","Industry","AFOLU","Other",
+           "All-encompassing","Energy","Industry","Transport","Housing","AFOLU","Other",
            
            
            "Air pollution","Indoor pollution",
@@ -437,7 +449,7 @@ p1 = health_outcome %>%
 
 
 health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat,
-                                             levels = rev(c('All-encompassing','Energy','Food system',
+                                             levels = rev(c('All-encompassing','Energy','AFOLU',
                                                             'Housing', 'Transport','Multisectorial')))
 
 p2 = health_outcome %>%
@@ -541,7 +553,7 @@ p6 = health_outcome %>%
 
 
 health_outcome$emission_sector_cat <- factor(health_outcome$emission_sector_cat, 
-                                             levels = c("All-encompassing", "Energy", "Food system",
+                                             levels = c("All-encompassing", "Energy", "AFOLU",
                                                         "Housing","Transport", "Multisectorial"))
 
 p7 = health_outcome %>%
@@ -556,7 +568,7 @@ p7 = health_outcome %>%
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
   #scale_x_discrete(labels = c('Tous','Énergie','Alimentation','Logement','Transport','Multisectorial'))
-  scale_x_discrete(labels = c("All", "Energy", "Food\nsystem","Housing","Transport","Multi\nsectorial"))
+  scale_x_discrete(labels = c("All", "Energy", "AFOLU","Housing","Transport","Multi\nsectorial"))
 
 
 baseline_year <- merge(health_outcome,info_publi, by = "author_date")
@@ -799,7 +811,7 @@ baseline_year %>%
 
 
 # Saving plots
-ggsave(here("figures","Map1.png"), plot = Map1 , width = 10, height = 7)
+ggsave("Map1.png", plot = Map1, width = 10, height = 18, dpi = 600)
 ggsave(here("figures","Map2.png"), plot = Map2 , width = 10, height = 7)
 ggsave(here("figures","timescale.png"), plot = timescale , width = 10, height = 9)
 ggsave(here("figures","quality.png"), plot = quality , width = 13, height = 7)
