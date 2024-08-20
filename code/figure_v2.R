@@ -499,15 +499,15 @@ p4 = info_publi %>%
   theme(legend.title = element_text(),
         legend.position = "top",
         text = element_text(size = 10))+
-  guides(fill=guide_legend(title="Scalable mortality analysis*:"))
+  guides(fill=guide_legend(title="Studies or scenario with a scalable health outcome (see methods):"))
 
 
 
 
 
 plot_outcome = ggarrange(p4,ggarrange(p1,p2,p3, ncol = 1 , nrow = 3, align = "v", 
-                                   labels = c("B: Typology of scenario","C: Emission sector","D: Exposure"),
-                                   hjust = c(-0.68,-0.85,-1.35),vjust = c(0.5,0.5,0.5)),
+                                   labels = c("B: Typology of scenario","C: Emission sector","D: Co-benefit pathway"),
+                                   hjust = c(-0.68,-0.85,-0.72),vjust = c(0.5,0.5,0.5)),
                          ncol = 2, nrow = 1, common.legend = T,  widths = c(0.8,1), legend = "bottom", labels = c("A: Year of publication",""), hjust = c(-0.28,0))+
   theme(plot.margin = margin(2,0.1,0.1,0.1, "cm"))
 
@@ -590,8 +590,8 @@ p8 = baseline_year %>%
 
 
 plot_mortality = annotate_figure(ggarrange(p5,p8,p6,p7, ncol = 2, nrow = 2,labels = c("B: Quantitative modelling methods","C: Baseline scenario",
-                                                                                      "D: Exposure","E: Sector of emission"),
-                                           align ="h", hjust = c(-0.2,-0.3,-0.6,-0.3)))
+                                                                                      "D: Co-benefit pathway","E: Sector of emission"),
+                                           align ="h", hjust = c(-0.2,-0.3,-0.3,-0.3)))
 
 
 plot_mortality
