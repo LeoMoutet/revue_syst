@@ -599,9 +599,9 @@ plot_mortality
 
 summary(health_outcome$mortality_proj)*100
 
-p9 = health_outcome %>%
-  filter(include_mortality == "Yes")%>%
-  ggplot(aes( y = 100*mortality_proj, x= include_mortality))+
+p9 = baseline_year %>%
+  filter(include_mortality.x == "Yes")%>%
+  ggplot(aes( y = 100*mortality_proj, x= include_mortality.x))+
   geom_violin(fill ="lightcyan2")+
   geom_point(size = 1,position=position_jitter(h=NULL,w=0.2), show.legend = F) +
   theme_pubr()+
@@ -616,6 +616,27 @@ p9 = health_outcome %>%
   stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
                 position = position_nudge(x = -0.42, y = 0.5))+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
+
+baseline_year %>%
+  filter(include_mortality.x == "Yes") %>%
+  ggplot(aes(y = 100 * mortality_proj, x = include_mortality.x)) +
+  geom_violin(fill = "lightcyan2") +
+  geom_point(aes( color = geo_scale.y), 
+             size = 2, position = position_jitter(h = NULL, w = 0.2), show.legend = TRUE) +
+  theme_pubr() +
+  xlab("") +
+  ylab("") +
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        text = element_text(size = 10),
+        plot.margin = margin(1, 0.1, 1, 0.1, "cm")) +
+  geom_hline(aes(yintercept = 0), color = "black", linetype = 2) +
+  stat_summary(geom = "crossbar", fun = "median", size = 0.2, col = "black") +
+  stat_summary(geom = "text", fun = "median", size = 3, col = "black",
+               aes(label = round(after_stat(y), 1)),
+               position = position_nudge(x = -0.42, y = 0.5)) +
+  scale_y_continuous(breaks = c(1, 5, 10, 15, 20), limits = c(-1, 20)) +
+  scale_color_manual(values = c("red", "blue", "green", "purple"))
 
 
 plot_mortality2 = annotate_figure(ggarrange(p9,plot_mortality, ncol = 2, nrow = 1,labels = c("A: Overall", ""),
