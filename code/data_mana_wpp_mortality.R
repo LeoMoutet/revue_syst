@@ -54,7 +54,7 @@ population_proj <- population_proj_wpp_2022[-c(1:12),]
 
 i <- c(11:112) 
 population_proj[ , i] <- apply(population_proj[ , i], 2,  
-                              function(x) as.numeric(x))
+                               function(x) as.numeric(x))
 
 ### Getting sum of pop for each region and year
 population_proj$n_pop <- rowSums( population_proj[,12:112] ) *1000      #Deaths are expressed in thousand in raw data
@@ -134,6 +134,13 @@ population_proj_syst_review <- population_proj_clean %>%
 
 sum(population_proj_syst_review$n_pop)
 
+# Chen, 2018
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "China" 
+         , Year == "2054")
+
+sum(mortality_proj_syst_review$n_death)
+
 # Conibear, 2022 / Ma, 2023b
 mortality_proj_syst_review <- mortality_proj_clean %>%
   filter(region == "China" 
@@ -193,7 +200,6 @@ mortality_proj_syst_review <- mortality_proj_clean %>%
   filter(region == "United Kingdom" , Year == "2035")
 
 sum(mortality_proj_syst_review$n_death)
-
 
 # Nawaz, 2022
 mortality_proj_syst_review <- mortality_proj_clean %>%
@@ -304,12 +310,18 @@ mortality_proj_syst_review <- mortality_proj_clean %>%
 
 sum(mortality_proj_syst_review$n_death)
 
-
 population_proj_syst_review <- population_proj_clean %>%
   filter(region == "United States of America" 
          , Year == "2050")
 
 sum(population_proj_syst_review$n_pop)
+
+
+# Shindell, 2018
+mortality_proj_syst_review <- mortality_proj_clean %>%
+  filter(region == "WORLD",  Year == "2060"  )
+
+sum(mortality_proj_syst_review$n_death)
 
 
 # Wang, 2023b
@@ -341,14 +353,3 @@ mortality_proj_syst_review <- mortality_proj_clean %>%
          , Year == "2050")
 
 sum(mortality_proj_syst_review$n_death)
-
-
-
-
-
-
-
-
-
-
-
