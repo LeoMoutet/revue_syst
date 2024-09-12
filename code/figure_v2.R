@@ -46,7 +46,7 @@ data_multi <- data.frame(country = c("China", "United Kingdom", "India", "United
                                      "Bangladesh", "Cambodia", "Iran", "Laos", "Malaysia", "Mongolia", 
                                      "Nepal", "Pakistan", "Philippines", "Thaïland", "Vietnam"
 ),
-value = c(19, 6, 6, 3, 
+value = c(20, 6, 6, 3, 
           4,5, 3,3,
           2,4,3,1,1,
           1,1,3,3,3,
@@ -62,8 +62,8 @@ value = c(19, 6, 6, 3,
 
 # Color scale
 data_multi$color_group <- cut(data_multi$value,
-                              breaks = c(1,2,4,6,19),
-                              labels = c("1-2", "3-4","5-6", "19"),
+                              breaks = c(1,2,4,6,20),
+                              labels = c("1-2", "3-4","5-6", "20"),
                               include.lowest = TRUE)
 
 # Take out Antartica and merge the data with the world map data
@@ -84,18 +84,18 @@ world_data_multi <- st_transform(world_data_multi, crs = robinson_proj)
 # Define latitude and longitude for specific regions
 points_data <- data.frame(
   # Shaanxi,   Beijing  , Shandong , California (LA), Anhui,     Sichuan, California (SF), California (CC), London (&Milton keynes), Barcelona, Freidburg, Malmö, 
-  #         Sofia, Santiago, Virginia
+  #         Sofia, Santiago, Virginia, Guangdong
   lat = c(34.274342, 39.916668, 36.066898, 34.052235      , 31.848398, 31.456781,37.773972,     41.755749,        51.5085300,             41.3850639, 47.997791, 55.60587, 42.698334,
-          -33.447487,37.926868) ,  #  latitudes
+          -33.447487,37.926868, 23.128994) ,  #  latitudes
   lon = c(108.889191, 116.383331, 120.382698,-118.243683,  117.272362, 102.843018,-122.431297,   -124.202591,     -0.1257400,             2.1734035, 7.842609, 13.00073, 23.319941,
-          -70.673676,-78.024902) ,  #  longitudes
+          -70.673676,-78.024902, 113.253250) ,  #  longitudes
   region = c("Shaanxi", "Beijing", "Shandong", " ", "Anhui", "Sichuan", "California (x3)", 
-             " ", "London", "Barcelona", "Freiburg", "Malmö", "Sofia", "Santiago", "Virginia"),
-  lat_nudged = c(37.274342, 43.916668, 37.066898, 34.052235      , 27.848398, 31.456781,37.773972,     
-                 41.755749, 50.5085300, 41.3850639, 47.997791, 59.60587, 42.698334, -33.447487,37.926868),
+             " ", "London", "Barcelona", "Freiburg", "Malmö", "Sofia", "Santiago", "Virginia", "Guangdong"),
+  lat_nudged = c(37.274342, 43.916668, 37.066898, 34.052235      , 31.848398, 31.456781,37.773972,     
+                 41.755749, 50.5085300, 41.3850639, 47.997791, 59.60587, 42.698334, -33.447487,37.926868, 23.128994),
   
-  lon_nudged = c(97.889191, 116.383331, 135.382698,-116.243683,  113.272362, 90.843018,-140.431297,   
-                 -122.202591, -13.1257400, -12.1734035, 20.842609, 6.00073, 15.319941,-82.673676,-66.024902)
+  lon_nudged = c(97.889191, 116.383331, 135.382698,-116.243683,  130.272362, 90.843018,-140.431297,   
+                 -122.202591, -13.1257400, -12.1734035, 20.842609, 6.00073, 15.319941,-82.673676,-66.024902, 130.253250)
   )
 
 
@@ -116,7 +116,7 @@ Map1 = ggplot() +
   geom_sf(data = points_sf, aes(color = "Sub-national investigation        "), size = 2, shape = 16) +
   geom_sf_text(data = points_sf_nudged, aes(label = region), size = 3, check_overlap = F) +
   scale_fill_manual(values = c("orange","firebrick2","firebrick4","mediumpurple4"),
-                    breaks = c("1-2", "3-4","5-6", "19")) +
+                    breaks = c("1-2", "3-4","5-6", "20")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
   labs(title = "",fill = "Number of articles:") +
   theme_pubr() +
@@ -138,12 +138,12 @@ ggsave(here("figures","Map1.png"), plot = Map1 , width = 10, height = 8)
 # 1st author map
 data_multi <- data.frame(country = c("China", "United Kingdom", "United States","France", "Poland", "Korea", "Germany", "Spain", "Austria", "Italy","Japan"
 ),
-value = c(20,6,11,1,2,1,4,4,4,1,1))
+value = c(22,6,12,1,2,1,4,4,4,1,1))
 
 # Color scale
 data_multi$color_group <- cut(data_multi$value,
-                              breaks = c(1,2,6,11,20),
-                              labels = c("1-2", "4-6", "11","20"),
+                              breaks = c(1,2,6,12,22),
+                              labels = c("1-2", "4-6", "12","22"),
                               include.lowest = TRUE)
 
 # Take out Antartica and
@@ -168,7 +168,7 @@ Map2= ggplot() +
           show.legend = FALSE, size = 5) +
   geom_sf(data = world_data_multi, aes(fill = color_group), color ="transparent") +
   scale_fill_manual(values = c("cadetblue1", "cornflowerblue", "blue", "darkblue"),
-                    breaks = c("1-2", "4-6", "11", "20"),
+                    breaks = c("1-2", "4-6", "12", "22"),
                     guide = guide_legend(title = "Number of article:")) +
   scale_color_manual(values = c("black"), guide = guide_legend(title = NULL)) +
   labs(title = "Spatial distribution of 1st authors' institution",
@@ -184,50 +184,6 @@ Map2= ggplot() +
 
 
 Map2
-
-# Year of publi
-##### Time-scale #####
-# Time-scale
-info_publi$end_point <- as.numeric(info_publi$end_point)
-info_publi$bau <- as.numeric(info_publi$bau)
-info_publi$res_point5 <- as.numeric(info_publi$res_point5)
-
- 
-timescale = info_publi %>%
-  ggplot(aes(x = as.numeric(rank_plot))) +
-  geom_linerange(aes(ymin = time_scale_min, ymax = time_scale_max), linewidth= 0.5) +
-  geom_text(aes(x = as.numeric(rank_plot), y = (time_scale_min -7) , label = author_date), size = 3.5, fontface = "bold") +
-  geom_segment(x=56, y=1986, xend=44.5, yend=1986)+
-  geom_text(x=50.5, y= 1981, label="World", size = 5)+
-  geom_segment(x=44, y=1991, xend=37.5, yend=1991 )+
-  geom_text(x=41, y= 1982.5, label="Multi-country", size = 5)+
-  geom_segment(x=37, y=1988, xend=12.5, yend=1988 )+
-  geom_text(x=25.5, y= 1980, label="National", size = 5)+
-  geom_segment(x=12, y=1991, xend=0.5, yend=1991 )+
-  geom_text(x=6.5, y= 1982.5, label="Sub-national", size = 5)+
-  geom_segment(aes(x=56, y=2020, xend=56, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
-  geom_text(x=56, y= 2070, label="2100", size = 4, angle = 45)+
-  geom_segment(aes(x=51, y=2020, xend=51, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
-  geom_text(x=51, y= 2070, label="2100", size = 4, angle = 45)+
-  geom_segment(aes(x=18, y=2021, xend=18, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
-  geom_text(x=18, y= 2070, label="2100", size = 4, angle = 45)+
-  geom_segment(aes(x=16, y=2011, xend=16, yend=2067), arrow = arrow(length=unit(0.5, 'cm')))+
-  geom_text(x=16, y= 2070, label="2154", size = 4, angle = 45)+
-  theme_bw() +
-  coord_flip() +
-  scale_y_continuous(breaks = c(2010, 2020, 2030, 2040, 2050, 2060, 2070, 2500), limits = c(1980, 2070)) +
-  ylab("Year") +
-  xlab("") +
-  theme(legend.position = "top",
-        panel.grid = element_blank(),
-        axis.text.y = element_blank(),
-        axis.text.x = element_text(angle = 45, hjust = 1, size = 15),
-        axis.ticks.y = element_blank(),
-        legend.title = element_blank())
-
-
-timescale
-
 
 
 # Sankey
@@ -277,24 +233,24 @@ links <- data.frame(
            "YLL","Morbidity","Deaths", "Economic"
   ), 
   
-  value=c(22,9,3,
+  value=c(24,9,3,
           8,5,2,3,
           8,4,5,7,3,5,2,
           3,1,1,2,1,
           1,2,1,1,1,1,1,
-          8,12,9,10,5,6,5,
+          10,12,9,10,5,6,5,
           
           
-          14,1,
-          37,3,
+          16,1,
+          39,3,
           20,4,
           11,3,
           18,3,
           19,1,
           12,
           
-          41,4,26,3,1,
-          14,
+          44,4,26,3,1,
+          15,
           1,1,
           2,2,1,1,
           2,1,2,1
@@ -406,7 +362,7 @@ quality = ggplot(quality_eval_long, aes(x = Criteria, y = Count, fill = factor(V
   theme_pubr() +
   coord_flip()+
   guides(fill = guide_legend(title = "", keywidth = 1, keyheight = 1, reverse = TRUE))+
-  scale_y_continuous(breaks= c(0,25,50))+
+  scale_y_continuous(breaks= c(0,30,60))+
   theme(legend.text = element_text(size = 15),
         axis.text.y = element_text(size = 20))
 
@@ -479,7 +435,7 @@ p3 = health_outcome %>%
   theme(legend.title = element_blank(),
         text = element_text(size = 10))+
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
-  scale_y_continuous(limits =c(0,115), breaks= c(0,10,25,50,75,100,110))+
+  scale_y_continuous(limits =c(0,115), breaks= c(0,10,25,50,75,100,120))+
   #scale_x_discrete(labels = c('Pollution','Alimentation','Activité physique')) +
   coord_flip()+
   theme(legend.title = element_blank(),
@@ -494,7 +450,7 @@ p4 = info_publi %>%
   xlab("Year")+
   ylab("Number of studies")+
   scale_fill_manual(values = c("steelblue1","steelblue4"))+
-  scale_y_continuous(limits = c(0, 13), breaks= c(0,5,10,13))+
+  scale_y_continuous(limits = c(0, 15), breaks= c(0,5,10,15))+
   scale_x_continuous( breaks= c(2012,2015,2020,2023))+
   theme(legend.title = element_text(),
         legend.position = "top",
@@ -834,7 +790,6 @@ baseline_year %>%
 # Saving plots
 ggsave(here("figures","Map1.png"), plot = Map1 , width = 10, height = 7)
 ggsave(here("figures","Map2.png"), plot = Map2 , width = 10, height = 7)
-ggsave(here("figures","timescale.png"), plot = timescale , width = 10, height = 9)
 ggsave(here("figures","quality.png"), plot = quality , width = 13, height = 7)
 ggsave(here("figures","plot_outcome.png"), plot = plot_outcome , width = 10, height = 7)
 ggsave(here("figures","plot_mortality.png"), plot = plot_mortality2 , width = 15, height = 7)
