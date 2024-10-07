@@ -1,0 +1,5 @@
+measure_id,measure_name,location_id,location_name,sex_id,sex_name,age_id,age_name,cause_id,cause_name,metric_id,metric_name,year,val,upper,lower
+1,Décès,163,Inde,3,Les deux,22,Tout age,294,Toutes causes,1,#,2011,8912732.437103668,9271710.278994277,8574639.244396675
+1,Décès,163,Inde,3,Les deux,22,Tout age,294,Toutes causes,1,#,2020,10666928.019293437,11265944.071006753,10088507.879760498
+4,AVP (Années de Vie Perdues),163,Inde,3,Les deux,22,Tout age,294,Toutes causes,1,#,2020,339131544.1002614,361504217.28814024,319211711.68597955
+4,AVP (Années de Vie Perdues),163,Inde,3,Les deux,22,Tout age,294,Toutes causes,1,#,2011,357292373.9183614,379776881.0979787,336601370.1968865

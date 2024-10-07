@@ -79,6 +79,99 @@ nine = tapply(phillips$val, phillips$year == "2020" & phillips$measure_id == "4"
 nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
 
 
+#### China 2050 ####
+
+china <- read.csv(here("data","cv_china_2050.csv"))
+
+
+four = tapply(china$val, china$year == "2011" & china$measure_id == "4", sum)/tapply(china$val, china$year == "2011" & china$measure_id == "1", sum)
+nine = tapply(china$val, china$year == "2020" & china$measure_id == "4", sum)/tapply(china$val, china$year == "2020" & china$measure_id == "1", sum)
+
+# For 2030, using decrease rate of 2011 - 2020 (once)
+nine [["TRUE"]]+(1*(nine [["TRUE"]] - four [["TRUE"]]))
+
+# For 2050, using decrease rate of 2011 - 2020 (3 times)
+nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
+
+# For 2060, using decrease rate of 2011 - 2020 (4 times)
+nine [["TRUE"]]+(4*(nine [["TRUE"]] - four [["TRUE"]]))
+
+  # +25 years old
+china_25 <- read.csv(here("data","cv_china_25+.csv"))
+
+four = tapply(china_25$val, china_25$year == "2011" & china_25$measure_id == "4", sum)/tapply(china_25$val, china_25$year == "2011" & china_25$measure_id == "1", sum)
+nine = tapply(china_25$val, china_25$year == "2020" & china_25$measure_id == "4", sum)/tapply(china_25$val, china_25$year == "2020" & china_25$measure_id == "1", sum)
+
+# For 2050, using decrease rate of 2011 - 2020 (3 times)
+nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
+
+# For 2060, using decrease rate of 2011 - 2020 (4 times)
+nine [["TRUE"]]+(4*(nine [["TRUE"]] - four [["TRUE"]]))
+
+
+
+# Hamilton, 2021
+
+hamilton <- read.csv(here("data","cv_hamilton.csv"))
+
+
+four = tapply(hamilton$val, hamilton$year == "2011" & hamilton$measure_id == "4", sum)/tapply(hamilton$val, hamilton$year == "2011" & hamilton$measure_id == "1", sum)
+nine = tapply(hamilton$val, hamilton$year == "2020" & hamilton$measure_id == "4", sum)/tapply(hamilton$val, hamilton$year == "2020" & hamilton$measure_id == "1", sum)
+
+# For 2040, using decrease rate of 2011 - 2020 (twice)
+nine [["TRUE"]]+(2*(nine [["TRUE"]] - four [["TRUE"]]))
+
+
+
+
+# California
+
+california <- read.csv(here("data","cv_california.csv"))
+
+
+four = tapply(california$val, california$year == "2011" & california$measure_id == "4", sum)/tapply(california$val, california$year == "2011" & california$measure_id == "1", sum)
+nine = tapply(california$val, california$year == "2020" & california$measure_id == "4", sum)/tapply(california$val, california$year == "2020" & california$measure_id == "1", sum)
+
+# For 2050, using decrease rate of 2011 - 2020 (3 times)
+nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
+
+
+
+
+
+# Dimitrova, 2021
+
+india <- read.csv(here("data","cv_dimitrova_2021.csv"))
+
+
+four = tapply(india$val, india$year == "2011" & india$measure_id == "4", sum)/tapply(india$val, india$year == "2011" & india$measure_id == "1", sum)
+nine = tapply(india$val, india$year == "2020" & india$measure_id == "4", sum)/tapply(india$val, india$year == "2020" & india$measure_id == "1", sum)
+
+# For 2050, using decrease rate of 2011 - 2020 (Once)
+nine [["TRUE"]]+(1*(nine [["TRUE"]] - four [["TRUE"]]))
+
+
+
+
+# World
+world <- read.csv(here("data","cv_world.csv"))
+
+
+four = tapply(world$val, world$year == "2011" & world$measure_id == "4", sum)/tapply(world$val, world$year == "2011" & world$measure_id == "1", sum)
+nine = tapply(world$val, world$year == "2020" & world$measure_id == "4", sum)/tapply(world$val, world$year == "2020" & world$measure_id == "1", sum)
+
+# For 2030, using decrease rate of 2011 - 2020 (once)
+nine [["TRUE"]]+(1*(nine [["TRUE"]] - four [["TRUE"]]))
+
+# For 2040, using decrease rate of 2011 - 2020 (2 times)
+nine [["TRUE"]]+(2*(nine [["TRUE"]] - four [["TRUE"]]))
+
+# For 2050, using decrease rate of 2011 - 2020 (3 times)
+nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
+
+# For 2060, using decrease rate of 2011 - 2020 (4 times)
+nine [["TRUE"]]+(4*(nine [["TRUE"]] - four [["TRUE"]]))
+
 
 
 

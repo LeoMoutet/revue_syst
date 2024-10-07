@@ -1,0 +1,5 @@
+measure_id,measure_name,location_id,location_name,sex_id,sex_name,age_id,age_name,cause_id,cause_name,metric_id,metric_name,year,val,upper,lower
+1,Décès,6,La Chine,3,Les deux,157,25 + ans,294,Toutes causes,1,#,2011,9430775.261461293,10159756.646007601,8754946.798323223
+1,Décès,6,La Chine,3,Les deux,157,25 + ans,294,Toutes causes,1,#,2020,11223046.635726372,12911550.216428738,9714872.277032685
+4,AVP (Années de Vie Perdues),6,La Chine,3,Les deux,157,25 + ans,294,Toutes causes,1,#,2011,208764326.5373323,227084797.3266274,192156860.95450103
+4,AVP (Années de Vie Perdues),6,La Chine,3,Les deux,157,25 + ans,294,Toutes causes,1,#,2020,229080544.74101293,267109245.6524506,195554769.71869853

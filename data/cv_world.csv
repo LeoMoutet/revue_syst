@@ -1,0 +1,5 @@
+measure_id,measure_name,location_id,location_name,sex_id,sex_name,age_id,age_name,cause_id,cause_name,metric_id,metric_name,year,val,upper,lower
+1,Décès,1,Global,3,Les deux,22,Tout age,294,Toutes causes,1,#,2011,53207507.0764793,54553813.20048958,51748483.72150721
+1,Décès,1,Global,3,Les deux,22,Tout age,294,Toutes causes,1,#,2020,63121339.83527405,65803168.12314034,60658141.98791731
+4,AVP (Années de Vie Perdues),1,Global,3,Les deux,22,Tout age,294,Toutes causes,1,#,2011,1867778983.2866178,1942619348.9967356,1794276546.5834208
+4,AVP (Années de Vie Perdues),1,Global,3,Les deux,22,Tout age,294,Toutes causes,1,#,2020,1873278903.4966292,1986516841.6560237,1776230062.8837037

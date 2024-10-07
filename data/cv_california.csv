@@ -1,0 +1,5 @@
+measure_id,measure_name,location_id,location_name,sex_id,sex_name,age_id,age_name,cause_id,cause_name,metric_id,metric_name,year,val,upper,lower
+1,Décès,527,Californie,3,Les deux,22,Tout age,294,Toutes causes,1,#,2011,238234.38778010962,239765.37227539098,236645.99837939057
+1,Décès,527,Californie,3,Les deux,22,Tout age,294,Toutes causes,1,#,2020,317580.4663608829,319812.2476284278,315168.93352465983
+4,AVP (Années de Vie Perdues),527,Californie,3,Les deux,22,Tout age,294,Toutes causes,1,#,2011,5064831.57177233,5102983.17885237,5028003.456937502
+4,AVP (Années de Vie Perdues),527,Californie,3,Les deux,22,Tout age,294,Toutes causes,1,#,2020,6713334.6911409125,6763847.879888137,6660171.73233224
