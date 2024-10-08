@@ -573,6 +573,14 @@ p9 = baseline_year %>%
                 position = position_nudge(x = -0.42, y = 0.5))+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
 
+
+plot_mortality2 = annotate_figure(ggarrange(p9,plot_mortality, ncol = 2, nrow = 1,labels = c("A: Overall", ""),
+                                           align ="v", hjust = c(-0.6,1),vjust = c(4,1), widths = c(0.4, 1)),
+                                 left = "Preventable mortality fraction (%)")
+
+plot_mortality2
+
+
 baseline_year %>%
   filter(include_mortality.x == "Yes") %>%
   ggplot(aes(y = 100 * mortality_proj, x = include_mortality.x)) +
@@ -594,13 +602,24 @@ baseline_year %>%
   scale_y_continuous(breaks = c(1, 5, 10, 15, 20), limits = c(-1, 20)) +
   scale_color_manual(values = c("red", "blue", "green", "purple"))
 
-
-plot_mortality2 = annotate_figure(ggarrange(p9,plot_mortality, ncol = 2, nrow = 1,labels = c("A: Overall", ""),
-                                           align ="v", hjust = c(-0.6,1),vjust = c(4,1), widths = c(0.4, 1)),
-                                 left = "Preventable mortality fraction (%)")
-
-plot_mortality2
-
+# Life-year gained
+baseline_year %>%
+  filter(include_yll == "Yes")%>%
+  ggplot(aes( y = life_years_100000, x= include_yll))+
+  geom_violin(fill ="lightcyan2")+
+  geom_point(size = 1,position=position_jitter(h=NULL,w=0.2), show.legend = F) +
+  theme_pubr()+
+  xlab("")+
+  ylab("Life-year gained per 100 000")+
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        text = element_text(size = 10),
+        plot.margin = margin(1,0.1,1,0.1,"cm"))+
+  geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
+  stat_summary( geom = "crossbar", fun = "median",  size = 0.2,  col = "black")+
+  stat_summary( geom = "text", fun = "median",  size = 3,  col = "black",aes(label = round(after_stat(y),1)),
+                position = position_nudge(x = -0.42, y = 50))+
+  scale_y_continuous( breaks= c(100,500,1000,2000,3000,4000), limits = c(-15,4600))
 
 # China sub-analysis
 china_impact = health_outcome %>%

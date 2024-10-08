@@ -1,0 +1,5 @@
+measure_id,measure_name,location_id,location_name,sex_id,sex_name,age_id,age_name,cause_id,cause_name,metric_id,metric_name,year,val,upper,lower
+1,Décès,4743,European Union,3,Les deux,22,Tout age,294,Toutes causes,1,#,2011,4332533.589791072,4344117.522444945,4321486.720671883
+1,Décès,4743,European Union,3,Les deux,22,Tout age,294,Toutes causes,1,#,2020,5177383.233867126,5191833.415497637,5159416.197007808
+4,AVP (Années de Vie Perdues),4743,European Union,3,Les deux,22,Tout age,294,Toutes causes,1,#,2011,80207358.09760797,80462064.54046597,79972821.63851784
+4,AVP (Années de Vie Perdues),4743,European Union,3,Les deux,22,Tout age,294,Toutes causes,1,#,2020,87985874.60414894,88292154.46865559,87598843.85683233

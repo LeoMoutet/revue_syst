@@ -1,0 +1,5 @@
+measure_id,measure_name,location_id,location_name,sex_id,sex_name,age_id,age_name,cause_id,cause_name,metric_id,metric_name,year,val,upper,lower
+1,Décès,80,France,3,Les deux,22,Tout age,294,Toutes causes,1,#,2011,537134.087971696,539155.5943523857,534920.2917532058
+1,Décès,80,France,3,Les deux,22,Tout age,294,Toutes causes,1,#,2020,654171.5466839084,657335.2481571321,650848.7242046029
+4,AVP (Années de Vie Perdues),80,France,3,Les deux,22,Tout age,294,Toutes causes,1,#,2011,9787414.334773107,9830902.05526271,9742742.439632861
+4,AVP (Années de Vie Perdues),80,France,3,Les deux,22,Tout age,294,Toutes causes,1,#,2020,10920291.02827423,10980116.593287244,10861446.11312355

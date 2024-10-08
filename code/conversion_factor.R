@@ -1,176 +1,131 @@
 # Conversion factor
 library(here)
 
+
+####################################################################
+# Extrapolate the rate for any target year
+extrapolate_rate <- function(data, base_year1, base_year2, measure_id_1, measure_id_4, target_year) {
+  
+  # Calculate the ratio for the first base year (base_year1)
+  rate_year1 <- tapply(data$val, data$year == base_year1 & data$measure_id == measure_id_4, sum) / 
+    tapply(data$val, data$year == base_year1 & data$measure_id == measure_id_1, sum)
+  
+  # Calculate the ratio for the second base year (base_year2)
+  rate_year2 <- tapply(data$val, data$year == base_year2 & data$measure_id == measure_id_4, sum) / 
+    tapply(data$val, data$year == base_year2 & data$measure_id == measure_id_1, sum)
+  
+  # Calculate the yearly rate of change between base_year1 and base_year2
+  yearly_change <- (rate_year2[["TRUE"]] - rate_year1[["TRUE"]]) / (base_year2 - base_year1)
+  
+  # Extrapolate the rate for the target year based on the yearly change
+  projected_rate <- rate_year2[["TRUE"]] + (yearly_change * (target_year - base_year2))
+  
+  return(projected_rate)
+}
+
+####################################################################
+
 # Milner, 2023
 
 milner_diet <- read.csv(here("data","cv_milner_2023_diet.csv"))
-
-
-four = tapply(milner_diet$val, milner_diet$year == "2016" & milner_diet$measure_id == "4", sum)/tapply(milner_diet$val, milner_diet$year == "2016" & milner_diet$measure_id == "1", sum)
-nine = tapply(milner_diet$val, milner_diet$year == "2020" & milner_diet$measure_id == "4", sum)/tapply(milner_diet$val, milner_diet$year == "2020" & milner_diet$measure_id == "1", sum)
-
-  # For 2035, using decrease rate of 2016 - 2020 (3 times)
-nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
-
-
-
+extrapolate_rate(milner_diet, 2016, 2020, 1, 4, 2035)
 
 milner_air <- read.csv(here("data","cv_milner_2023_air.csv"))
-
-
-four = tapply(milner_air$val, milner_air$year == "2016" & milner_air$measure_id == "4", sum)/tapply(milner_air$val, milner_air$year == "2016" & milner_air$measure_id == "1", sum)
-nine = tapply(milner_air$val, milner_air$year == "2020" & milner_air$measure_id == "4", sum)/tapply(milner_air$val, milner_air$year == "2020" & milner_air$measure_id == "1", sum)
-
-# For 2035, using decrease rate of 2016 - 2020 (3 times)
-nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
-
-
-
-
+extrapolate_rate(milner_air, 2016, 2020, 1, 4, 2035)
 
 milner_pa <- read.csv(here("data","cv_milner_2023_physical.csv"))
-
-
-four = tapply(milner_pa$val, milner_pa$year == "2016" & milner_pa$measure_id == "4", sum)/tapply(milner_pa$val, milner_pa$year == "2016" & milner_pa$measure_id == "1", sum)
-nine = tapply(milner_pa$val, milner_pa$year == "2020" & milner_pa$measure_id == "4", sum)/tapply(milner_pa$val, milner_pa$year == "2020" & milner_pa$measure_id == "1", sum)
-
-# For 2035, using decrease rate of 2016 - 2020 (3 times)
-nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
-
+extrapolate_rate(milner_pa, 2016, 2020, 1, 4, 2035)
 
 
 # Williams, 2018
 
 williams <- read.csv(here("data","cv_williams_2018.csv"))
-
-
-one = tapply(williams$val, williams$year == "2011" & williams$measure_id == "4", sum)/tapply(williams$val, williams$year == "2011" & williams$measure_id == "1", sum)
-nine = tapply(williams$val, williams$year == "2020" & williams$measure_id == "4", sum)/tapply(williams$val, williams$year == "2020" & williams$measure_id == "1", sum)
-
-
-  # For 2080 (2011 + ((2154-2011)/2)), using decrease rate of 2011 - 2020 (6 times)
-nine [["TRUE"]]+(6*(nine [["TRUE"]] - one [["TRUE"]]))
-
-
+extrapolate_rate(williams, 2011, 2020, 1, 4, 2080)
 
 
 # zysk, 2020
 
 zysk <- read.csv(here("data","cv_zysk_2020.csv"))
-
-
-four = tapply(zysk$val, zysk$year == "2011" & zysk$measure_id == "4", sum)/tapply(zysk$val, zysk$year == "2011" & zysk$measure_id == "1", sum)
-nine = tapply(zysk$val, zysk$year == "2020" & zysk$measure_id == "4", sum)/tapply(zysk$val, zysk$year == "2020" & zysk$measure_id == "1", sum)
-
-# For 2050, using decrease rate of 2014 - 2019 (6 times)
-nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
-
+extrapolate_rate(zysk, 2011, 2020, 1, 4, 2050)
 
 
 # phillips, 2021
 
 phillips <- read.csv(here("data","cv_phillips_2021.csv"))
-
-
-four = tapply(phillips$val, phillips$year == "2011" & phillips$measure_id == "4", sum)/tapply(phillips$val, phillips$year == "2011" & phillips$measure_id == "1", sum)
-nine = tapply(phillips$val, phillips$year == "2020" & phillips$measure_id == "4", sum)/tapply(phillips$val, phillips$year == "2020" & phillips$measure_id == "1", sum)
-
-# For 2050, using decrease rate of 2011 - 2020 (3 times)
-nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
+extrapolate_rate(phillips, 2011, 2020, 1, 4, 2050)
 
 
 #### China 2050 ####
 
 china <- read.csv(here("data","cv_china_2050.csv"))
-
-
-four = tapply(china$val, china$year == "2011" & china$measure_id == "4", sum)/tapply(china$val, china$year == "2011" & china$measure_id == "1", sum)
-nine = tapply(china$val, china$year == "2020" & china$measure_id == "4", sum)/tapply(china$val, china$year == "2020" & china$measure_id == "1", sum)
-
-# For 2030, using decrease rate of 2011 - 2020 (once)
-nine [["TRUE"]]+(1*(nine [["TRUE"]] - four [["TRUE"]]))
-
-# For 2050, using decrease rate of 2011 - 2020 (3 times)
-nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
-
-# For 2060, using decrease rate of 2011 - 2020 (4 times)
-nine [["TRUE"]]+(4*(nine [["TRUE"]] - four [["TRUE"]]))
+extrapolate_rate(china, 2011, 2020, 1, 4, 2030)
+extrapolate_rate(china, 2011, 2020, 1, 4, 2035)
+extrapolate_rate(china, 2011, 2020, 1, 4, 2050)
+extrapolate_rate(china, 2011, 2020, 1, 4, 2054)
+extrapolate_rate(china, 2011, 2020, 1, 4, 2060)
 
   # +25 years old
 china_25 <- read.csv(here("data","cv_china_25+.csv"))
-
-four = tapply(china_25$val, china_25$year == "2011" & china_25$measure_id == "4", sum)/tapply(china_25$val, china_25$year == "2011" & china_25$measure_id == "1", sum)
-nine = tapply(china_25$val, china_25$year == "2020" & china_25$measure_id == "4", sum)/tapply(china_25$val, china_25$year == "2020" & china_25$measure_id == "1", sum)
-
-# For 2050, using decrease rate of 2011 - 2020 (3 times)
-nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
-
-# For 2060, using decrease rate of 2011 - 2020 (4 times)
-nine [["TRUE"]]+(4*(nine [["TRUE"]] - four [["TRUE"]]))
-
+extrapolate_rate(china_25, 2011, 2020, 1, 4, 2050)
+extrapolate_rate(china_25, 2011, 2020, 1, 4, 2060)
 
 
 # Hamilton, 2021
 
 hamilton <- read.csv(here("data","cv_hamilton.csv"))
-
-
-four = tapply(hamilton$val, hamilton$year == "2011" & hamilton$measure_id == "4", sum)/tapply(hamilton$val, hamilton$year == "2011" & hamilton$measure_id == "1", sum)
-nine = tapply(hamilton$val, hamilton$year == "2020" & hamilton$measure_id == "4", sum)/tapply(hamilton$val, hamilton$year == "2020" & hamilton$measure_id == "1", sum)
-
-# For 2040, using decrease rate of 2011 - 2020 (twice)
-nine [["TRUE"]]+(2*(nine [["TRUE"]] - four [["TRUE"]]))
-
-
+extrapolate_rate(hamilton, 2011, 2020, 1, 4, 2040)
 
 
 # California
 
 california <- read.csv(here("data","cv_california.csv"))
-
-
-four = tapply(california$val, california$year == "2011" & california$measure_id == "4", sum)/tapply(california$val, california$year == "2011" & california$measure_id == "1", sum)
-nine = tapply(california$val, california$year == "2020" & california$measure_id == "4", sum)/tapply(california$val, california$year == "2020" & california$measure_id == "1", sum)
-
-# For 2050, using decrease rate of 2011 - 2020 (3 times)
-nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
-
-
-
+extrapolate_rate(california, 2011, 2020, 1, 4, 2040)
 
 
 # Dimitrova, 2021
 
 india <- read.csv(here("data","cv_dimitrova_2021.csv"))
-
-
-four = tapply(india$val, india$year == "2011" & india$measure_id == "4", sum)/tapply(india$val, india$year == "2011" & india$measure_id == "1", sum)
-nine = tapply(india$val, india$year == "2020" & india$measure_id == "4", sum)/tapply(india$val, india$year == "2020" & india$measure_id == "1", sum)
-
-# For 2050, using decrease rate of 2011 - 2020 (Once)
-nine [["TRUE"]]+(1*(nine [["TRUE"]] - four [["TRUE"]]))
-
-
+extrapolate_rate(india, 2011, 2020, 1, 4, 2040)
 
 
 # World
 world <- read.csv(here("data","cv_world.csv"))
+extrapolate_rate(world, 2011, 2020, 1, 4, 2030)
+extrapolate_rate(world, 2011, 2020, 1, 4, 2040)
+extrapolate_rate(world, 2011, 2020, 1, 4, 2047)
+extrapolate_rate(world, 2011, 2020, 1, 4, 2050)
+extrapolate_rate(world, 2011, 2020, 1, 4, 2060)
 
 
-four = tapply(world$val, world$year == "2011" & world$measure_id == "4", sum)/tapply(world$val, world$year == "2011" & world$measure_id == "1", sum)
-nine = tapply(world$val, world$year == "2020" & world$measure_id == "4", sum)/tapply(world$val, world$year == "2020" & world$measure_id == "1", sum)
+# Rafaj, 2013
 
-# For 2030, using decrease rate of 2011 - 2020 (once)
-nine [["TRUE"]]+(1*(nine [["TRUE"]] - four [["TRUE"]]))
+rafaj2013 <- read.csv(here("data","cv_europe.csv"))
+extrapolate_rate(rafaj2013, 2011, 2020, 1, 4, 2050)
 
-# For 2040, using decrease rate of 2011 - 2020 (2 times)
-nine [["TRUE"]]+(2*(nine [["TRUE"]] - four [["TRUE"]]))
 
-# For 2050, using decrease rate of 2011 - 2020 (3 times)
-nine [["TRUE"]]+(3*(nine [["TRUE"]] - four [["TRUE"]]))
+# Rafaj, 2021
 
-# For 2060, using decrease rate of 2011 - 2020 (4 times)
-nine [["TRUE"]]+(4*(nine [["TRUE"]] - four [["TRUE"]]))
+rafaj2021 <- read.csv(here("data","cv_rafaj2021.csv"))
+extrapolate_rate(rafaj2021, 2011, 2020, 1, 4, 2050)
+
+
+# Nawaz
+
+nawaz <- read.csv(here("data","cv_nawaz.csv"))
+extrapolate_rate(nawaz, 2011, 2020, 1, 4, 2040)
+
+
+# Barban
+
+barban <- read.csv(here("data","cv_barban.csv"))
+extrapolate_rate(barban, 2011, 2020, 1, 4, 2045)
+
+
+# Shindell
+
+shindell <- read.csv(here("data","cv_usa.csv"))
+extrapolate_rate(shindell, 2011, 2020, 1, 4, 2050)
+
 
 
 
