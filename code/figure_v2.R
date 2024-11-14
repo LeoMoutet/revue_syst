@@ -326,6 +326,65 @@ sankey = htmlwidgets::onRender(
   '
 )
 
+
+sankey = htmlwidgets::onRender(
+  sankeyplot2,
+  '
+  function(el) {
+    // Make the node labels bold
+    d3.select(el).selectAll(".node text").attr("font-weight", "bold");
+
+    // Add white background for text labels for better visibility
+    d3.select(el).selectAll(".node text")
+      .each(function() {
+        var bbox = this.getBBox();
+        d3.select(this.parentNode)
+          .insert("rect", "text")
+          .attr("x", bbox.x - 3)
+          .attr("y", bbox.y - 3)
+          .attr("width", bbox.width + 6)
+          .attr("height", bbox.height + 6)
+          .style("fill", "white")
+          .style("stroke", "black");
+      });
+    
+    // Custom titles for each node (this will display at the top)
+    var nodeTitles = ["Scenario", "Sector", "Pathway", "Outcome"];
+    
+    // Get the positions of each node (y-position) to place the titles at the top
+    var nodes = d3.select(el).selectAll(".node");
+    
+    // Create a new group for the custom titles
+    var marginX = 290;  // Adjust this value to change the spacing between titles
+    var offsetX = 0;  // Initial horizontal offset for the first title
+    
+    // Create text elements at the top of the graph
+    d3.select(el).select("svg")
+      .append("g")
+      .attr("class", "custom-titles")
+      .selectAll("text")
+      .data(nodeTitles)
+      .enter()
+      .append("text")
+      .attr("x", function(d, i) { 
+        // Position each title with a horizontal offset
+        var nodeXPos = nodes.nodes()[i].getBoundingClientRect().left;
+        var xPos = nodeXPos + offsetX;
+        
+        // Update the offset for the next title
+        offsetX += marginX;
+        
+        return xPos;
+      })
+      .attr("y", 20) // Fixed y-position for titles at the top
+      .attr("text-anchor", "middle")
+      .text(function(d) { return d; })
+      .attr("font-size", 16)
+      .attr("font-weight", "bold");
+  }
+  '
+)
+
 saveNetwork(sankey, here("figures","sankey_plot.html"))
 webshot("sankey_plot.html", here("figures","sankey_plot.png"))
 
