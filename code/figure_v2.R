@@ -19,7 +19,9 @@ pacman::p_load(dplyr,
                lattice,
                ggVennDiagram,
                venneuler,
-               forcats)
+               forcats,
+               ggalluvial,
+               webshot)
 
 # Data
 info_publi <- read_excel(here("data","extraction_grid_article.xlsx"))
@@ -207,7 +209,7 @@ links <- data.frame(
            "Air pollution",
            "Diet","Diet",
            "Physical activity","Physical activity","Physical activity","Physical activity",
-           "Indoor pollution","Indoor pollution","Indoor pollution","Indoor pollution"
+           "Indoor air quality","Indoor air quality","Indoor air quality","Indoor air quality"
   ), 
   
   target=c("Energy","Transport", "AFOLU",
@@ -218,19 +220,19 @@ links <- data.frame(
            "All-encompassing","Energy","Industry","Transport","Housing","AFOLU","Other",
            
            
-           "Air pollution","Indoor pollution",
-           "Air pollution","Indoor pollution",
+           "Air pollution","Indoor air quality",
+           "Air pollution","Indoor air quality",
            "Air pollution", "Physical activity",
            "Air pollution", "Diet",
-           "Air pollution", "Indoor pollution",
-           "Air pollution","Indoor pollution",
+           "Air pollution", "Indoor air quality",
+           "Air pollution","Indoor air quality",
            "Air pollution",
            
            "Deaths", "YLL", "Economic","Life expectancy","DALYs",
            "Morbidity",
            "Deaths", "YLL", 
            "Deaths", "YLL","Economic","Life expectancy",
-           "YLL","Morbidity","Deaths", "Economic"
+           "YLL","Morbidity","Deaths", "Health economics"
   ), 
   
   value=c(24,9,3,
@@ -301,7 +303,7 @@ sankeyplot2 <- sankeyNetwork(Links = links, Nodes = nodes,
 
 
 
-htmlwidgets::onRender(
+sankey = htmlwidgets::onRender(
   sankeyplot2,
   '
   function(el) {
@@ -324,9 +326,75 @@ htmlwidgets::onRender(
   '
 )
 
+saveNetwork(sankey, here("figures","sankey_plot.html"))
+webshot("sankey_plot.html", here("figures","sankey_plot.png"))
 
 
 
+# Manually correcting the lengths for the vectors
+source_vector <- c("Energy decarbonation","Energy decarbonation","Energy decarbonation",
+                   "Energy decarbonation","Energy decarbonation","Energy decarbonation","Energy decarbonation",
+                   "Health","Health","Health","Health","Health","Health","Health",
+                   "Sufficiency","Sufficiency","Sufficiency","Sufficiency","Sufficiency",
+                   "Financial","Financial","Financial","Financial","Financial","Financial","Financial",
+                   "Not detailed","Not detailed","Not detailed","Not detailed","Not detailed","Not detailed","Not detailed",
+                   
+                   "All-encompassing", "All-encompassing",
+                   "Energy", "Energy",
+                   "Transport",  "Transport", 
+                   "AFOLU","AFOLU",
+                   "Housing", "Housing",
+                   "Industry", "Industry",
+                   "Other",
+                   
+                   "Air pollution","Air pollution","Air pollution","Air pollution","Air pollution",
+                   "Air pollution",
+                   "Diet","Diet",
+                   "Physical activity","Physical activity","Physical activity","Physical activity",
+                   "Indoor air quality","Indoor air quality","Indoor air quality","Indoor air quality")
+
+target_vector <- c("Energy","Transport", "AFOLU",
+                   "Housing","Industry","All-encompassing","Other",
+                   "Energy","AFOLU","Industry","Transport", "Other","Housing", "All-encompassing", 
+                   "Energy", "All-encompassing","Housing","Transport", "AFOLU",
+                   "All-encompassing", "Transport", "Energy", "Housing","Industry","AFOLU","Other",
+                   "All-encompassing","Energy","Industry","Transport","Housing","AFOLU","Other",
+                   
+                   
+                   "Air pollution","Indoor air quality",
+                   "Air pollution","Indoor air quality",
+                   "Air pollution", "Physical activity",
+                   "Air pollution", "Diet",
+                   "Air pollution", "Indoor air quality",
+                   "Air pollution","Indoor air quality",
+                   "Air pollution",
+
+                   "Deaths", "YLL", "Economic","Life expectancy","DALYs",
+                   "Morbidity",
+                   "Deaths", "YLL", 
+                   "Deaths", "YLL","Economic","Life expectancy",
+                   "YLL","Morbidity","Deaths", "Health economics")
+
+value_vector <- c(24, 9, 3, 8, 5, 2, 3, 8, 4, 5, 7, 3, 5, 2, 3, 1, 1, 2, 1, 
+                  1, 2, 1, 1, 1, 1, 1, 10, 12, 9, 10, 5, 6, 5, 16, 1, 39, 3, 
+                  20, 4, 11, 3, 18, 3, 19, 1, 12, 44, 4, 26, 3, 1, 15, 1, 1, 2, 
+                  2, 1, 1, 2, 1, 2, 1)
+
+
+# Now combine them into a data frame
+links <- data.frame(
+  source = source_vector,
+  target = target_vector,
+  value = value_vector
+)
+
+
+# Load the 'alluvial' library
+library(alluvial)
+
+alluvial(links, 
+         freq = links$value,  
+         col = c("blue", "green"))
 
 
 
