@@ -327,14 +327,14 @@ sankey = htmlwidgets::onRender(
 )
 
 
+
+
 sankey = htmlwidgets::onRender(
   sankeyplot2,
   '
   function(el) {
-    // Make the node labels bold
+    // Make the text bold and add white background as done before
     d3.select(el).selectAll(".node text").attr("font-weight", "bold");
-
-    // Add white background for text labels for better visibility
     d3.select(el).selectAll(".node text")
       .each(function() {
         var bbox = this.getBBox();
@@ -347,116 +347,50 @@ sankey = htmlwidgets::onRender(
           .style("fill", "white")
           .style("stroke", "black");
       });
-    
-    // Custom titles for each node (this will display at the top)
-    var nodeTitles = ["Scenario", "Sector", "Pathway", "Outcome"];
-    
-    // Get the positions of each node (y-position) to place the titles at the top
-    var nodes = d3.select(el).selectAll(".node");
-    
-    // Create a new group for the custom titles
-    var marginX = 290;  // Adjust this value to change the spacing between titles
-    var offsetX = 0;  // Initial horizontal offset for the first title
-    
-    // Create text elements at the top of the graph
-    d3.select(el).select("svg")
-      .append("g")
-      .attr("class", "custom-titles")
-      .selectAll("text")
-      .data(nodeTitles)
-      .enter()
-      .append("text")
-      .attr("x", function(d, i) { 
-        // Position each title with a horizontal offset
-        var nodeXPos = nodes.nodes()[i].getBoundingClientRect().left;
-        var xPos = nodeXPos + offsetX;
-        
-        // Update the offset for the next title
-        offsetX += marginX;
-        
-        return xPos;
-      })
-      .attr("y", 20) // Fixed y-position for titles at the top
-      .attr("text-anchor", "middle")
-      .text(function(d) { return d; })
-      .attr("font-size", 16)
-      .attr("font-weight", "bold");
+
+    // Add headings to the top of each column
+    var svg = d3.select(el).select("svg");
+
+    // Add "Scenario" heading
+    svg.append("text")
+      .attr("x", 20)  // Adjust x-position as needed
+      .attr("y", 15)  // Adjust y-position as needed
+      .attr("font-size", "18px")
+      .attr("font-weight", "bold")
+      .text("SCENARIO");
+
+    // Add "Sector" heading
+    svg.append("text")
+      .attr("x", 330)  // Adjust x-position as needed to center above middle column
+      .attr("y", 15)   // Same y-position
+      .attr("font-size", "18px")
+      .attr("font-weight", "bold")
+      .text("SECTOR");
+
+    // Add "Impact" heading
+    svg.append("text")
+      .attr("x", 650)  // Adjust x-position as needed for right column
+      .attr("y", 15)   // Same y-position
+      .attr("font-size", "18px")
+      .attr("font-weight", "bold")
+      .text("PATHWAY");
+      
+      // Add "Outcome" heading
+    svg.append("text")
+      .attr("x", 950)  // Adjust x-position as needed to center above middle column
+      .attr("y", 15)   // Same y-position
+      .attr("font-size", "18px")
+      .attr("font-weight", "bold")
+      .text("OUTCOME");
   }
   '
 )
 
-saveNetwork(sankey, here("figures","sankey_plot.html"))
-webshot("sankey_plot.html", here("figures","sankey_plot.png"))
+sankey = sankey  %>%
+  layout(width = 800, height = 600)
 
-
-
-# Manually correcting the lengths for the vectors
-source_vector <- c("Energy decarbonation","Energy decarbonation","Energy decarbonation",
-                   "Energy decarbonation","Energy decarbonation","Energy decarbonation","Energy decarbonation",
-                   "Health","Health","Health","Health","Health","Health","Health",
-                   "Sufficiency","Sufficiency","Sufficiency","Sufficiency","Sufficiency",
-                   "Financial","Financial","Financial","Financial","Financial","Financial","Financial",
-                   "Not detailed","Not detailed","Not detailed","Not detailed","Not detailed","Not detailed","Not detailed",
-                   
-                   "All-encompassing", "All-encompassing",
-                   "Energy", "Energy",
-                   "Transport",  "Transport", 
-                   "AFOLU","AFOLU",
-                   "Housing", "Housing",
-                   "Industry", "Industry",
-                   "Other",
-                   
-                   "Air pollution","Air pollution","Air pollution","Air pollution","Air pollution",
-                   "Air pollution",
-                   "Diet","Diet",
-                   "Physical activity","Physical activity","Physical activity","Physical activity",
-                   "Indoor air quality","Indoor air quality","Indoor air quality","Indoor air quality")
-
-target_vector <- c("Energy","Transport", "AFOLU",
-                   "Housing","Industry","All-encompassing","Other",
-                   "Energy","AFOLU","Industry","Transport", "Other","Housing", "All-encompassing", 
-                   "Energy", "All-encompassing","Housing","Transport", "AFOLU",
-                   "All-encompassing", "Transport", "Energy", "Housing","Industry","AFOLU","Other",
-                   "All-encompassing","Energy","Industry","Transport","Housing","AFOLU","Other",
-                   
-                   
-                   "Air pollution","Indoor air quality",
-                   "Air pollution","Indoor air quality",
-                   "Air pollution", "Physical activity",
-                   "Air pollution", "Diet",
-                   "Air pollution", "Indoor air quality",
-                   "Air pollution","Indoor air quality",
-                   "Air pollution",
-
-                   "Deaths", "YLL", "Economic","Life expectancy","DALYs",
-                   "Morbidity",
-                   "Deaths", "YLL", 
-                   "Deaths", "YLL","Economic","Life expectancy",
-                   "YLL","Morbidity","Deaths", "Health economics")
-
-value_vector <- c(24, 9, 3, 8, 5, 2, 3, 8, 4, 5, 7, 3, 5, 2, 3, 1, 1, 2, 1, 
-                  1, 2, 1, 1, 1, 1, 1, 10, 12, 9, 10, 5, 6, 5, 16, 1, 39, 3, 
-                  20, 4, 11, 3, 18, 3, 19, 1, 12, 44, 4, 26, 3, 1, 15, 1, 1, 2, 
-                  2, 1, 1, 2, 1, 2, 1)
-
-
-# Now combine them into a data frame
-links <- data.frame(
-  source = source_vector,
-  target = target_vector,
-  value = value_vector
-)
-
-
-# Load the 'alluvial' library
-library(alluvial)
-
-alluvial(links, 
-         freq = links$value,  
-         col = c("blue", "green"))
-
-
-
+library(htmlwidgets)
+saveWidget(sankey, here("figures", "sankey.html"))
 
 # Quality assessment
 
