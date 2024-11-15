@@ -329,6 +329,7 @@ sankey = htmlwidgets::onRender(
 
 
 
+
 sankey = htmlwidgets::onRender(
   sankeyplot2,
   '
@@ -352,43 +353,195 @@ sankey = htmlwidgets::onRender(
     var svg = d3.select(el).select("svg");
 
     // Add "Scenario" heading
-    svg.append("text")
+    var scenarioText = svg.append("text")
       .attr("x", 20)  // Adjust x-position as needed
-      .attr("y", 15)  // Adjust y-position as needed
+      .attr("y", 12)  // Adjust y-position as needed
       .attr("font-size", "18px")
       .attr("font-weight", "bold")
       .text("SCENARIO");
 
+    // Underline "Scenario" heading
+    svg.append("line")
+      .attr("x1", 20)  // Same x-position as heading
+      .attr("x2", 115) // Adjust to length of text
+      .attr("y1", 15)  // Position slightly below the heading
+      .attr("y2", 15)  // Align with y1
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
     // Add "Sector" heading
-    svg.append("text")
+    var sectorText = svg.append("text")
       .attr("x", 330)  // Adjust x-position as needed to center above middle column
-      .attr("y", 15)   // Same y-position
+      .attr("y", 12)   // Same y-position
       .attr("font-size", "18px")
       .attr("font-weight", "bold")
       .text("SECTOR");
 
-    // Add "Impact" heading
-    svg.append("text")
+    // Underline "Sector" heading
+    svg.append("line")
+      .attr("x1", 330)
+      .attr("x2", 405)  // Adjust to length of text
+      .attr("y1", 15)
+      .attr("y2", 15)
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Add "Pathway" heading
+    var impactText = svg.append("text")
       .attr("x", 650)  // Adjust x-position as needed for right column
-      .attr("y", 15)   // Same y-position
+      .attr("y", 12)   // Same y-position
       .attr("font-size", "18px")
       .attr("font-weight", "bold")
       .text("PATHWAY");
-      
-      // Add "Outcome" heading
-    svg.append("text")
-      .attr("x", 950)  // Adjust x-position as needed to center above middle column
-      .attr("y", 15)   // Same y-position
+
+    // Underline "Pathway" heading
+    svg.append("line")
+      .attr("x1", 650)
+      .attr("x2", 740)  // Adjust to length of text
+      .attr("y1", 15)
+      .attr("y2", 15)
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Add "Outcome" heading
+    var outcomeText = svg.append("text")
+      .attr("x", 950)  // Adjust x-position as needed
+      .attr("y", 12)   // Same y-position
       .attr("font-size", "18px")
       .attr("font-weight", "bold")
       .text("OUTCOME");
+
+    // Underline "Outcome" heading
+    svg.append("line")
+      .attr("x1", 950)
+      .attr("x2", 1045)  // Adjust to length of text
+      .attr("y1", 15)
+      .attr("y2", 15)
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
   }
   '
 )
 
-sankey = sankey  %>%
-  layout(width = 800, height = 600)
 
+
+
+
+###
+sankeyplot2 <- sankeyNetwork(Links = links, Nodes = nodes,
+                             Source = "IDsource", Target = "IDtarget",
+                             Value = "value", NodeID = "name", 
+                             colourScale=my_color, LinkGroup="group", NodeGroup="group",
+                             fontSize = 10, nodeWidth = 2 )
+
+sankey = htmlwidgets::onRender(
+  sankeyplot2,
+  '
+  function(el) {
+    // Make the text bold and add white background as done before
+    d3.select(el).selectAll(".node text")
+      .attr("font-weight", "bold")
+      .attr("font-size", "10px");  // Reduced font size for node labels
+
+    d3.select(el).selectAll(".node text")
+      .each(function() {
+        var bbox = this.getBBox();
+        d3.select(this.parentNode)
+          .insert("rect", "text")
+          .attr("x", bbox.x - 3)
+          .attr("y", bbox.y - 3)
+          .attr("width", bbox.width + 6)
+          .attr("height", bbox.height + 6)
+          .style("fill", "white")
+          .style("stroke", "black");
+      });
+
+    // Reduce the font size of link labels as well
+    d3.select(el).selectAll(".link text")
+      .attr("font-size", "10px");  // Reduced font size for link labels
+
+    // Decrease the SVG height for the preview (small screen size)
+    var svg = d3.select(el).select("svg")
+      .attr("height", 300);  // Reduced height for preview
+
+    // Add headings to the top of each column
+    // Add "Scenario" heading
+    var scenarioText = svg.append("text")
+      .attr("x", 20)  // Adjust x-position as needed
+      .attr("y", 12)  // Adjust y-position for preview
+      .attr("font-size", "14px")  // Reduced font size for headings
+      .attr("font-weight", "bold")
+      .text("SCENARIO");
+
+    // Underline "Scenario" heading
+    svg.append("line")
+      .attr("x1", 20)  // Same x-position as heading
+      .attr("x2", 95) // Adjust to length of text
+      .attr("y1", 15)  // Position slightly below the heading
+      .attr("y2", 15)  // Align with y1
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Add "Sector" heading
+    var sectorText = svg.append("text")
+      .attr("x", 160)  // Adjust x-position as needed to center above middle column
+      .attr("y", 12)   // Same y-position
+      .attr("font-size", "14px")  // Reduced font size for headings
+      .attr("font-weight", "bold")
+      .text("SECTOR");
+
+    // Underline "Sector" heading
+    svg.append("line")
+      .attr("x1", 160)
+      .attr("x2", 220)  // Adjust to length of text
+      .attr("y1", 15)
+      .attr("y2", 15)
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Add "Pathway" heading
+    var impactText = svg.append("text")
+      .attr("x", 320)  // Adjust x-position as needed for right column
+      .attr("y", 12)   // Same y-position
+      .attr("font-size", "14px")  // Reduced font size for headings
+      .attr("font-weight", "bold")
+      .text("PATHWAY");
+
+    // Underline "Pathway" heading
+    svg.append("line")
+      .attr("x1", 320)
+      .attr("x2", 390)  // Adjust to length of text
+      .attr("y1", 15)
+      .attr("y2", 15)
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Add "Outcome" heading
+    var outcomeText = svg.append("text")
+      .attr("x", 460)  // Adjust x-position as needed
+      .attr("y", 12)   // Same y-position
+      .attr("font-size", "14px")  // Reduced font size for headings
+      .attr("font-weight", "bold")
+      .text("OUTCOME");
+
+    // Underline "Outcome" heading
+    svg.append("line")
+      .attr("x1", 460)
+      .attr("x2", 534)  // Adjust to length of text
+      .attr("y1", 15)
+      .attr("y2", 15)
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
+
+    // Now, move the Sankey diagram itself down below the headings in preview
+    var sankeyPlot = svg.select(".sankey");  // Select the Sankey diagram (make sure you have the correct class or ID for it)
+    sankeyPlot.attr("transform", "translate(0, 40)");  // Move the plot down (adjust as needed)
+  }
+  '
+)
+
+
+sankey
 library(htmlwidgets)
 saveWidget(sankey, here("figures", "sankey.html"))
 
