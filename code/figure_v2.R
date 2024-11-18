@@ -19,9 +19,7 @@ pacman::p_load(dplyr,
                lattice,
                ggVennDiagram,
                venneuler,
-               forcats,
-               ggalluvial,
-               webshot)
+               forcats)
 
 # Data
 info_publi <- read_excel(here("data","extraction_grid_article.xlsx"))
@@ -569,16 +567,22 @@ quality_eval_long$Criteria <- factor(quality_eval_long$Criteria, levels = criter
 quality = ggplot(quality_eval_long, aes(x = Criteria, y = Count, fill = factor(Variable, levels = c("Yes", "Yes partially", "Unclear", "No")))) +
   geom_bar(stat = "identity") +
   labs(title = "",
-       x = "",
+       x = "Confidence assessment criteria",
        y = "Number of article",
        fill = "Response") +
   scale_fill_manual(values = c("#1A9850", "#B5E5B5", "#FF7F00", "#AA3939")) + 
   theme_pubr() +
-  coord_flip()+
-  guides(fill = guide_legend(title = "", keywidth = 1, keyheight = 1, reverse = TRUE))+
-  scale_y_continuous(breaks= c(0,30,60))+
-  theme(legend.text = element_text(size = 15),
-        axis.text.y = element_text(size = 20))
+  coord_flip() +
+  guides(fill = guide_legend(title = "Confidence rating scale:", keywidth = 1, keyheight = 1, 
+                             reverse = TRUE)) +
+  scale_y_continuous(breaks= c(0,30,60)) +
+  theme(
+    legend.text = element_text(size = 15),
+    legend.title = element_text(size = 15),  # Increase legend title size
+    axis.text.y = element_text(size = 20),
+    axis.title.x = element_text(size = 18),  # Increase x-axis title size
+    axis.title.y = element_text(size = 18)   # Increase y-axis title size
+  )
 
 
 quality
@@ -699,7 +703,7 @@ p5 = health_outcome %>%
   ylab("")+
   scale_color_manual(values =c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
   theme(legend.title = element_blank(),
-        text = element_text(size = 10))+
+        text = element_text(size = 13))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
   #scale_x_discrete(labels = c('Évaluation comparative','Tables de vie')) +
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))
@@ -715,7 +719,7 @@ p6 = health_outcome %>%
   xlab("")+
   ylab("")+
   theme(legend.title = element_blank(),
-        text = element_text(size = 10))+
+        text = element_text(size = 13))+
   scale_color_manual(values = c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
   #scale_x_discrete(labels = c('Pollution','Activité physique','Alimentation')) +
@@ -733,7 +737,7 @@ p7 = health_outcome %>%
   xlab("")+
   ylab("")+
   theme(legend.title = element_blank(),
-        text = element_text(size = 10))+
+        text = element_text(size = 13))+
   scale_color_manual(values = c("#5F5647","#A42820","#9B9987",wes_palette("Darjeeling1")))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
   scale_y_continuous( breaks= c(1,5,10,15,20), limits = c(-1,20))+
@@ -750,7 +754,7 @@ p8 = baseline_year %>%
   xlab("")+
   ylab("")+
   theme(legend.title = element_blank(),
-        text = element_text(size = 10))+
+        text = element_text(size = 13))+
   scale_color_manual(values = c("#5F5647","#A42820","#9B9987"))+
   scale_fill_manual(values = c("#5F5647","#A42820","#9B9987"))+
   geom_hline(aes(yintercept = 0), color= "black", linetype = 2)+
@@ -761,7 +765,7 @@ p8 = baseline_year %>%
 
 plot_mortality = annotate_figure(ggarrange(p5,p8,p6,p7, ncol = 2, nrow = 2,labels = c("B: Quantitative modelling methods","C: Baseline scenario",
                                                                                       "D: Co-benefit pathway","E: Sector of emission"),
-                                           align ="h", hjust = c(-0.2,-0.3,-0.3,-0.3)))
+                                           align ="h", hjust = c(-0.23,-0.4,-0.38,-0.38)))
 
 
 plot_mortality
@@ -817,7 +821,7 @@ baseline_year %>%
   scale_color_manual(values = c("red", "blue", "green", "purple"))
 
 # Life-year gained
-baseline_year %>%
+yll_plot = baseline_year %>%
   filter(include_yll == "Yes")%>%
   ggplot(aes( y = life_years_100000, x= include_yll))+
   geom_violin(fill ="lightcyan2")+
@@ -1028,6 +1032,7 @@ ggsave(here("figures","plot_outcome.png"), plot = plot_outcome , width = 10, hei
 ggsave(here("figures","plot_mortality.png"), plot = plot_mortality2 , width = 15, height = 7)
 ggsave(here("figures","china_impact.png"), plot = china_impact , width = 10, height = 7)
 ggsave(here("figures","plot_AP.png"), plot = plot_AP , width = 10, height = 7)
+ggsave(here("figures","yll_plot.png"), plot = yll_plot , width = 10, height = 7)
 
 
 
