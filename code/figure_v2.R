@@ -1032,7 +1032,7 @@ ggsave(here("figures","plot_outcome.png"), plot = plot_outcome , width = 10, hei
 ggsave(here("figures","plot_mortality.png"), plot = plot_mortality2 , width = 15, height = 7)
 ggsave(here("figures","china_impact.png"), plot = china_impact , width = 10, height = 7)
 ggsave(here("figures","plot_AP.png"), plot = plot_AP , width = 10, height = 7)
-ggsave(here("figures","yll_plot.png"), plot = yll_plot , width = 10, height = 7)
+ggsave(here("figures","yll_plot.png"), plot = yll_plot , width = 5, height = 7)
 
 
 
