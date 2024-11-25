@@ -188,8 +188,8 @@ Map2
 
 # Sankey
 links <- data.frame(
-  source=c("Energy decarbonation","Energy decarbonation","Energy decarbonation",
-           "Energy decarbonation","Energy decarbonation","Energy decarbonation","Energy decarbonation",
+  source=c("Energy decarbonisation","Energy decarbonisation","Energy decarbonisation",
+           "Energy decarbonisation","Energy decarbonisation","Energy decarbonisation","Energy decarbonisation",
            "Health","Health","Health","Health","Health","Health","Health",
            "Sufficiency","Sufficiency","Sufficiency","Sufficiency","Sufficiency",
            "Financial","Financial","Financial","Financial","Financial","Financial","Financial",
@@ -230,7 +230,7 @@ links <- data.frame(
            "Morbidity",
            "Deaths", "YLL", 
            "Deaths", "YLL","Economic","Life expectancy",
-           "YLL","Morbidity","Deaths", "Health economics"
+           "YLL","Morbidity","Deaths", "Health economic"
   ), 
   
   value=c(24,9,3,
