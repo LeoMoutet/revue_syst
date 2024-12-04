@@ -1035,6 +1035,14 @@ ggsave(here("figures","plot_AP.png"), plot = plot_AP , width = 10, height = 7)
 ggsave(here("figures","yll_plot.png"), plot = yll_plot , width = 5, height = 7)
 
 
+# Saving editable plots
+postscript("Map1.eps", width = 10, height = 7, onefile = FALSE, horizontal = FALSE, paper = "special")
+postscript("plot_outcome.eps", width = 10, height = 7, onefile = FALSE, horizontal = FALSE, paper = "special")
+postscript("quality.eps", width = 13, height = 7, onefile = FALSE, horizontal = FALSE, paper = "special")
+postscript("plot_mortality.eps", width = 10, height = 7, onefile = FALSE, horizontal = FALSE, paper = "special")
+
+
+
 
 
 
