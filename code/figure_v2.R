@@ -297,139 +297,6 @@ sankeyplot2 <- sankeyNetwork(Links = links, Nodes = nodes,
                              Source = "IDsource", Target = "IDtarget",
                              Value = "value", NodeID = "name", 
                              colourScale=my_color, LinkGroup="group", NodeGroup="group",
-                             fontSize = 20, nodeWidth = 2 )
-
-
-
-sankey = htmlwidgets::onRender(
-  sankeyplot2,
-  '
-  function(el) {
-    d3.select(el).selectAll(".node text").attr("font-weight", "bold");
-
-    // Add white background for text labels
-    d3.select(el).selectAll(".node text")
-      .each(function() {
-        var bbox = this.getBBox();
-        d3.select(this.parentNode)
-          .insert("rect", "text")
-          .attr("x", bbox.x - 3)
-          .attr("y", bbox.y - 3)
-          .attr("width", bbox.width + 6)
-          .attr("height", bbox.height + 6)
-          .style("fill", "white")
-          .style("stroke", "black");
-      });
-  }
-  '
-)
-
-
-
-
-
-sankey = htmlwidgets::onRender(
-  sankeyplot2,
-  '
-  function(el) {
-    // Make the text bold and add white background as done before
-    d3.select(el).selectAll(".node text").attr("font-weight", "bold");
-    d3.select(el).selectAll(".node text")
-      .each(function() {
-        var bbox = this.getBBox();
-        d3.select(this.parentNode)
-          .insert("rect", "text")
-          .attr("x", bbox.x - 3)
-          .attr("y", bbox.y - 3)
-          .attr("width", bbox.width + 6)
-          .attr("height", bbox.height + 6)
-          .style("fill", "white")
-          .style("stroke", "black");
-      });
-
-    // Add headings to the top of each column
-    var svg = d3.select(el).select("svg");
-
-    // Add "Scenario" heading
-    var scenarioText = svg.append("text")
-      .attr("x", 20)  // Adjust x-position as needed
-      .attr("y", 12)  // Adjust y-position as needed
-      .attr("font-size", "18px")
-      .attr("font-weight", "bold")
-      .text("SCENARIO");
-
-    // Underline "Scenario" heading
-    svg.append("line")
-      .attr("x1", 20)  // Same x-position as heading
-      .attr("x2", 115) // Adjust to length of text
-      .attr("y1", 15)  // Position slightly below the heading
-      .attr("y2", 15)  // Align with y1
-      .attr("stroke", "black")
-      .attr("stroke-width", 2);
-
-    // Add "Sector" heading
-    var sectorText = svg.append("text")
-      .attr("x", 330)  // Adjust x-position as needed to center above middle column
-      .attr("y", 12)   // Same y-position
-      .attr("font-size", "18px")
-      .attr("font-weight", "bold")
-      .text("SECTOR");
-
-    // Underline "Sector" heading
-    svg.append("line")
-      .attr("x1", 330)
-      .attr("x2", 405)  // Adjust to length of text
-      .attr("y1", 15)
-      .attr("y2", 15)
-      .attr("stroke", "black")
-      .attr("stroke-width", 2);
-
-    // Add "Pathway" heading
-    var impactText = svg.append("text")
-      .attr("x", 650)  // Adjust x-position as needed for right column
-      .attr("y", 12)   // Same y-position
-      .attr("font-size", "18px")
-      .attr("font-weight", "bold")
-      .text("PATHWAY");
-
-    // Underline "Pathway" heading
-    svg.append("line")
-      .attr("x1", 650)
-      .attr("x2", 740)  // Adjust to length of text
-      .attr("y1", 15)
-      .attr("y2", 15)
-      .attr("stroke", "black")
-      .attr("stroke-width", 2);
-
-    // Add "Outcome" heading
-    var outcomeText = svg.append("text")
-      .attr("x", 950)  // Adjust x-position as needed
-      .attr("y", 12)   // Same y-position
-      .attr("font-size", "18px")
-      .attr("font-weight", "bold")
-      .text("OUTCOME");
-
-    // Underline "Outcome" heading
-    svg.append("line")
-      .attr("x1", 950)
-      .attr("x2", 1045)  // Adjust to length of text
-      .attr("y1", 15)
-      .attr("y2", 15)
-      .attr("stroke", "black")
-      .attr("stroke-width", 2);
-  }
-  '
-)
-
-
-
-
-
-###
-sankeyplot2 <- sankeyNetwork(Links = links, Nodes = nodes,
-                             Source = "IDsource", Target = "IDtarget",
-                             Value = "value", NodeID = "name", 
-                             colourScale=my_color, LinkGroup="group", NodeGroup="group",
                              fontSize = 10, nodeWidth = 2 )
 
 sankey = htmlwidgets::onRender(
@@ -578,10 +445,10 @@ quality = ggplot(quality_eval_long, aes(x = Criteria, y = Count, fill = factor(V
   scale_y_continuous(breaks= c(0,30,60)) +
   theme(
     legend.text = element_text(size = 15),
-    legend.title = element_text(size = 15),  # Increase legend title size
+    legend.title = element_text(size = 15), 
     axis.text.y = element_text(size = 20),
-    axis.title.x = element_text(size = 18),  # Increase x-axis title size
-    axis.title.y = element_text(size = 18)   # Increase y-axis title size
+    axis.title.x = element_text(size = 18), 
+    axis.title.y = element_text(size = 18)  
   )
 
 
