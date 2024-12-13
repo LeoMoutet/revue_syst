@@ -16,12 +16,6 @@ Data :
 - **quality_eval_v2.xlsx** : Extraction grid for confidence assessment
 
 - **Tables to extrapolate the conversion factor** (See "Code : conversion_factor)
-milner_air.csv
-milner_diet.csv
-milner_pa.csv
-phillips.csv
-williams.csv
-zysk.csv
 
 
 
