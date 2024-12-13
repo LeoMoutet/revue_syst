@@ -14,13 +14,13 @@ Code
 Data
 ========
 
-- **extraction_grid** : Extraction grid of each article, also used as an input data frame to display figures (Dictionnary of the variables on the second sheet) 
+- **extraction_grid_article** : Extraction grid of each article, also used as an input data frame to display figures (Dictionnary of the variables on the second sheet) 
 
 - **extraction_grid_health_outcome**: Extraction grid of each scenario, also used as an input data frame to display figures (Dictionnary of the variables on the second sheet)
 
-- **quality_eval_v2.xlsx** : Extraction grid for confidence assessment
+- **quality_eval.xlsx** : Extraction grid for confidence assessment
 
-- **Tables to extrapolate the conversion factor** (See "Code : conversion_factor)
+- **Tables to extrapolate the conversion factor** (See "Code : conversion_factor): cv_author
 
 
 
